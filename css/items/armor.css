@@ -95,7 +95,7 @@ div.window-app:has(.custom-armor-sheet) .window-content,
 /* Cabeçalho da Ficha (Linha Única) */
 .custom-armor-sheet .sheet-header-wrapper { display: flex !important; gap: 15px !important; align-items: center !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; padding-bottom: 15px !important; width: 100% !important; }
 .custom-armor-sheet .sheet-header-wrapper .img-wrapper { width: 64px !important; height: 64px !important; border-radius: 8px !important; overflow: hidden !important; border: 2px solid rgba(157, 78, 221, 0.4) !important; }
-.custom-armor-sheet .sheet-header-wrapper .profile-img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+.custom-armor-sheet .sheet-header-wrapper .profile-img { width: 100% !important; height: 100% !important; object-fit: cover !important; cursor: pointer !important; }
 
 /* Distribuição Horizontal dos 5 campos do cabeçalho */
 .custom-armor-sheet .sheet-header-wrapper .header-fields {

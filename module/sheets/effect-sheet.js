@@ -23,7 +23,7 @@ export class EffectsSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       title: "Configurador de Status"
     },
     form: {
-      submitOnChange: true, // Mantém salvando o nome automaticamente ao digitar
+      submitOnChange: true,
       closeOnSubmit: false
     }
   };
@@ -43,15 +43,11 @@ export class EffectsSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     context.item = this.document;
     context.system = this.document.system;
 
-    // IDENTIFICADOR DE ORIGEM DEFINITIVO:
-    // Se o item possuir um Actor como pai (parent), significa que ele está equipado/aplicado na ficha de alguém.
     const estaNoJogador = this.document.parent && this.document.parent.documentName === "Actor";
 
     if (estaNoJogador) {
-      // Se está no jogador, força o trancamento total baseado no que a PlayerSheet mandou
       context.isEditable = options.form?.editable !== false && this.isEditable;
     } else {
-      // Se não tem pai (está no menu de itens do mundo), permite criar e editar livremente
       context.isEditable = true;
       if (options.form) options.form.editable = true;
     }
@@ -94,7 +90,6 @@ export class EffectsSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   _onRender(context, options) {
     super._onRender(context, options);
 
-    // ESCUTA: Botão de Salvar / Fixar Efeito
     const btnAdd = this.element.querySelector(".btn-add-effect");
     if (btnAdd) {
       btnAdd.addEventListener("click", async (event) => {
@@ -126,7 +121,6 @@ export class EffectsSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       });
     }
 
-    // ESCUTA: Botão de Deletar Efeito de dentro do Item
     const areaLista = this.element.querySelector('.effects-list-section');
     if (areaLista && !areaLista.dataset.listenerAtivo) {
       areaLista.dataset.listenerAtivo = "true";

@@ -1,4 +1,4 @@
-import { safeInt, obterModificadorArmadura } from "./core/utils.js";
+import { safeInt, obterModificadorArmadura, getSafeValue, safeArray } from "./core/utils.js";
 import { ATTRIBUTES_KEYS, COMBAT_KEYS, ITEM_TYPE_CATEGORY_MAP, MODIFICADORES_STATUS, DEFAULT_BONUS_LIST, EQUIPPABLE_BONUS_TARGETS } from "./core/constants.js";
 import { Field } from "./core/fields-utils.js";
 
@@ -25,8 +25,9 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         required: Field.Number(100, true, false, { min: 1 })
       }),
 
-      current_gil : Field.Number(0),
-      extract_gil : Field.Array(Field.Object(), []),
+      current_gil: Field.Number(0),
+      extract_gil: Field.Array(Field.Object(), []),
+      accessory: Field.Array(Field.String(), []),
 
       percent_bonus: Field.Schema({
         forca: Field.Number(0),
@@ -47,7 +48,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         hp: Field.Number(0),
         mp: Field.Number(0),
         critical: Field.Number(0),
-        damage:Field.Number(1)
+        damage: Field.Number(1)
       }),
 
       information: Field.Schema({
@@ -158,7 +159,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
           total: Field.Number(0)
         }),
         critical_chance: Field.Number(0),
-        damage_bonus:Field.Number(1)
+        damage_bonus: Field.Number(1)
       }),
 
       expert_class: Field.Schema({
@@ -200,23 +201,25 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // 3. Aplica buffs/debuffs baseados nos efeitos ativos
     this._applyStatusModifiers();
 
-    // 4. Garante que nenhum atributo passe do cap máximo (30)
-    this._applyHardCap();
-
-    // 5. Calcula os status de combate uma única vez com os atributos finais travados
-    this._recalculateCombat();
-
-    // 6. Roda o loop unificado de níveis (1 a 99) para HP, MP e Somas Globais
-    this._recalculateMaxHpMpByTable();
-
-    // 7. Aplica percent_bonus em todos os campos total
+    // 4. Aplica percent_bonus nos atributos
     this._applyAttributePercentBonuses();
 
+    // 5. Garante que nenhum atributo passe do cap máximo (30)
+    this._applyHardCap();
+
+    // 6. Calcula os status de combate uma única vez com os atributos finais travados
+    this._recalculateCombat();
+
+    // 7. Roda o loop unificado de níveis (1 a 99) para HP, MP e Somas Globais
+    this._recalculateMaxHpMpByTable();
+
+    // 8. Aplica percent_bonus no combate
     this._applyCombatPercentBonuses();
 
+    // 9. Aplica percent_bonus no HP/MP
     this._applyHpMpPercentBonuses();
 
-    // 8. Aplica modificador de armadura por atributo (só armadura e armadura_magica)
+    // 10. Aplica modificador de armadura por atributo (só armadura e armadura_magica)
     this._applyArmorModifiers();
   }
 
@@ -240,8 +243,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     }
   }
 
-  _applyHpMpPercentBonuses(){
-    
+  _applyHpMpPercentBonuses() {
+
     if (this.hp) {
       this.hp.total = this._applyPercentBonus(this.hp, "hp");
     }
@@ -255,17 +258,17 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const attr = this.atributos;
     if (!attr) return;
 
-    const vitalidade = attr.vitalidade?.total || 0;
-    const espirito = attr.espirito?.total || 0;
+    const vitalidade = getSafeValue(attr.vitalidade?.total);
+    const espirito = getSafeValue(attr.espirito?.total);
 
     if (this.combate.armadura) {
       const mod = obterModificadorArmadura(vitalidade);
-      this.combate.armadura.total = Math.round(this.combate.armadura.total * mod);
+      this.combate.armadura.total = Math.round(getSafeValue(this.combate.armadura.total) * mod);
     }
 
     if (this.combate.armadura_magica) {
       const mod = obterModificadorArmadura(espirito);
-      this.combate.armadura_magica.total = Math.round(this.combate.armadura_magica.total * mod);
+      this.combate.armadura_magica.total = Math.round(getSafeValue(this.combate.armadura_magica.total) * mod);
     }
   }
 
@@ -274,35 +277,28 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const nivelSeguro = Math.max(1, Math.min(nivel, 99));
     const progressao = this.progressao_niveis || {};
 
-    // Inicializadores para o total geral (1 a 99)
     const somas = { dhp: 0, vit: 0, dmp: 0, esp: 0 };
-
-    // Inicializadores para o HP/MP máximo do nível atual do personagem
     let somaHpPersonagem = 0;
     let somaMpPersonagem = 0;
 
-    // UM ÚNICO LOOP DE 1 A 99 PARA RESOLVER TUDO
     for (let i = 1; i <= 99; i++) {
       const dados = progressao[`nv${i}`] || {};
-      const dhp = parseInt(dados.dhp || 0, 10) || 0;
-      const vit = parseInt(dados.vit || 0, 10) || 0;
-      const dmp = parseInt(dados.dmp || 0, 10) || 0;
-      const esp = parseInt(dados.esp || 0, 10) || 0;
+      const dhp = safeInt(dados.dhp, 0);
+      const vit = safeInt(dados.vit, 0);
+      const dmp = safeInt(dados.dmp, 0);
+      const esp = safeInt(dados.esp, 0);
 
-      // 1. Acumula nas somas globais (antigo _recalculateProgressaoSomas)
       somas.dhp += dhp;
       somas.vit += vit;
       somas.dmp += dmp;
       somas.esp += esp;
 
-      // 2. Acumula no HP/MP máximo apenas se estiver dentro do nível do personagem
       if (i <= nivelSeguro) {
         somaHpPersonagem += dhp + vit;
         somaMpPersonagem += dmp + esp;
       }
     }
 
-    // Aplica os valores na memória (dados derivados)
     this.hp.base = 30 + somaHpPersonagem;
     this.mp.base = 10 + somaMpPersonagem;
     this.xp.required = 500 * nivelSeguro;
@@ -316,7 +312,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
   _calculateBaseStats() {
     for (const chave of ATTRIBUTES_KEYS) {
       if (this.atributos[chave]) {
-        this.atributos[chave].total = (this.atributos[chave].base || 0) + (this.atributos[chave].bonus || 0);
+        this.atributos[chave].total = getSafeValue(this.atributos[chave].base) + getSafeValue(this.atributos[chave].bonus);
       }
     }
   }
@@ -327,9 +323,9 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     for (const chave of ATTRIBUTES_KEYS) {
       if (this.atributos[chave]) {
         this.atributos[chave].max = Math.min(limites[chave], 30);
-        this.atributos[chave].total = (this.atributos[chave].base || 0) + (this.atributos[chave].bonus || 0);
-        this.atributos[chave].teste = ((this.atributos[chave].total || 0) * 3) + 10;
-        this.atributos[chave].padrao = Math.trunc((this.atributos[chave].teste || 0) / 2);
+        this.atributos[chave].total = getSafeValue(this.atributos[chave].base) + getSafeValue(this.atributos[chave].bonus);
+        this.atributos[chave].teste = (getSafeValue(this.atributos[chave].total) * 3) + 10;
+        this.atributos[chave].padrao = Math.trunc(getSafeValue(this.atributos[chave].teste) / 2);
       }
     }
   }
@@ -339,7 +335,6 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       forca: 0, vitalidade: 0, agilidade: 0, velocidade: 0, magia: 0, espirito: 0
     };
 
-    // Percorre a lista de itens uma única vez e extrai o que precisa
     const items = this.parent.items || [];
     let itemJob = null;
     let itemRaca = null;
@@ -347,8 +342,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     for (const item of items) {
       if (item.type === "job") itemJob = item;
       else if (item.type === "race") itemRaca = item;
-      
-      // Se já achou os dois, pode parar o loop mais cedo (otimização extra)
+
       if (itemJob && itemRaca) break;
     }
 
@@ -368,13 +362,11 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
   }
 
   _applyStatusModifiers() {
-    // 1. Cria o mapa de status diretamente
     const statusAtivos = {
       agility_up: false, agility_down: false, agility_break: false,
       spirit_up: false, spirit_down: false, spirit_break: false
     };
 
-    // 2. Acessa appliedEffects UMA ÚNICA VEZ e armazena em cache
     const efeitosAtivos = this.parent.appliedEffects;
     if (efeitosAtivos) {
       for (const efeito of efeitosAtivos) {
@@ -382,14 +374,12 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         const idsDoEfeito = efeito.statuses;
         if (!idsDoEfeito) continue;
 
-        // Ativa as flags no mapa se o efeito existir
         for (const status of Object.keys(statusAtivos)) {
           if (idsDoEfeito.has(status)) statusAtivos[status] = true;
         }
       }
     }
 
-    // 3. Aplica os multiplicadores nos atributos de forma direta, sem funções extras intermediárias
     const mapeamento = {
       agilidade: ["agility_up", "agility_down", "agility_break"],
       espirito: ["spirit_up", "spirit_down", "spirit_break"]
@@ -402,28 +392,10 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       for (const status of statusRelevantes) {
         if (statusAtivos[status]) {
           attr.total = Math.floor(attr.total * MODIFICADORES_STATUS[status]);
-          break; // Aplica apenas o primeiro status relevante encontrado (Up, Down ou Break)
+          break;
         }
       }
     }
-  }
-
-  _getStatusMultiplier(atributo, statusAtivos) {
-    const mapeamento = {
-      agilidade: ["agility_up", "agility_down", "agility_break"],
-      espirito: ["spirit_up", "spirit_down", "spirit_break"]
-    };
-
-    const statusRelevantes = mapeamento[atributo];
-    if (!statusRelevantes) return null;
-
-    for (const status of statusRelevantes) {
-      if (statusAtivos[status]) {
-        return MODIFICADORES_STATUS[status];
-      }
-    }
-
-    return null;
   }
 
   _applyHardCap() {
@@ -439,51 +411,30 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const attr = this.atributos;
     const level = parseInt(this.level || 1, 10);
 
-    this.combate.evasao.base = (attr.agilidade?.total || 0) + (attr.velocidade?.total || 0);
-    this.combate.evasao_magica.base = (attr.espirito?.total || 0) + (attr.magia?.total || 0);
-    this.combate.destreza.base = level + ((attr.agilidade?.total || 0) * 2) + 50;
-    this.combate.mente.base = level + ((attr.magia?.total || 0) * 2) + 50;
-    this.combate.precisao.base = level + ((attr.agilidade?.total || 0) * 2);
-    this.combate.precisao_magica.base = level + ((attr.magia?.total || 0) * 2) + 100;
+    this.combate.evasao.base = getSafeValue(attr.agilidade?.total) + getSafeValue(attr.velocidade?.total);
+    this.combate.evasao_magica.base = getSafeValue(attr.espirito?.total) + getSafeValue(attr.magia?.total);
+    this.combate.destreza.base = level + (getSafeValue(attr.agilidade?.total) * 2) + 50;
+    this.combate.mente.base = level + (getSafeValue(attr.magia?.total) * 2) + 50;
+    this.combate.precisao.base = level + (getSafeValue(attr.agilidade?.total) * 2);
+    this.combate.precisao_magica.base = level + (getSafeValue(attr.magia?.total) * 2) + 100;
 
     for (const chave of COMBAT_KEYS) {
       if (this.combate[chave]) {
-        this.combate[chave].total = (this.combate[chave].base || 0) + (this.combate[chave].bonus || 0);
+        this.combate[chave].total = getSafeValue(this.combate[chave].base) + getSafeValue(this.combate[chave].bonus);
       }
     }
   }
 
   _applyPercentBonus(field, percentKey) {
-    const percent = this.percent_bonus[percentKey] || 0;
-    const base = field.base || 0;
-    const bonus = field.bonus || 0;
-    return (base + bonus) * (1 + percent / 100);
+    const percent = getSafeValue(this.percent_bonus[percentKey]);
+    const currentTotal = getSafeValue(field.total);
+    return currentTotal * (1 + percent / 100);
   }
-
-  get forcaTotal() { return this._applyPercentBonus(this.atributos.forca, "forca"); }
-  get vitalidadeTotal() { return this._applyPercentBonus(this.atributos.vitalidade, "vitalidade"); }
-  get agilidadeTotal() { return this._applyPercentBonus(this.atributos.agilidade, "agilidade"); }
-  get velocidadeTotal() { return this._applyPercentBonus(this.atributos.velocidade, "velocidade"); }
-  get magiaTotal() { return this._applyPercentBonus(this.atributos.magia, "magia"); }
-  get espiritoTotal() { return this._applyPercentBonus(this.atributos.espirito, "espirito"); }
-
-  get armaduraTotal() { return this._applyPercentBonus(this.combate.armadura, "armadura"); }
-  get armaduraMagicaTotal() { return this._applyPercentBonus(this.combate.armadura_magica, "armadura_magica"); }
-  get evasaoTotal() { return this._applyPercentBonus(this.combate.evasao, "evasao"); }
-  get evasaoMagicaTotal() { return this._applyPercentBonus(this.combate.evasao_magica, "evasao_magica"); }
-  get precisaoTotal() { return this._applyPercentBonus(this.combate.precisao, "precisao"); }
-  get precisaoMagicaTotal() { return this._applyPercentBonus(this.combate.precisao_magica, "precisao_magica"); }
-  get destrezaTotal() { return this._applyPercentBonus(this.combate.destreza, "destreza"); }
-  get menteTotal() { return this._applyPercentBonus(this.combate.mente, "mente"); }
-  get expertTotal() { return this._applyPercentBonus(this.combate.expert, "expert"); }
-
-  get hpTotal() { return this._applyPercentBonus(this.hp, "hp"); }
-  get mpTotal() { return this._applyPercentBonus(this.mp, "mp"); }
 
   get totalBaseAttr() {
     const attr = this.atributos;
     if (!attr) return 0;
-    return ATTRIBUTES_KEYS.reduce((total, chave) => total + (attr[chave]?.base || 0), 0);
+    return ATTRIBUTES_KEYS.reduce((total, chave) => total + getSafeValue(attr[chave]?.base), 0);
   }
 
   get totalBonusAttr() {
@@ -539,7 +490,6 @@ export class EffectsItemModel extends foundry.abstract.TypeDataModel {
   }
 }
 
-//Usado como base dos efeitos que serão aplicados em buffs,debuffs e passivas
 export class ModificadorEstrutura extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
@@ -551,7 +501,6 @@ export class ModificadorEstrutura extends foundry.abstract.DataModel {
   }
 }
 
-//Apenas placeholder, irei usar o que esta em modificadores e diracao_turnos em breve
 export class EffectsItemModelTest extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
@@ -578,12 +527,12 @@ export class ItemModel extends foundry.abstract.TypeDataModel {
     return obj;
   }
 
-  get fullDisplayName(){
+  get fullDisplayName() {
 
     const tier = this.tier || "T1";
     const probability = this.probability ?? 0;
-    const name = this.parent?.name || ""; 
-    
+    const name = this.parent?.name || "";
+
     return `[${tier}] [${probability}%] ${name}`;
   }
 
@@ -608,7 +557,7 @@ export class GearBasicModel extends ItemModel {
     return obj;
   }
 
-  get computeAbilityDisplay(){
+  get computeAbilityDisplay() {
     const abilities = this.abilities || [];
 
     if (!abilities.length) return "";
@@ -620,9 +569,9 @@ export class GearBasicModel extends ItemModel {
 export class StatusBonusBase extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
-      status: Field.String("", true),           // hp_max, mp_max, attack...
-      value: Field.Number(0, true),             // valor numérico
-      mode: Field.String("flat", true)          // flat | percent
+      status: Field.String("", true),
+      value: Field.Number(0, true),
+      mode: Field.String("flat", true)
     };
   }
 }
@@ -630,10 +579,10 @@ export class StatusBonusBase extends foundry.abstract.DataModel {
 export class ItemAbilityBase extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
-      name: Field.String(), // nome habilidade
-      description: Field.Rich(), //descrição
+      name: Field.String(),
+      description: Field.Rich(),
       tags: Field.Array(),
-      bonusList: Field.Array(StatusBonusBase) //lista de bonus
+      bonusList: Field.Array(StatusBonusBase)
     };
   }
 }
@@ -643,21 +592,35 @@ export class WeaponModel extends GearBasicModel {
   static defineSchema() {
     const gear = super.defineSchema();
 
+    if (gear.slot) {
+      gear.slot.initial = "weapon";
+    }
+
     let obj = {
       ...gear,
       weapon: Field.Schema({
-        type: Field.String(), // Magico ou Fisico
-        group: Field.String("physical"), // Tipo de arma ( staff, axe ...)
-        twoHanded: Field.Boolean()  //Se a arma usa ambos os slots
+        type: Field.String(),
+        group: Field.String("physical"),
+        twoHanded: Field.Boolean()
       }),
       damage: Field.Schema({
         dice: Field.String(),
         multiplier: Field.Number(1),
-        atribute: Field.String()  // Forca , AGI...
+        atribute: Field.String()
       })
     }
 
     return obj;
+  }
+
+  static async preCreate(data, options, userId) {
+    super.preCreate?.(data, options, userId);
+
+    const tags = safeArray(data.system?.tags);
+    if (!tags.includes("weapon")) {
+      tags.push("weapon");
+    }
+    data.updateSource({ "system.tags": tags });
   }
 
   get computeInfoDisplay() {
@@ -679,9 +642,13 @@ export class ArmorModel extends GearBasicModel {
   static defineSchema() {
     const gear = super.defineSchema();
 
+    if (gear.slot) {
+      gear.slot.initial = "accessory";
+    }
+
     let obj = {
       ...gear,
-      bonusList: Field.Array(StatusBonusBase,DEFAULT_BONUS_LIST)
+      bonusList: Field.Array(StatusBonusBase, DEFAULT_BONUS_LIST)
     }
 
     return obj;
@@ -690,13 +657,13 @@ export class ArmorModel extends GearBasicModel {
   static async preCreate(data, options, userId) {
     super.preCreate?.(data, options, userId);
 
-    const tags = Array.isArray(data.system?.tags) ? data.system.tags : [];
+    const tags = safeArray(data.system?.tags);
     if (!tags.includes("armor")) {
       tags.push("armor");
     }
     data.updateSource({ "system.tags": tags });
 
-    if (!Array.isArray(data.system?.bonusList) || data.system.bonusList.length === 0) {
+    if (!safeArray(data.system?.bonusList).length) {
       data.updateSource({ "system.bonusList": DEFAULT_BONUS_LIST });
     }
   }
@@ -721,13 +688,13 @@ export class ArmorModel extends GearBasicModel {
       const key = bonus.status;
       if (!key || !labelMap[key]) continue;
 
-      const value = typeof safeInt === "function" ? safeInt(bonus.value, 0) : (parseInt(bonus.value) || 0);
-      totals[key] = (totals[key] || 0) + value;
+      const value = getSafeValue(bonus.value, 0);
+      totals[key] = getSafeValue(totals[key]) + value;
     }
 
     const parts = [];
     for (const [key, label] of Object.entries(labelMap)) {
-      const value = totals[key] || 0;
+      const value = getSafeValue(totals[key]);
       if (value === 0) continue;
 
       const sign = value > 0 ? "+" : "";
@@ -747,7 +714,7 @@ export class ConsumableBasicModel extends ItemModel {
       ...item,
       quantity: Field.Number(1),
       infinity: Field.Boolean(),
-      effects: Field.Array(foundry.data.fields.ObjectField) //No select só tera HP/MP 
+      effects: Field.Array(StatusBonusBase)
     }
 
     return obj;

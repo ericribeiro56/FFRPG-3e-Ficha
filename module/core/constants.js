@@ -58,6 +58,21 @@ export const ARMOR_SLOTS = {
   accessory: "Acessório"
 };
 
+export const INVENTORY_SLOT_TAG_MAP = {
+  helmet: "armors",
+  chestplate: "armors",
+  arms: "armors",
+  accessory: "accessories",
+  shield: "shields",
+  weapon: "weapons",
+  key: "key",
+  heal: "heal",
+  combat: "combat",
+  support: "support",
+  ammo: "ammo"
+};
+
+
 export const WEAPON_DAMAGE_TYPE = {
   magic: "Mágico",
   physical: "Físico"
@@ -134,6 +149,14 @@ export const ITEM_TYPE_CATEGORY_MAP = {
   gear_consumable: "consumable"
 };
 
+export const GEAR_ITEM_TYPES = Object.keys(ITEM_TYPE_CATEGORY_MAP);
+
+export const GEAR_TYPES = {
+  WEAPON: "gear_weapon",
+  ARMOR: "gear_armor",
+  CONSUMABLE: "gear_consumable"
+};
+
 export const GIL_TAX_MULTIPLIERS = {
   "0": 1.0,
   "1": 1.05,
@@ -147,3 +170,9 @@ export const GIL_TAX_MULTIPLIERS = {
   "9": 0.75
 };
 
+export const CLASS_LIST = {
+  warrior: "Guerreiro",
+  expert: "Expert",
+  mage: "Mago",
+  adept: "Adepto"
+}

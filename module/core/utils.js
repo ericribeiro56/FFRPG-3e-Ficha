@@ -5,6 +5,21 @@ export function safeInt(value, fallback = 0) {
   return Number.isNaN(parsed) ? fallback : parsed;
 }
 
+export function getSafeValue(value, fallback = 0) {
+  if (value === undefined || value === null) return fallback;
+  const num = Number(value);
+  return Number.isNaN(num) ? fallback : num;
+}
+
+export function safeArray(value, fallback = []) {
+  return Array.isArray(value) ? value : fallback;
+}
+
+export function datasetInt(element, key, fallback = 0) {
+  const raw = element?.dataset?.[key];
+  return safeInt(raw, fallback);
+}
+
 export function normalizeName(name) {
   return name?.toLowerCase().trim() ?? "";
 }
@@ -59,16 +74,18 @@ export function findItemByTypeAndName(collection, type, name) {
   });
 }
 
-/**
- * Calcula o fator multiplicador baseado na tabela de VIT/SPR (ex: retorna 1.25 para +25%).
- * @param {number} valorAtributo - O valor total atual de VIT ou SPR.
- * @returns {number} O fator multiplicador pronto (ex: 1.25 para multiplicar direto).
- */
 export function obterModificadorArmadura(valorAtributo) {
-  if (!valorAtributo || valorAtributo <= 0) return 1; // Retorna 1 se for zero (Armadura * 1 = Armadura)
+  if (!valorAtributo || valorAtributo <= 0) return 1;
   
   const valorLimitado = Math.min(valorAtributo, 30);
   
-  // Somando 1 no início, a tabela passa a dar resultados entre 1.05 e 1.75
   return 1 + (Math.ceil(valorLimitado / 2) * 0.05);
+}
+
+export function sortByLabel(options) {
+  return options.slice().sort((a, b) => ((a.label || a.display || "").localeCompare(b.label || b.display || "")));
+}
+
+export function sortObjectByValue(obj) {
+  return Object.fromEntries(Object.entries(obj).sort((a, b) => (a[1] || "").localeCompare(b[1] || "")));
 }

@@ -5,20 +5,23 @@ import {
   applyGilTax,
   safeArrayCopy,
   findItemByTypeAndName,
-  getEffectDurationTurns
+  getEffectDurationTurns,
+  sortObjectByValue,
+  safeArray
 } from "../core/utils.js";
 
 import { DropDispatcher } from "../core/drop-handler.js";
 import { buildEffectContext } from "../core/context-builders.js";
-import { OPCOES_DEFESAS_HP, OPCOES_PERCENTUAIS_CURA, opcoesTaxasGil } from "../core/constants.js";
-import { determinarSlot, getSlotErrorMessage, applyEquipmentEffect, removeEquipmentEffect } from "../core/equipment-service.js";
+import { INVENTORY_SLOT_TAG_MAP, OPCOES_DEFESAS_HP, OPCOES_PERCENTUAIS_CURA, opcoesTaxasGil } from "../core/constants.js";
+import { applyEquipmentEffect, removeEquipmentEffect } from "../core/equipment-service.js";
+import { MessageService } from "../core/message-service.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
-  constructor(options={}) {
+  constructor(options = {}) {
     options.id = options.document ? `actor-sheet-${options.document.id}` : options.id;
     super(options);
   }
@@ -62,15 +65,14 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.actor = this.document;
     context.system = this.document.system;
 
-    // --- LISTAS PARA OS SEUS SELECTS DINÂMICOS ---
-    context.opcoesAtributos = {
+    context.opcoesAtributos = sortObjectByValue({
       "": "Nenhum Atributo",
       "agilidade": "Agilidade",
       "magia": "Magia",
       "espirito": "Espírito"
-    };
+    });
 
-    context.opcoesPericias = {
+    context.opcoesPericias = sortObjectByValue({
       "": "Nenhuma Perícia",
       "alquimia": "Alquimia",
       "atuacao": "Atuação",
@@ -80,15 +82,12 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       "invencao": "Invenção",
       "jogos": "Jogos",
       "labia": "Lábia"
-    };
+    });
 
-    // --- ENRIQUECIMENTO OBRIGATÓRIO DO PROSEMIRROR (v14) ---
-    // Transforma a string crua em HTML assíncrono interpretável pela AppV2
     context.enrichBackground = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
       this.document.system.information.bgHistory || "",
       { secrets: this.document.isOwner, async: true }
     );
-    // ------------------------------------------------------
 
     const raceItem = this.document.items.find(i => i.type === "race");
     const jobItem = this.document.items.find(i => i.type === "job");
@@ -112,14 +111,12 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     return context;
   }
 
-  // Registra e configura editores ProseMirror na ApplicationV2 (v14)
   _configureEditors(options) {
     super._configureEditors(options);
 
-    // Adiciona o seu editor no pipeline gerenciado da folha
     this.editors["bgHistory"] = {
       target: "system.information.bgHistory",
-      button: false, // Mantém inline (sempre aberto para digitação)
+      button: false,
       engine: "prosemirror",
       collaborative: false
     };
@@ -164,7 +161,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this.controladorAbas.bind(this.element);
   }
 
- _abrirDialogGil(event, target) {
+  _abrirDialogGil(event, target) {
     const templateSource = `
 <div class="dialog-base dialog-gil">
   
@@ -208,12 +205,11 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 </div>`;
 
     const templateCompilado = Handlebars.compile(templateSource);
-    // opcoesTaxasGil deve vir do seu constants.js
     const htmlContent = templateCompilado({ taxas: opcoesTaxasGil });
 
     DialogV2.prompt({
-      window: { 
-        title: "Movimentação de Caixa (Gil)" 
+      window: {
+        title: "Movimentação de Caixa (Gil)"
       },
       position: {
         width: 320
@@ -261,7 +257,6 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   _abrirCombateHP(event, target) {
-    // 1. O TEMPLATE SOURCE: Envelopado em uma linha flex para travar o lado a lado horizontamente!
     const templateSource = `
 <div class="dialog-base dialog-combate-split" style="display: flex; flex-direction: row; padding: 4px 0;">
 
@@ -343,15 +338,14 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 </div>`;
 
     const templateCompilado = Handlebars.compile(templateSource);
-    const htmlContent = templateCompilado({ 
-      defesas: OPCOES_DEFESAS_HP, 
-      percentuaisCura: OPCOES_PERCENTUAIS_CURA 
+    const htmlContent = templateCompilado({
+      defesas: OPCOES_DEFESAS_HP,
+      percentuaisCura: OPCOES_PERCENTUAIS_CURA
     });
 
-    // 2. CONSTRUTOR NATIVO DO DIALOGV2 (Totalmente fluido, leve e móvel)
     const dialogHP = new foundry.applications.api.DialogV2({
-      window: { 
-        title: "" 
+      window: {
+        title: ""
       },
       position: {
         width: 460 // Largura reduzida e compactada
@@ -402,25 +396,25 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             let danoCalculado = quantidade;
 
             if (fraqElemental) danoCalculado = Math.floor(danoCalculado * 1.5);
-            if (resElemental)  danoCalculado = Math.floor(danoCalculado * 0.5);
-            if (protectShell)  danoCalculado = Math.floor(danoCalculado * 0.5);
-            if (guard)         danoCalculado = Math.floor(danoCalculado * 0.5);
+            if (resElemental) danoCalculado = Math.floor(danoCalculado * 0.5);
+            if (protectShell) danoCalculado = Math.floor(danoCalculado * 0.5);
+            if (guard) danoCalculado = Math.floor(danoCalculado * 0.5);
 
-            switch (tipoDefesa){
-              case "arm" :         
-                          danoCalculado = Math.max(0, danoCalculado - armaduraFisica); 
-                          break;
-              case "arm_metade" :
-                          danoCalculado = Math.max(0, danoCalculado - Math.floor(armaduraFisica / 2));
-                          break;
-              case "armm" :
-                          danoCalculado = Math.max(0, danoCalculado - armaduraMagica);
-                          break;
-              case "armm_metade" :
-                          danoCalculado = Math.max(0, danoCalculado - Math.floor(armaduraMagica / 2));
-                          break;
-              default: 
-                          break;
+            switch (tipoDefesa) {
+              case "arm":
+                danoCalculado = Math.max(0, danoCalculado - armaduraFisica);
+                break;
+              case "arm_metade":
+                danoCalculado = Math.max(0, danoCalculado - Math.floor(armaduraFisica / 2));
+                break;
+              case "armm":
+                danoCalculado = Math.max(0, danoCalculado - armaduraMagica);
+                break;
+              case "armm_metade":
+                danoCalculado = Math.max(0, danoCalculado - Math.floor(armaduraMagica / 2));
+                break;
+              default:
+                break;
             }
 
             const novoHp = Math.max(0, hpAtual - danoCalculado);
@@ -467,75 +461,180 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     return listaNiveis;
   }
 
+  //Aux para adiciona ao grupo corretamente
+  addToGroup(item, itemGroups) {
+    const slot = item.system?.slot;
+
+    const grupoAlvo = INVENTORY_SLOT_TAG_MAP[slot] ?? "others";
+
+    itemGroups[grupoAlvo].push(item);
+  }
+
+  processarSlotSimples(slotName, listaIndex, listaAlvo,equippedList) {
+    const itens = equippedList.filter(item => item.system?.slot === slotName);
+    if (itens.length > 0) {
+      listaAlvo[listaIndex].item = itens[0];
+      this.desequiparFatiados(itens, 1);
+    }
+  }
+
+  // Pega os itens que passaram do limite e joga no inventário (itemGroups)
+  desequiparFatiados(listaDeItens, limiteMaximo) {
+    listaDeItens.slice(limiteMaximo).forEach(item => {
+      item.system.equipped = false;
+      this.addToGroup(item, itemGroups);
+    });
+  }
+
   _buildEquipmentContext() {
-    const gearTypes = ["gear_weapon", "gear_armor", "gear_consumable"];
-    const gearItems = this.document.items.filter(i => gearTypes.includes(i.type));
-    const equipados = gearItems.filter(i => i.system?.equipped);
-    const naoEquipados = gearItems.filter(i => !i.system?.equipped);
 
-    const slotsList = [
-      { slot: "main_hand", label: "Mão Principal", item: equipados.find(i => i.system?.slot === "main_hand") },
-      { slot: "offhand", label: "OffHand", item: equipados.find(i => i.system?.slot === "offhand") },
-      { slot: "helmet", label: "Capacete", item: equipados.find(i => i.system?.slot === "helmet") },
-      { slot: "chestplate", label: "Peito", item: equipados.find(i => i.system?.slot === "chestplate") },
-      { slot: "arms", label: "Braços", item: equipados.find(i => i.system?.slot === "arms") },
-      { slot: "accessory_1", label: "Acessório [1]", item: equipados.find(i => i.system?.slot === "accessory_1") },
-      { slot: "accessory_2", label: "Acessório [2]", item: equipados.find(i => i.system?.slot === "accessory_2") }
-    ];
+    const equippableTag = ["weapon", "armor"];
 
-    const weapons = naoEquipados.filter(i => i.system?.slot === "main_hand" || i.system?.slot === "offhand");
-    const shields = naoEquipados.filter(i => i.system?.slot === "shield");
-    const accessories = naoEquipados.filter(i => i.system?.slot === "accessory" || i.system?.slot === "accessory_1" || i.system?.slot === "accessory_2");
-    const armors = naoEquipados.filter(i => !i.system?.slot || i.system?.slot === "helmet" || i.system?.slot === "chestplate" || i.system?.slot === "arms");
+    const equippableItens = this.document.items.filter(item =>
+      equippableTag.some(tag => safeArray(item.system?.tags).includes(tag))
+    );
 
-    const keyItems = this.document.items.filter(i => (i.system?.tags || []).some(t => t === "keyItem"));
+    const consumabelItens = this.document.items.filter(item =>
+      !equippableTag.some(tag => safeArray(item.system?.tags).includes(tag))
+    );
 
-    const consumables = naoEquipados.filter(i => i.type === "gear_consumable");
 
-    const prioridadeTags = ["cura", "batalha", "suporte", "municao"];
-    const categories = { cura: [], combatItem: [], supportItem: [], ammo: [], others: [] };
+    const equippedList = [];
 
-    for (const item of consumables) {
-      const tags = item.system?.tags || [];
-      const tagEncontrada = prioridadeTags.find(p => tags.includes(p));
-
-      if (!tagEncontrada) {
-        categories.others.push(item);
-      } else {
-        categories[tagEncontrada === "batalha" ? "combatItem" : tagEncontrada].push(item);
-      }
+    const itemGroups = {
+      weapons: [],
+      shields: [],
+      armors: [],
+      accessories: [],
+      keys: [],
+      heals: [],
+      combat: [],
+      support: [],
+      ammo: [],
+      others: []
     }
 
-    const healList = categories.cura;
-    const combatList = categories.combatItem;
-    const supportList = categories.supportItem;
-    const ammoList = categories.ammo;
-    const othersList = categories.others;
+    for (const item of equippableItens) {
+
+      if (!item.system.equipped) {
+        this.addToGroup(item, itemGroups);
+        continue;
+      }
+
+      equippedList.push(item);
+    }
+
+    for (const item of consumabelItens) {
+
+      if(safeArray(item.system?.tags).includes("key")){
+        itemGroups.keys.push(item);
+        continue;
+      }
+
+      if(safeArray(item.system?.tags).includes("heal")){
+        itemGroups.heals.push(item);
+        continue; 
+      }
+
+      if(safeArray(item.system?.tags).includes("support")){
+        itemGroups.support.push(item);
+        continue; 
+      }
+
+      if(safeArray(item.system?.tags).includes("combat")){
+        itemGroups.combat.push(item);
+        continue; 
+      }
+
+      if(safeArray(item.system?.tags).includes("ammo")){
+        itemGroups.ammo.push(item);
+        continue; 
+      }
+
+      this.addToGroup(item, itemGroups);
+
+    }
+
+    const listaSlots = [
+      { slot: "main_hand", label: "Mão Principal", item: null },
+      { slot: "offhand", label: "Mão Secundária", item: null },
+      { slot: "helmet", label: "Capacete", item: null },
+      { slot: "chestplate", label: "Armadura", item: null },
+      { slot: "arms", label: "Braçadeiras", item: null },
+      { slot: "accessory", label: "Acessório [1]", item: null },
+      { slot: "accessory", label: "Acessório [2]", item: null }
+    ];
+
+    equippedList.sort((a, b) => a.system.slot.localeCompare(b.system.slot));
+
+    const allWeapons = equippedList.filter(item => item.system?.slot === "weapon");
+    const allShields = equippedList.filter(item => item.system?.slot === "shield");
+
+    // Lógica de Armas e Shield
+    if (allWeapons.length > 0) {
+      listaSlots[0].item = allWeapons[0]; // Equipa Arma Principal
+
+      if (allWeapons[0].system?.weapon?.twoHanded) {
+        // Arma de 2 Mãos: Desequipa qualquer outra arma extra e todos os escudos
+        this.desequiparFatiados(allWeapons, 1);
+        this.desequiparFatiados(allShields, 0);
+      } else {
+        // Arma de 1 Mão:
+        if (allWeapons.length > 1) {
+          listaSlots[1].item = allWeapons[1]; // Segunda arma na Mão Secundária
+          this.desequiparFatiados(allWeapons, 2); // Desequipa da 3ª em diante
+          this.desequiparFatiados(allShields, 0); // Desequipa todos os escudos
+        } else if (allShields.length > 0) {
+          listaSlots[1].item = allShields[0]; // Escudo na Mão Secundária
+          this.desequiparFatiados(allShields, 1); // Desequipa segundos escudos em diante
+        }
+      }
+    } else if (allShields.length > 0) {
+      // Sem armas: Coloca o primeiro escudo na mão secundária
+      listaSlots[1].item = allShields[0];
+      this.desequiparFatiados(allShields, 1);
+    }
+
+    //Processamento de outros slots
+    this.processarSlotSimples("helmet", 2, listaSlots, equippedList);     // Capacete vai no índice 2
+    this.processarSlotSimples("chestplate", 3, listaSlots, equippedList); // Peitoral vai no índice 3
+    this.processarSlotSimples("arms", 4, listaSlots, equippedList);       // Braçadeiras vão no índice 4
+
+    //Processamento dos slots
+    const allAccessory = equippedList.filter(item => item.system?.slot === "accessory");
+    if (allAccessory.length > 0) {
+      listaSlots[5].item = allAccessory[0]; // Primeiro acessório
+      if (allAccessory.length > 1) {
+        listaSlots[6].item = allAccessory[1]; // Segundo acessório
+      }
+      this.desequiparFatiados(allAccessory, 2); // Desequipa do 3º em diante
+    }
+
+    this.slotsList = listaSlots;
 
     return {
-      slotsList,
-      weapons,
-      shields,
-      armor: armors,
-      accessories,
-      keyItems,
-      healList,
-      combatList,
-      supportList,
-      ammoList,
-      othersList,
-      consumables,
+      slotsList: listaSlots,
+      weapons: itemGroups.weapons,
+      shields: itemGroups.shields,
+      armor: itemGroups.armors,
+      accessories: itemGroups.accessories,
+      keyItems:itemGroups.keys,
+      healList: itemGroups.heals,
+      combatList: itemGroups.combat,
+      supportList: itemGroups.support,
+      ammoList: itemGroups.ammo,
+      othersList: itemGroups.others,
       gruposVazios: {
-        heal: healList.length === 0,
-        combat: combatList.length === 0,
-        support: supportList.length === 0,
-        ammo: ammoList.length === 0,
-        weapons: weapons.length === 0,
-        shields: shields.length === 0,
-        armor: armors.length === 0,
-        accessories: accessories.length === 0,
-        keyItems: keyItems.length === 0,
-        others: othersList.length === 0
+        heal: itemGroups.heals.length === 0,
+        combat: itemGroups.combat.length === 0,
+        support: itemGroups.support.length === 0,
+        ammo: itemGroups.ammo.length === 0,
+        weapons: itemGroups.weapons.length === 0,
+        shields: itemGroups.shields.length === 0,
+        armor: itemGroups.armors.length === 0,
+        accessories: itemGroups.accessories.length === 0,
+        keyItems: itemGroups.keys.length === 0,
+        others: itemGroups.others.length === 0
       }
     };
   }
@@ -611,102 +710,84 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }, { render: false });
   }
 
+  async _updateItemToActive(item){
+    await item.update({ "system.equipped": true});
+    await this.document.prepareData();
+    await applyEquipmentEffect(this.document, item);
+    await this.document.prepareData();
+    await this.refreshItemDisplays(item);
+    this.render();
+  }
+  
   async equiparItem(event, target) {
     const itemId = target.dataset.itemId;
     const item = this.document.items.get(itemId);
+
     if (!item) return;
 
-    const slot = determinarSlot(item, this.document);
-    if (!slot) {
-      ui.notifications.warn(getSlotErrorMessage(item));
+    const title = "Slot Ocupado";
+    const msg = "Você não pode equipar devido ao slot já está ocupado.";
+
+    const slotItem = item.system.slot;
+
+    if(slotItem == "weapon"){
+      if(item.system.weapon.twoHanded == true){
+
+        if(this.slotsList[0].item == null && this.slotsList[1].item==null){
+          await this._updateItemToActive(item);
+          return;
+        }else{
+          MessageService.showError(title,msg);
+          return;
+        }
+
+      }else{
+        if(this.slotsList[0].item == null || this.slotsList[1].item == null){
+          await this._updateItemToActive(item);
+          return;
+        }
+        MessageService.showError(title,msg);
+        return;
+      }
+    }
+
+    if(slotItem == "accessory"){
+      if(this.slotsList[5].item == null || this.slotsList[6].item == null){
+        await this._updateItemToActive(item);
+        return;
+      }
+      MessageService.showError(title,msg);
       return;
     }
 
-    if (slot === "offhand") {
-      const twoHandedMain = this.document.items.find(i => i.system?.equipped && i.system?.slot === "main_hand" && i.type === "gear_weapon" && i.system?.twoHanded && i.id !== item.id);
-      if (twoHandedMain) {
-        ui.notifications.warn(`Não é possível equipar uma arma na OffHand enquanto ${twoHandedMain.name} (arma de duas mãos) estiver equipada.`);
-        return;
-      }
+    if("helmet" == slotItem && this.slotsList[2].item == null){
+      await this._updateItemToActive(item);
+      return;
+    }
+    if("chestplate" == slotItem && this.slotsList[3].item == null){
+      await this._updateItemToActive(item);
+      return;
+    }
+    if("arms" == slotItem && this.slotsList[4].item == null){
+      await this._updateItemToActive(item);
+      return;
     }
 
-    const isTwoHanded = item.type === "gear_weapon" && item.system?.twoHanded;
-    const slotsParaVerificar = isTwoHanded ? ["main_hand", "offhand"] : [slot];
+    MessageService.showError(title,msg);
 
-    const conflitos = [];
-    for (const s of slotsParaVerificar) {
-      const equippedNoSlot = this.document.items.find(i => i.system?.equipped && i.system?.slot === s && i.id !== item.id);
-      if (equippedNoSlot) conflitos.push(equippedNoSlot);
-    }
-
-    if (conflitos.length > 0) {
-      const nomes = conflitos.map(i => i.name).join(", ");
-      const slotsTexto = slotsParaVerificar.join(" e ");
-      const confirmar = await DialogV2.confirm({
-        window: { title: "Slots Ocupados", classes: ["ffrpg3e-dialog-confirm"] },
-        content: `<p style="margin:0;font-size:13px;">Os slots <strong>${slotsTexto}</strong> estão ocupados por <strong>${nomes}</strong>. Deseja substituir?</p>`,
-        yes: { label: "Substituir", default: true },
-        no: { label: "Cancelar" }
-      });
-      if (!confirmar) return;
-
-      const itensDesequippeds = conflitos.map(c => ({ item: c, slotAnterior: c.system.slot }));
-      for (const conflito of conflitos) {
-        await conflito.update({ "system.equipped": false }, { render: false });
-      }
-
-      try {
-        await applyEquipmentEffect(this.document, item);
-        await item.update({ "system.equipped": true, "system.slot": slot });
-      } catch (erro) {
-        console.error("[FFRPG3E][ROLLBACK] Falha ao equipar, restaurando itens...", erro);
-        for (const dado of itensDesequippeds) {
-          await dado.item.update({ "system.equipped": true, "system.slot": dado.slotAnterior || "" }, { render: false });
-        }
-        ui.notifications.warn("Falha ao equipar item. O estado foi restaurado.");
-        return;
-      }
-      await this.refreshItemDisplays(item);
-    } else {
-      try {
-        await applyEquipmentEffect(this.document, item);
-        await item.update({ "system.equipped": true, "system.slot": slot });
-      } catch (erro) {
-        ui.notifications.warn("Falha ao equipar item.");
-        return;
-      }
-      await this.refreshItemDisplays(item);
-    }
   }
 
   async desequiparItem(event, target) {
-    if (!this.document.isOwner && !game.user.isGM) {
-      ui.notifications.warn("Sem permissão para desequipar itens.");
-      return;
-    }
+
     const itemId = target.dataset.itemId;
     const item = this.document.items.get(itemId);
     if (!item) return;
 
-    const estadoAnterior = {
-      equipped: item.system.equipped,
-      slot: item.system.slot
-    };
-
-    try {
-      const removido = await removeEquipmentEffect(this.document, itemId);
-      await item.update({ "system.equipped": false });
-      await this.refreshItemDisplays(item);
-    } catch (erro) {
-      console.error("[FFRPG3E][ROLLBACK] Falha ao desequipar, restaurar estado...", erro);
-      try {
-        await applyEquipmentEffect(this.document, item);
-      } catch (rollbackErro) {
-        console.error("[FFRPG3E][ROLLBACK] Falha ao restaurar bônus...", rollbackErro);
-      }
-      await item.update({ "system.equipped": estadoAnterior.equipped, "system.slot": estadoAnterior.slot || "" }, { render: false });
-      ui.notifications.warn("Falha ao desequipar item. O estado foi restaurado.");
-    }
+    await removeEquipmentEffect(this.document, itemId);
+    await item.update({ "system.equipped": false });
+    await this.document.prepareData();
+    await this.refreshItemDisplays(item);
+    this.render();
   }
 
   async abrirSheetItem(event, target) {
@@ -740,9 +821,9 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         itemLocalizado.sheet.options.editable = false;
       }
 
-      return await itemLocalizado.sheet.render(true, { 
+      return await itemLocalizado.sheet.render(true, {
         document: itemLocalizado,
-        focus: true 
+        focus: true
       });
     }
   }
@@ -767,8 +848,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       return;
     }
     const efeitoId = target.dataset.itemId;
-    
-    // Na V2, os efeitos aplicados ficam no document do Actor
+
     const efeitoNoJogador = this.document.appliedEffects.find(ef => ef.id === efeitoId);
     if (!efeitoNoJogador) return;
 
