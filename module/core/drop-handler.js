@@ -70,12 +70,16 @@ class GearDropHandler {
 
     const tags = item.system?.tags || [];
     const sourceId = item.sourceId || item.uuid || null;
+    const name = item.name;
+    const type = item.type;
 
     const isConsumable = tags.some(t => t === "consumable");
     const isWeapon = tags.some(t => t === "weapon");
     const isArmor = tags.some(t => t === "armor");
     const isShield = tags.some(t => t === "shield");
     const isAccessory = tags.some(t => t === "accessory");
+
+    console.log(`[FFRPG3E][DROP] item=${name}, type=${type}, tags=${JSON.stringify(tags)}, isAccessory=${isAccessory}, isArmor=${isArmor}`);
 
     if (isConsumable && sourceId) {
       const gearTypes = ["gear", "gear_weapon", "gear_armor", "gear_consumable"];

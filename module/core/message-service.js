@@ -1,12 +1,7 @@
-// MessageService carregado
-
 export const MessageService = {
-  // --- MÉTODO INTEGRADO PARA O DROP-HANDLER NO V14 ---
   async createEffectAppliedMessage(actor, item) {
-    // Busca o texto da descrição do EffectsItemModel
     const descricao = item.system.descricao || "Nenhuma descrição fornecida.";
 
-    // Monta o HTML do cartão de chat no estilo clássico de RPG
     const chatTemplate = `
       <div class="ffrpg3e-chat-card effect-card">
         <header class="card-header flexrow" style="display: flex; align-items: center; gap: 8px;">
@@ -22,12 +17,11 @@ export const MessageService = {
       </div>
     `;
 
-    // Cria fisicamente a mensagem no painel de Chat do Foundry v14
     return ChatMessage.create({
       user: game.user.id,
       speaker: ChatMessage.getSpeaker({ actor: actor }),
       content: chatTemplate,
-      style: CONST.CHAT_MESSAGE_STYLES.OOC // Padrão estável exigido no v14
+      style: CONST.CHAT_MESSAGE_STYLES.OOC
     });
   },
 
@@ -57,5 +51,43 @@ export const MessageService = {
 
   raceReplaced(newRaceName) {
     return `Raça substituída por ${newRaceName}.`;
-  }
+  },
+
+  async _confirmacaoPopup(msg) {
+  return new Promise((resolve) => {
+    new Dialog({
+      title: "",
+      content: msg,
+      buttons: {
+        sim: {
+          icon: '<i class="fas fa-check"></i>',
+          label: "Sim",
+          callback: () => resolve(true) // Retorna true se clicar em Sim
+        },
+        nao: {
+          icon: '<i class="fas fa-times"></i>',
+          label: "Não",
+          callback: () => resolve(false) // Retorna false se clicar em Não
+        }
+      },
+      default: "sim",
+      close: () => resolve(false) // Se fechar no "X", cancela por segurança
+    }).render(true);
+  });
+},
+ showError(title, content, label = "Entendido") {
+  // Usa o novo DialogV2 do Foundry VTT
+  foundry.applications.api.DialogV2.prompt({
+    window: { title: title },
+    content: `<p>${content}</p>`,
+    ok: {
+      label: label,
+      callback: () => {
+        // Código opcional ao fechar
+      }
+    }
+  });
+}
+
+
 };

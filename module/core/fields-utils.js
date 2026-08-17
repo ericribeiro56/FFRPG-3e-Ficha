@@ -15,22 +15,18 @@ export const Field = {
     if (!type) {
       fieldType = new fields.StringField();
     } else if (typeof type === "object") {
-      // Se já for uma instância de campo pronta do Foundry (ex: new fields.ObjectField())
       fieldType = type; 
     } else if (typeof type === "function") {
       const isModel = type.prototype instanceof foundry.abstract.DataModel;
       if (isModel) {
-        // CORREÇÃO: Para arrays de sub-modelos customizados, injeta um EmbeddedDataField como tipo do elemento
         fieldType = new fields.EmbeddedDataField(type);
       } else {
-        // Se for uma classe de campo primitiva (ex: fields.StringField)
         fieldType = new type();
       }
     }
     return new fields.ArrayField(fieldType, { initial: initial ?? [], required: false });
   },
   Embedded(model, initial = {}) {
-    // CORREÇÃO: Cria a instância isolada de um sub-modelo usando o operador 'new'
     return new fields.EmbeddedDataField(model, { initial });
   },
   Rich(initial = "", required = false){

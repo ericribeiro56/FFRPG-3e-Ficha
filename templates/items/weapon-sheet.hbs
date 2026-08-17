@@ -63,7 +63,7 @@
       
         <div class="field-group custom-weapon-field-checkbox">
           <label>Duas Mãos</label>
-          <input name="system.weapon.twoHanded" type="checkbox" value="{{system.weapon.twoHanded}}"/>
+          <input name="system.weapon.twoHanded" type="checkbox" {{#if system.weapon.twoHanded}}checked{{/if}}/>
         </div>
       </div>
 
@@ -200,16 +200,16 @@
                 </select>
                 <button type="button" class="action-btn-add" data-action="addTempModifier">+</button>
               </div>
-               <div class="vertical-scroll-list compact-height">
-                {{#each system.tempAbilities.bonusList as |tBonus bIndex|}}
-                <div class="list-item-row triple-display">
-                  <span class="modifier-badge target-badge">{{tBonus.status}}</span>
-                  <span class="modifier-badge value-badge">{{tBonus.value}}</span>
-                  <span class="modifier-badge mode-badge">{{tBonus.mode}}</span>
-                  <button type="button" class="action-btn-remove" data-action="removeTempModifier" data-index="{{bIndex}}">×</button>
+                <div class="vertical-scroll-list compact-height">
+                  {{#each system.tempAbilities.bonusList as |tBonus bIndex|}}
+                  <div class="list-item-row triple-display">
+                    <span class="modifier-badge target-badge">{{statusDisplay tBonus.status}}</span>
+                    <span class="modifier-badge value-badge">{{tBonus.value}}</span>
+                    <span class="modifier-badge mode-badge">{{modeDisplay tBonus.mode}}</span>
+                    <button type="button" class="action-btn-remove" data-action="removeTempModifier" data-index="{{bIndex}}">×</button>
+                  </div>
+                  {{/each}}
                 </div>
-                {{/each}}
-              </div>
             </div>
           </div>
 
@@ -282,10 +282,10 @@
                 <div class="vertical-scroll-list compact-height">
                   {{#each ability.bonusList as |bonus bIndex|}}
                   <div class="list-item-row triple-display">
-                    <span class="modifier-badge target-badge">{{bonus.status}}</span>
+                    <span class="modifier-badge target-badge">{{statusDisplay bonus.status}}</span>
                     <span class="modifier-badge value-badge">{{bonus.value}}</span>
-                    <span class="modifier-badge mode-badge">{{bonus.mode}}</span>
-                    <button type="button" class="action-btn-remove" data-action="removeSavedModifier" data-ability-index="{{../aIndex}}" data-bonus-index="{{bIndex}}">×</button>
+                    <span class="modifier-badge mode-badge">{{modeDisplay bonus.mode}}</span>
+                    <button type="button" class="action-btn-remove action-btn-remove[data-action='removeSavedModifier']" data-action="removeSavedModifier" data-ability-index="{{../aIndex}}" data-bonus-index="{{bIndex}}">×</button>
                   </div>
                   {{/each}}
                 </div>

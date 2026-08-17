@@ -1,10 +1,92 @@
-import { safeInt } from "./utils.js";
-import { EQUIPPABLE_BONUS_TARGETS } from "./constants.js";
+import { getSafeValue, safeArray, safeInt } from "./utils.js";
+import { EQUIPPABLE_BONUS_TARGETS, ARMOR_SLOTS } from "./constants.js";
 
 function buildChange(key, value) {
   const numericValue = safeInt(value, 0);
   if (!key || !numericValue) return null;
   return { key, mode: "add", value: numericValue };
+}
+
+export function getSlotLabel(slot) {
+  if (!slot) return slot;
+  const labels = {
+    ...ARMOR_SLOTS,
+    main_hand: "Mão Principal",
+    offhand: "OffHand",
+    accessory_0: "Acessório",
+    accessory_1: "Acessório"
+  };
+  return labels[slot] || slot;
+}
+
+export function verificarRegrasWeapon(item, actor) {
+  const slotItem = item.system?.slot;
+  console.log(`[FFRPG3E][WEAPON] Iniciando verificação para ${item.name}, slot=${slotItem}`);
+
+  if (slotItem !== "weapon") {
+    console.log(`[FFRPG3E][WEAPON] Item não é weapon, retornando slot original: ${slotItem}`);
+    return { ehWeapon: false, slotAlvo: slotItem, conflitos: [], mensagem: null };
+  }
+
+  const mainHand = actor.items.find(i => i.system?.equipped && i.system?.slot === "main_hand");
+  const offhand = actor.items.find(i => i.system?.equipped && i.system?.slot === "offhand");
+
+  console.log(`[FFRPG3E][WEAPON] main_hand=${mainHand?.name || "vazio"}, offhand=${offhand?.name || "vazio"}`);
+
+  if (mainHand?.system?.weapon?.twoHanded) {
+    console.log(`[FFRPG3E][WEAPON] main_hand tem arma de 2 mãos: ${mainHand.name}`);
+
+    if (item.system?.weapon?.twoHanded) {
+      console.log(`[FFRPG3E][WEAPON] Tentando equipar arma de 2 mãos com main_hand ocupada por 2 mãos`);
+      return {
+        ehWeapon: true,
+        slotAlvo: null,
+        conflitos: [mainHand],
+        mensagem: `Já existe ${mainHand.name} (arma de duas mãos) na Mão Principal.`
+      };
+    }
+
+    console.log(`[FFRPG3E][WEAPON] Não pode equipar na offhand porque main_hand é 2 mãos`);
+    return {
+      ehWeapon: true,
+      slotAlvo: null,
+      conflitos: [mainHand],
+      mensagem: `Não é possível equipar ${item.name} na OffHand enquanto ${mainHand.name} (arma de duas mãos) estiver equipada.`
+    };
+  }
+
+  if (!mainHand) {
+    console.log(`[FFRPG3E][WEAPON] main_hand vazia, equipando em main_hand`);
+    return { ehWeapon: true, slotAlvo: "main_hand", conflitos: [], mensagem: null };
+  }
+
+  if (!mainHand.system?.weapon?.twoHanded) {
+    console.log(`[FFRPG3E][WEAPON] main_hand ocupada por arma de 1 mão: ${mainHand.name}`);
+
+    if (offhand) {
+      console.log(`[FFRPG3E][WEAPON] offhand ocupada: ${offhand.name}`);
+      return {
+        ehWeapon: true,
+        slotAlvo: null,
+        conflitos: [mainHand, offhand],
+        mensagem: `Mão Principal e OffHand estão ocupadas.`
+      };
+    }
+
+    console.log(`[FFRPG3E][WEAPON] offhand vazia, equipando em offhand`);
+    return { ehWeapon: true, slotAlvo: "offhand", conflitos: [mainHand], mensagem: null };
+  }
+
+  return { ehWeapon: true, slotAlvo: null, conflitos: [], mensagem: "Não foi possível determinar o slot." };
+}
+
+export function escolherSlotAccessory(actor) {
+  const itensEquipados = actor.items.filter(i => i.system?.equipped && ["accessory", "accessory_0", "accessory_1"].includes(i.system?.slot));
+  const slotsOcupados = new Set(itensEquipados.map(i => i.system?.slot));
+  
+  if (!slotsOcupados.has("accessory_0")) return "accessory_0";
+  if (!slotsOcupados.has("accessory_1")) return "accessory_1";
+  return "accessory_0";
 }
 
 export function getEquipBonusTarget(key) {
@@ -15,23 +97,6 @@ function hasTag(item, tag) {
   return (item.system?.tags || []).some(t => t === tag);
 }
 
-export function determinarSlot(item, actor) {
-  if (hasTag(item, "weapon")) {
-    if (item.system?.isOffhand) return "offhand";
-    if (item.system?.twoHanded) return "main_hand";
-    return "main_hand";
-  }
-  if (hasTag(item, "shield")) return "offhand";
-  if (hasTag(item, "armor")) return item.system?.slot || "chestplate";
-  if (hasTag(item, "accessory")) {
-    const acc1 = actor.items.find(i => i.system?.slot === "accessory_1" && i.system?.equipped && i.id !== item.id);
-    if (!acc1) return "accessory_1";
-    const acc2 = actor.items.find(i => i.system?.slot === "accessory_2" && i.system?.equipped && i.id !== item.id);
-    if (!acc2) return "accessory_2";
-    return "accessory_1";
-  }
-  return null;
-}
 
 export function getSlotErrorMessage(item) {
   if (hasTag(item, "consumable")) {
@@ -43,13 +108,12 @@ export function getSlotErrorMessage(item) {
   return "Este item não pode ser equipado.";
 }
 
-export function buildEquipmentEffect(item) {
+function collectFlatBonuses(item) {
   const sistema = item.system || {};
-  const changes = [];
   const flatMap = new Map();
 
-  const bonusList = Array.isArray(sistema.bonusList) ? sistema.bonusList : [];
-  const abilities = Array.isArray(sistema.abilities) ? sistema.abilities : [];
+  const bonusList = safeArray(sistema.bonusList);
+  const abilities = safeArray(sistema.abilities);
 
   for (const bonus of bonusList) {
     if (bonus.mode === "percent") continue;
@@ -64,12 +128,11 @@ export function buildEquipmentEffect(item) {
       targetPath = targetPath.replace(".bonus", ".base");
     }
 
-    const current = flatMap.get(targetPath) || 0;
-    flatMap.set(targetPath, current + value);
+    flatMap.set(targetPath, getSafeValue(flatMap.get(targetPath)) + value);
   }
 
   for (const ability of abilities) {
-    const abilityBonuses = Array.isArray(ability.bonusList) ? ability.bonusList : [];
+    const abilityBonuses = safeArray(ability.bonusList);
     for (const bonus of abilityBonuses) {
       if (bonus.mode === "percent") continue;
       const target = getEquipBonusTarget(bonus.status);
@@ -78,10 +141,16 @@ export function buildEquipmentEffect(item) {
       const value = safeInt(bonus.value, 0);
       if (!value) continue;
 
-      const current = flatMap.get(target.flatTarget) || 0;
-      flatMap.set(target.flatTarget, current + value);
+      flatMap.set(target.flatTarget, getSafeValue(flatMap.get(target.flatTarget)) + value);
     }
   }
+
+  return flatMap;
+}
+
+export function buildEquipmentEffect(item) {
+  const flatMap = collectFlatBonuses(item);
+  const changes = [];
 
   for (const [key, value] of flatMap) {
     const change = buildChange(key, value);
@@ -110,7 +179,7 @@ export async function applyEquipmentEffect(actor, item) {
   const abilities = Array.isArray(sistema.abilities) ? sistema.abilities : [];
   const bonusList = Array.isArray(sistema.bonusList) ? sistema.bonusList : [];
 
-  for (const bonus of [...bonusList, ...abilities.flatMap(a => Array.isArray(a.bonusList) ? a.bonusList : [])]) {
+  for (const bonus of [...bonusList, ...abilities.flatMap(a => safeArray(a.bonusList))]) {
     if (bonus.mode !== "percent") continue;
     const target = getEquipBonusTarget(bonus.status);
     if (!target) continue;
@@ -128,6 +197,8 @@ export async function applyEquipmentEffect(actor, item) {
     await effect.setFlag("ffrpg3e", "sourceItemId", item.id);
   }
 
+  await actor.prepareData();
+
   return effect;
 }
 
@@ -138,9 +209,9 @@ export async function removeEquipmentEffect(actor, itemId) {
   const item = actor.items.find(i => i.id === itemId);
   if (item) {
     const sistema = item.system || {};
-    const abilities = Array.isArray(sistema.abilities) ? sistema.abilities : [];
+      const abilities = safeArray(sistema.abilities);
 
-    for (const bonus of [...(Array.isArray(sistema.bonusList) ? sistema.bonusList : []), ...abilities.flatMap(a => Array.isArray(a.bonusList) ? a.bonusList : [])]) {
+    for (const bonus of [...safeArray(sistema.bonusList), ...abilities.flatMap(a => safeArray(a.bonusList))]) {
       if (bonus.mode !== "percent") continue;
       const target = getEquipBonusTarget(bonus.status);
       if (!target) continue;
@@ -151,5 +222,8 @@ export async function removeEquipmentEffect(actor, itemId) {
   }
 
   await actor.deleteEmbeddedDocuments("ActiveEffect", [effect.id], { render: false });
+
+  await actor.prepareData();
+
   return true;
 }

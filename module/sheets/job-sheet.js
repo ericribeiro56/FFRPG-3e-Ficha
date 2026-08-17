@@ -1,6 +1,9 @@
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
 
+import { CLASS_LIST } from "../core/constants.js";
+import { sortByLabel } from "../core/utils.js";
+
 /**
  * Ficha de Controle e Configuração para os Itens do tipo "Job" (Classes) - v14 (Application V2)
  */
@@ -29,7 +32,7 @@ export class JobSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       title: "Configurador de Classe / Job"
     },
     form: {
-      submitOnChange: true, // Mantém salvando os inputs comuns de forma reativa ao digitar
+      submitOnChange: true,
       closeOnSubmit: false
     }
   };
@@ -48,12 +51,13 @@ export class JobSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     context.item = this.document;
     context.system = this.document.system;
 
-    // Enriquecimento oficial v14 seguro (limpo e sem avisos de obsolescência)
     context.descricaoEnriquecida = await foundry.applications.ux.TextEditor.implementation.enrichHTML(this.document.system.descricao || "", {
       secrets: this.document.isOwner,
       rollData: this.document.getRollData(),
       relativeTo: this.document
     });
+
+    context.classList = sortByLabel(Object.entries(CLASS_LIST).map(([value, label]) => ({ value, label })));
 
     return context;
   }
@@ -65,11 +69,8 @@ export class JobSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   _prepareSubmitData(event, form, formData) {
     const data = super._prepareSubmitData(event, form, formData);
     
-    // Garante que o Foundry não perca a referência do objeto system
     if (!data.system) data.system = {};
     
-    // Se o campo mp_die veio no formulário, higieniza apenas se o foco mudou (blur),
-    // mas para evitar travar o teclado ao digitar, deixamos a string fluir livre.
     const textoMpDie = data.system?.mp_die;
     if ( typeof textoMpDie === "string" ) {
       const trimmed = textoMpDie.trim().toLowerCase();
@@ -88,12 +89,9 @@ export class JobSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   _onRender(context, options) {
     super._onRender(context, options);
     
-    // Vincula o gerenciador de abas persistente ao HTML
     this.controladorAbas.bind(this.element);
 
-    // Clique na imagem grande abre o FilePicker nativo do Foundry
     const imagemEditavel = this.element.querySelector('img[data-edit="img"]');
-    // Adiciona trava de segurança para o listener não se duplicar na memória do navegador
     if (imagemEditavel && !imagemEditavel.dataset.hasListener) {
       imagemEditavel.dataset.hasListener = "true";
       imagemEditavel.addEventListener("click", (event) => {
@@ -103,7 +101,6 @@ export class JobSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
           type: "image",
           current: this.document.img,
           callback: async (path) => {
-            // O update já notifica a AppV2 e redesenha a ficha de forma reativa sozinhos!
             await this.document.update({ img: path });
           }
         });

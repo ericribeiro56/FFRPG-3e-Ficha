@@ -194,9 +194,9 @@
                <div class="vertical-scroll-list compact-height">
                 {{#each system.tempAbilities.bonusList as |tBonus bIndex|}}
                 <div class="list-item-row triple-display">
-                  <span class="modifier-badge target-badge">{{tBonus.status}}</span>
+                  <span class="modifier-badge target-badge">{{statusDisplay tBonus.status}}</span>
                   <span class="modifier-badge value-badge">{{tBonus.value}}</span>
-                  <span class="modifier-badge mode-badge">{{tBonus.mode}}</span>
+                  <span class="modifier-badge mode-badge">{{modeDisplay tBonus.mode}}</span>
                   <button type="button" class="action-btn-remove" data-action="removeTempModifier" data-index="{{bIndex}}">×</button>
                 </div>
                 {{/each}}
@@ -270,15 +270,15 @@
                   </select>
                   <button type="button" class="action-btn-add" data-action="addSavedModifier" data-ability-index="{{aIndex}}">+</button>
                 </div>
-                <div class="vertical-scroll-list compact-height">
-                  {{#each ability.bonusList as |bonus bIndex|}}
-                  <div class="list-item-row triple-display">
-                    <span class="modifier-badge target-badge">{{bonus.status}}</span>
-                    <span class="modifier-badge value-badge">{{bonus.value}}</span>
-                    <span class="modifier-badge mode-badge">{{bonus.mode}}</span>
-                    <button type="button" class="action-btn-remove" data-action="removeSavedModifier" data-ability-index="{{../aIndex}}" data-bonus-index="{{bIndex}}">×</button>
-                  </div>
-                  {{/each}}
+              <div class="vertical-scroll-list compact-height">
+                {{#each ability.bonusList as |sBonus sIndex|}}
+                <div class="list-item-row triple-display">
+                  <span class="modifier-badge target-badge">{{statusDisplay sBonus.status}}</span>
+                  <span class="modifier-badge value-badge">{{sBonus.value}}</span>
+                  <span class="modifier-badge mode-badge">{{modeDisplay sBonus.mode}}</span>
+                  <button type="button" class="action-btn-remove action-btn-remove[data-action='removeSavedModifier']" data-action="removeSavedModifier" data-ability-index="{{../aIndex}}" data-bonus-index="{{sIndex}}">×</button>
+                </div>
+                {{/each}}
                 </div>
               </div>
             </div>
