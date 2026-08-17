@@ -1,0 +1,287 @@
+/* PARTE 1/2 REVISADA: css/armor-sheet.css (Suporte Dinâmico a Múltiplos Itens) */
+
+/* ==========================================================================
+   BLINDAGEM DINÂMICA UNIVERSAL: SELEÇÃO POR CLASSES (EVITA CONFLITOS DE ID)
+   ========================================================================== */
+/* Intercepta a tag form e anula a largura de 480px forçada pelo JS do Foundry */
+form.custom-armor-sheet,
+.custom-armor-sheet {
+  min-width: 940px !important;
+  width: 940px !important;
+  max-width: 940px !important;
+  min-height: 740px !important;
+  height: 740px !important;
+  max-height: 740px !important;
+}
+
+
+/* Intercepta a janela externa (.window-app) de QUALQUER instância aberta que contenha nossa folha */
+div.window-app.armor-window,
+div.window-app:has(.custom-armor-sheet),
+.window-app:has(form.custom-armor-sheet) {
+  min-width: 940px !important;
+  width: 940px !important;
+  max-width: 940px !important;
+  min-height: 740px !important;
+  height: 740px !important;
+  max-height: 740px !important;
+}
+
+/* Intercepta o window-content de forma ultra específica para remover a borda */
+div.window-app:has(.custom-armor-sheet) .window-content,
+.window-app:has(form.custom-armor-sheet) .window-content,
+.armor-window .window-content {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 5px !important; /* Mantém o recuo interno de segurança */
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+  
+  /* FORÇADO: Remove em definitivo qualquer borda preta ou nativa */
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important; 
+}
+
+
+/* Base Geral do Formulário Customizado */
+.custom-armor-sheet {
+  background: rgba(26, 26, 30, 0.85) !important;
+  backdrop-filter: blur(14px) !important;
+  color: #e2e2e9 !important;
+  font-family: "Inter", "Roboto", sans-serif !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 15px !important;
+  
+  height: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important; /* Bloqueia scrolls na janela inteira, foca nos blocos locais */
+}
+
+.custom-armor-sheet .sheet-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 15px !important;
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Elementos Básicos de Formulário (Visual Dark e Moderno) */
+.custom-armor-sheet input[type="text"],
+.custom-armor-sheet input[type="number"],
+.custom-armor-sheet select {
+  background: rgba(42, 42, 50, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  color: #ffffff !important;
+  padding: 6px 10px !important;
+  height: 32px !important;
+  font-size: 13px !important;
+  box-sizing: border-box !important;
+}
+.custom-armor-sheet input:focus, .custom-armor-sheet select:focus { border-color: #9d4edd !important; background: rgba(50, 50, 62, 0.9) !important; outline: none !important; }
+.custom-armor-sheet label { font-size: 11px !important; text-transform: uppercase !important; letter-spacing: 0.8px !important; color: rgba(255, 255, 255, 0.5) !important; margin-bottom: 4px !important; display: block !important; }
+.custom-armor-sheet .field-group { display: flex !important; flex-direction: column !important; }
+
+/* Customização de Scrollbars Internas */
+.custom-armor-sheet .vertical-scroll-list::-webkit-scrollbar { width: 5px !important; }
+.custom-armor-sheet .vertical-scroll-list::-webkit-scrollbar-thumb { background: rgba(157, 78, 221, 0.3) !important; border-radius: 10px !important; }
+
+/* Cabeçalho da Ficha (Linha Única) */
+.custom-armor-sheet .sheet-header-wrapper { display: flex !important; gap: 15px !important; align-items: center !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; padding-bottom: 15px !important; width: 100% !important; }
+.custom-armor-sheet .sheet-header-wrapper .img-wrapper { width: 64px !important; height: 64px !important; border-radius: 8px !important; overflow: hidden !important; border: 2px solid rgba(157, 78, 221, 0.4) !important; }
+.custom-armor-sheet .sheet-header-wrapper .profile-img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+
+/* Distribuição Horizontal dos 5 campos do cabeçalho */
+.custom-armor-sheet .sheet-header-wrapper .header-fields {
+  display: grid !important;
+  grid-template-columns: 2.4fr 0.6fr 1.15fr 1.5fr 1.5fr !important;
+  gap: 12px !important;
+  flex: 1 !important;
+}
+.custom-armor-sheet .name-field, .custom-armor-sheet .tier-field, .custom-armor-sheet .prob-field, .custom-armor-sheet .gil-field, .custom-armor-sheet .slot-field {
+  grid-column: auto !important;
+}
+
+/* Estrutura das Duas Colunas Principais do Corpo */
+.custom-armor-sheet .sheet-main-content { display: grid !important; grid-template-columns: 1fr 1.2fr !important; gap: 20px !important; flex: 1 !important; overflow: hidden !important; height: calc(100% - 95px) !important; }
+.custom-armor-sheet .column-left-data { display: flex !important; flex-direction: column !important; gap: 15px !important; overflow-y: auto !important; padding-right: 5px !important; height: 100% !important; }
+.custom-armor-sheet .horizontal-row-inputs { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+
+/* Customização Temática do Campo de Gil */
+.custom-armor-sheet .currency-input-wrapper { position: relative !important; display: flex !important; align-items: center !important; }
+.custom-armor-sheet .currency-symbol { position: absolute !important; left: 10px !important; color: #ffb703 !important; font-weight: bold !important; }
+.custom-armor-sheet .currency-input-wrapper input { padding-left: 24px !important; border-color: rgba(255, 183, 3, 0.3) !important; color: #ffb703 !important; }
+
+/* Esticamento Vertical Controlado da Descrição Principal */
+.custom-armor-sheet .description-field.major-height { flex: 1 !important; display: flex !important; flex-direction: column !important; margin-bottom: 0 !important; }
+
+/* Organiza todos os 4 campos na mesma linha horizontal com colunas finas */
+.custom-armor-sheet .armor-attributes-row-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr 1fr !important; /* Força exatamente 4 colunas iguais */
+  gap: 10px !important; /* Espaçamento ligeiramente menor para encaixar perfeitamente */
+  background: rgba(30, 30, 36, 0.3) !important; /* Mantém o fundo sutil demarcando a área */
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-radius: 8px !important;
+  padding: 8px 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Garante que os inputs internos ocupem toda a largura da sua respectiva coluna fina */
+.custom-armor-sheet .custom-attr-field {
+  width: 100% !important;
+}
+
+.custom-armor-sheet .custom-attr-field input {
+  width: 100% !important;
+  height: 30px !important; /* Ligeiramente mais compacto para combinar com o visual refinado */
+}
+
+/* PARTE 2/2 - BLOCO A: css/armor-sheet.css */
+
+/* Blocos Gerais (Tags e Materiais) */
+.custom-armor-sheet .properties-section-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+.custom-armor-sheet .property-block-vertical { background: rgba(30, 30, 36, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 8px !important; padding: 10px !important; display: flex !important; flex-direction: column !important; gap: 8px !important; }
+.custom-armor-sheet .block-title-tag { font-size: 10px !important; font-weight: bold !important; text-transform: uppercase !important; color: rgba(255, 255, 255, 0.4) !important; }
+.custom-armor-sheet .block-adder-row { display: flex !important; gap: 6px !important; }
+.custom-armor-sheet .action-btn-add { background: #8a2be2 !important; color: white !important; border: none !important; border-radius: 6px !important; width: 32px !important; height: 32px !important; font-weight: bold; cursor: pointer; }
+.custom-armor-sheet .vertical-scroll-list { background: rgba(0, 0, 0, 0.2) !important; border-radius: 6px !important; height: 110px !important; overflow-y: auto !important; display: flex !important; flex-direction: column !important; padding: 4px !important; gap: 4px !important; }
+.custom-armor-sheet .vertical-scroll-list.compact-height { height: 85px !important; }
+.custom-armor-sheet .list-item-row { display: flex !important; justify-content: space-between !important; align-items: center !important; background: rgba(255, 255, 255, 0.04) !important; padding: 4px 8px !important; border-radius: 4px !important; border-left: 2px solid #8a2be2 !important; }
+.custom-armor-sheet .item-text-content { font-size: 12px !important; color: #d1d1db !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+.custom-armor-sheet .action-btn-remove { background: transparent !important; border: none !important; color: rgba(255, 255, 255, 0.3) !important; font-size: 14px !important; cursor: pointer; }
+.custom-armor-sheet .action-btn-remove:hover { color: #ff4d4d !important; }
+
+/* ==========================================================================
+   CORREÇÃO DO PROSEMIRROR: ANULA ABSOLUTE NATIVO E OBRIGA A PREENCHER ALTURA
+   ========================================================================== */
+.custom-armor-sheet prose-mirror { border: none !important; background: transparent !important; }
+
+.custom-armor-sheet .editor-container {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  height: 100% !important;
+}
+
+.custom-armor-sheet .description-field.major-height .editor-content {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  min-height: 200px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  background: rgba(0, 0, 0, 0.15) !important;
+  padding: 10px 12px !important;
+}
+
+.custom-armor-sheet .editor-content .ProseMirror {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+}
+
+.prosemirror, prose-mirror { gap: 0; }
+
+.custom-armor-sheet prose-mirror .menu-container {
+  background: rgba(42, 42, 50, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-bottom: none !important;
+  border-top-left-radius: 6px !important;
+  border-top-right-radius: 6px !important;
+}
+.custom-armor-sheet prose-mirror .menu-container + .editor-container .editor-content {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+/* PARTE 2/2 - BLOCO B: css/armor-sheet.css */
+
+/* COLUNA DIREITA: Gerenciador de Habilidades */
+.custom-armor-sheet .column-right-abilities { display: flex !important; flex-direction: column !important; gap: 15px !important; overflow-y: auto !important; height: 100% !important; }
+.custom-armor-sheet .form-section-header { font-size: 12px !important; font-weight: bold !important; text-transform: uppercase !important; color: #9d4edd !important; border-left: 3px solid #8a2be2 !important; padding-left: 8px !important; display: block !important; margin-bottom: 5px !important; }
+
+/* Accordion de Criação Retrátil */
+.custom-armor-sheet .ability-creation-accordion-box { background: rgba(138, 43, 226, 0.04) !important; border: 1px solid rgba(138, 43, 226, 0.15) !important; border-radius: 8px !important; overflow-y: auto !important; }
+.custom-armor-sheet .creation-accordion-header { list-style: none !important; padding: 10px 12px !important; cursor: pointer !important; background: rgba(30, 30, 36, 0.4) !important; }
+.custom-armor-sheet .creation-accordion-header::-webkit-details-marker { display: none !important; }
+.custom-armor-sheet .form-section-header-text { font-size: 12px !important; font-weight: bold !important; text-transform: uppercase !important; color: #9d4edd !important; }
+.custom-armor-sheet .creation-accordion-expanded-content { padding: 12px !important; display: flex !important; flex-direction: column !important; gap: 10px !important; border-top: 1px solid rgba(138, 43, 226, 0.15) !important; }
+.custom-armor-sheet .ability-creation-accordion-box[open] .accordion-chevron { transform: rotate(90deg) !important; }
+
+/* Proporção Assimétrica da Habilidade (Tags 35% vs Modificadores 65%) */
+.custom-armor-sheet .column-right-abilities .properties-section-grid { display: grid !important; grid-template-columns: 1fr 1.8fr !important; gap: 12px !important; }
+.custom-armor-sheet .block-adder-triple-row { display: grid !important; grid-template-columns: 1.3fr 0.6fr 0.8fr auto !important; gap: 4px !important; }
+.custom-armor-sheet .save-ability-submit-btn { background: linear-gradient(135deg, #8a2be2, #4b0082) !important; color: #ffffff !important; border: none !important; border-radius: 6px !important; padding: 8px !important; font-weight: bold !important; cursor: pointer; text-transform: uppercase !important; }
+.custom-armor-sheet .save-ability-submit-btn:hover { filter: brightness(1.2) !important; }
+
+/* PARTE 2/2 - BLOCO C: css/armor-sheet.css */
+
+/* Habilidades Salvas */
+.custom-armor-sheet .saved-abilities-container { overflow-y: auto;}
+.custom-armor-sheet .ability-accordion-item { height: auto !important; background: rgba(42, 42, 50, 0.4) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 8px !important; overflow: hidden !important; }
+.custom-armor-sheet .ability-accordion-item[open] { border-color: rgba(138, 43, 226, 0.4) !important; background: rgba(42, 42, 50, 0.7) !important; }
+
+.custom-armor-sheet .ability-accordion-summary-header { 
+  list-style: none !important; 
+  display: flex !important; 
+  justify-content: space-between !important; 
+  align-items: center !important; 
+  padding: 10px 12px !important; 
+  cursor: pointer !important; 
+  background: rgba(30, 30, 36, 0.5) !important; 
+}
+.custom-armor-sheet .ability-accordion-summary-header::-webkit-details-marker { display: none !important; }
+.custom-armor-sheet .summary-left-clickable { display: flex !important; align-items: center !important; gap: 10px !important; }
+.custom-armor-sheet .accordion-chevron { font-size: 10px !important; color: #9d4edd !important; transition: transform 0.2s ease !important; display: inline-block !important; }
+.custom-armor-sheet .ability-title-text { font-weight: 600 !important; font-size: 13px !important; color: #ffffff !important; }
+.custom-armor-sheet .action-btn-remove-ability { background: transparent !important; border: none !important; color: rgba(255, 77, 77, 0.6) !important; font-size: 11px !important; cursor: pointer; }
+
+.custom-armor-sheet .ability-accordion-expanded-content { padding: 12px !important; border-top: 1px solid rgba(255, 255, 255, 0.05) !important; display: flex !important; flex-direction: column !important; gap: 12px !important; }
+.custom-armor-sheet .list-item-row.triple-display { display: grid !important; grid-template-columns: 1.5fr 1fr 1fr auto !important; gap: 4px !important; justify-items: start !important; }
+.custom-armor-sheet .modifier-badge { font-size: 11px !important; padding: 2px 6px !important; border-radius: 4px !important; background: rgba(255, 255, 255, 0.05) !important; width: 100% !important; text-align: center !important; box-sizing: border-box !important; }
+.custom-armor-sheet .target-badge { color: #88c0d0 !important; font-weight: bold !important; }
+.custom-armor-sheet .value-badge { color: #a3be8c !important; }
+.custom-armor-sheet .mode-badge { color: #ebcb8b !important; font-style: italic !important; }
+.custom-armor-sheet .empty-abilities-notice { font-size: 12px !important; color: rgba(255, 255, 255, 0.3) !important; text-align: center !important; font-style: italic !important; margin-top: 10px !important; }
+
+/* ==========================================================================
+   OTIMIZAÇÃO VERTICAL FINAL E EXTRAÇÃO DE ESPAÇOS FANTASMAS
+   ========================================================================== */
+.custom-armor-sheet .ability-creation-accordion-box prose-mirror { height: auto !important; min-height: auto !important; margin: 0 !important; padding: 0 !important; }
+
+.custom-armor-sheet .inner-form-field .editor-content,
+.custom-armor-sheet .ability-creation-accordion-box .editor-content {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  background: rgba(0, 0, 0, 0.15) !important;
+  padding: 8px 12px !important;
+  flex: none !important;
+  margin-bottom: 0 !important;
+}
+
+.custom-armor-sheet .ability-creation-accordion-box .editor-container { height: auto !important; min-height: auto !important; margin-bottom: 0 !important; padding-bottom: 0 !important; }
+.custom-armor-sheet prose-mirror, .custom-armor-sheet .editor-container, .custom-armor-sheet .editor-content { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+.custom-armor-sheet .editor-content .ProseMirror p:last-child { margin-bottom: 0 !important; }

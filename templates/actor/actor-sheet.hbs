@@ -1,0 +1,157 @@
+<div class="ficha-wrapper-v14">
+
+    <div class="top-section">
+        <div class="left-box">
+            <img src="{{actor.img}}" class="profile-img" title="{{actor.name}}" data-edit="img" />
+        </div>
+
+        <div class="center-box">
+            <div class="row-group">
+                <label>Nome:</label>
+                <div class="field-wrapper">
+                    <input type="text" name="name" value="{{actor.name}}" placeholder="Nome do Personagem" />
+                </div>
+            </div>
+
+            <div class="row-group">
+                <label>Nível:</label>
+                <div class="field-wrapper unique-field">
+                    <input type="number" name="system.level" value="{{system.level}}" />
+                </div>
+            </div>
+
+            <div class="row-group">
+                <label>HP:</label>
+                <div class="barra-split">
+                    <input type="number" name="system.hp.atual" value="{{system.hp.atual}}" />
+                    <span>/</span>
+                    <input type="number" name="system.hp.total" value="{{system.hp.total}}" readonly class="field-locked" />
+                    <button type="button" class="gerenciar-hp-btn" data-action="abrirCombateHP" title="Gerenciar HP">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row-group">
+                <label>MP:</label>
+                <div class="barra-split">
+                    <input type="number" name="system.mp.atual" value="{{system.mp.atual}}" />
+                    <span>/</span>
+                    <input type="number" name="system.mp.total" value="{{system.mp.total}}" readonly class="field-locked" />
+                </div>
+            </div>
+
+            <div class="row-group">
+                <label>EXP:</label>
+                <div class="barra-split">
+                    <input type="number" name="system.xp.current" value="{{system.xp.current}}" />
+                    <span>/</span>
+                    <input type="number" name="system.xp.required" value="{{system.xp.required}}" readonly class="field-locked" />
+                </div>
+            </div>
+
+            <div class="row-group">
+                <label>Gil:</label>
+                <div class="gil-field-wrapper">
+                    <input type="number" name="system.current_gil" value="{{system.current_gil}}" readonly
+                        class="gil-readonly-input" />
+                    <button type="button" class="gerenciar-gil-btn" data-action="abrirGil" title="Adicionar / Remover Gil">
+                        <i class="fas fa-coins"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-box">
+
+            <div class="info-cards-compact">
+                <div class="info-card race-card" 
+                     data-item-id="{{raceItem.id}}" 
+                     title="{{raceItem.name}}">
+                     <label>Raça:</label>
+                     <div class="info-card-content">
+                         {{#if raceItem}}
+                         <span class="info-card-name" data-action="abrirSheetItem" data-item-id="{{raceItem.id}}" style="cursor:pointer;">{{raceItem.name}}</span>
+                         <button type="button" class="info-btn remover-ficha-btn" data-action="removerItemFicha" data-item-id="{{raceItem.id}}"
+                             data-tipo="race" title="Remover raça"><i class="fas fa-trash"></i></button>
+                         {{else}}
+                         <span class="info-card-empty">Sem Raça Definida</span>
+                         {{/if}}
+                     </div>
+                </div>
+
+                <div class="info-card job-card" 
+                     data-item-id="{{jobItem.id}}" 
+                     title="({{jobItem.system.classe}}) {{jobItem.name}}">
+                     <label>Classe / Job:</label>
+                     <div class="info-card-content">
+                         {{#if jobItem}}
+                         <span class="info-card-name" data-action="abrirSheetItem" data-item-id="{{jobItem.id}}" style="cursor:pointer;">({{jobItem.system.classe}}) {{jobItem.name}}</span>
+                         <button type="button" class="info-btn remover-ficha-btn" data-action="removerItemFicha" data-item-id="{{jobItem.id}}"
+                             data-tipo="job" title="Remover job"><i class="fas fa-trash"></i></button>
+                         {{else}}
+                         <span class="info-card-empty">Sem Job Definido</span>
+                         {{/if}}
+                     </div>
+                </div>
+            </div>
+
+            <div class="row-group">
+                <label>Gênero:</label>
+                <input type="text" name="system.information.genero" value="{{system.information.genero}}"
+                    placeholder="Gênero" style="width: 120px;" />
+            </div>
+            <div class="row-group">
+                <label>Signo:</label>
+                <input type="text" name="system.information.signo" value="{{system.information.signo}}"
+                    placeholder="Signo" style="width: 120px;" />
+            </div>
+            <div class="row-group">
+                <label>Idade:</label>
+                <input type="number" name="system.information.idade" value="{{system.information.idade}}"
+                     placeholder="Idade" style="width: 70px;margin-right:5px" />
+                <label>Sangue:</label>
+                <input type="text" name="system.information.sangue" value="{{system.information.sangue}}"
+                    placeholder="Sangue" style="width: 70px;" />
+            </div>
+            <div class="row-group">
+                <label>Peso:</label>
+                <input type="text" name="system.information.peso" value="{{system.information.peso}}" placeholder="Peso"
+                    style="width:70px;margin-right:5px" />
+                <label>Altura:</label>
+                <input type="text" name="system.information.altura" value="{{system.information.altura}}"
+                    placeholder="Altura" style="width: 70px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- PARTE INFERIOR (Abas Modulares) -->
+    <div class="bottom-section">
+        <nav class="sheet-tabs tabs" data-tab-group="primary">
+            <a class="item" data-tab="atributos">Atributos/Combate</a>
+            <a class="item" data-tab="inventario">Inventário</a>
+            <a class="item" data-tab="status">Status</a>
+            <a class="item" data-tab="extrato">Extrato</a>
+            <a class="item" data-tab="background">Background</a>
+        </nav>
+
+        <section class="sheet-body">
+            <div class="tab" data-tab="atributos">
+                {{> "systems/ffrpg3e/templates/actor/tabs/atributos-sheet.hbs"}}
+            </div>
+            <div class="tab" data-tab="inventario">
+                {{> "systems/ffrpg3e/templates/generics/inventory-sheet.hbs"}}
+            </div>
+            <div class="tab" data-tab="status">
+                {{> "systems/ffrpg3e/templates/actor/tabs/status-sheet.hbs"}}
+            </div>
+            <div class="tab" data-tab="extrato">
+                {{> "systems/ffrpg3e/templates/actor/tabs/extrato-sheet.hbs"}}
+            </div>
+            <div class="tab" data-tab="background">
+                {{> "systems/ffrpg3e/templates/actor/tabs/background-sheet.hbs"}}
+            </div>
+        </section>
+    </div>
+
+</div>

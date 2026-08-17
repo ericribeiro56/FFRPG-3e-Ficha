@@ -1,0 +1,238 @@
+/* Container Principal */
+.effects-manager-wrapper {
+    background-color: #121214;
+    color: #e1e1e6;
+    font-family: "Signika", "Segoe UI", sans-serif;
+    padding: 10px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* Cabeçalho */
+.effects-header {
+    margin-bottom: 15px;
+}
+
+.effects-header h2 {
+    color: #ffb300;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+    border-bottom: 2px solid #ffb300;
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Formulário de Criação */
+.effects-creator-form {
+    background: rgba(0,0,0,0.2);
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #3a3a40;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.effects-creator-form .form-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.effects-creator-form .form-field-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.effects-creator-form label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #bbb;
+}
+
+/* Inputs Escuros Polidos */
+.dark-input {
+    background-color: #0b0b0c !important;
+    color: #ffffff !important;
+    border: 1px solid #3a3a40 !important;
+    border-radius: 6px;
+    padding: 6px 10px;
+    height: 32px;
+    font-size: 12px;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dark-input option {
+    background-color: #1c1c1e !important;
+    color: #ffffff !important;
+    padding: 4px;
+}
+
+.dark-input:focus {
+    border-color: #ffb300 !important;
+    box-shadow: 0 0 0 2px rgba(255, 179, 0, 0.2);
+    outline: none;
+}
+
+textarea.dark-input {
+    height: 55px !important;
+    font-family: inherit;
+    line-height: 15px;
+    resize: none;
+    width: 100%;
+    text-align: left;
+}
+
+.dark-input[type="text"] {
+    width: 100%;
+    text-align: left;
+}
+
+.dark-input[type="number"],
+.dark-input[type="number"] {
+    width: 60%;
+}
+
+/* Botão Adicionar Premium */
+.btn-add-effect {
+    width: 100%;
+    height: 32px;
+    background: #ffb300;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-add-effect:hover {
+    background: #ffa000;
+}
+
+.btn-add-effect:active {
+    transform: scale(0.98);
+}
+
+/* Lista de Efeitos */
+.effects-list-section {
+    margin-top: 0;
+}
+
+.effects-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Card de Efeito Estilizado */
+.effect-card {
+    display: flex;
+    align-items: flex-start;
+    background: #1c1c1e;
+    border: 1px solid #29292e;
+    padding: 12px;
+    border-radius: 6px;
+    gap: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.effect-icon {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #7a6b58;
+    border-radius: 3px;
+    background: #09090a;
+    margin-top: 2px;
+}
+
+.effect-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 2px;
+}
+
+.effect-name {
+    font-weight: bold;
+    font-size: 13px;
+    color: #fff;
+}
+
+.effect-time {
+    font-size: 11px;
+    color: #ffb300;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.effect-desc {
+    margin: 6px 0 0 0;
+    font-size: 11px;
+    color: #8c8c9d;
+    font-style: italic;
+    line-height: 14px;
+    border-top: 1px solid #29292e;
+    padding-top: 6px;
+}
+
+/* Botão Lixeira Minimalista */
+.btn-delete-effect {
+    background: transparent;
+    border: none;
+    color: #ff5252;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    transition: color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-delete-effect:hover {
+    color: #ff1744;
+    transform: scale(1.1);
+}
+
+.btn-delete-effect:active {
+    transform: scale(0.95);
+}
+
+/* Estado Vazio */
+.empty-text {
+    font-style: italic;
+    color: #666;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+    padding: 20px;
+    border: 1px dashed #29292e;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.empty-text i {
+    font-size: 16px;
+    opacity: 0.5;
+}

@@ -1,0 +1,1674 @@
+/* ==========================================================================
+   PARTE 1 CORRIGIDA: FUNDAÇÃO DA JANELA (TEMA PERGAMINHO ENVELHECIDO FOSCO)
+   ========================================================================== */
+
+/* Substitui o branco estourado por um tom de pergaminho/papiro denso e rústico */
+form.ffrpg3e.sheet.actor,
+form.ffrpg3e.sheet.actor .window-content {
+    background: linear-gradient(135deg, #ebdcc5 0%, #dfcea7 100%) !important;
+    /* Tom bege quente e confortável */
+    padding: 0 !important;
+    overflow-x: hidden !important;
+    border: 1px solid #9c8469 !important;
+    box-shadow: 0 8px 32px rgba(74, 51, 25, 0.25) !important;
+}
+
+/* Garante transparência nos contêineres internos */
+form.ffrpg3e.sheet.actor .ficha-wrapper-v14,
+form.ffrpg3e.sheet.actor .sheet-body,
+form.ffrpg3e.sheet.actor .tab {
+    background: transparent !important;
+}
+
+/* Trava as dimensões físicas obrigatórias da Ficha do Ator */
+.ffrpg3e.sheet.actor {
+    font-family: "Signika", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #2b1a08 !important;
+    /* Escrita forte em nanquim escuro */
+    width: 950px;
+    height: 850px;
+    max-width: 950px;
+    max-height: 850px;
+    min-width: 950px;
+    min-height: 850px;
+    box-sizing: border-box;
+}
+
+/* Wrapper Geral de Organização Interna */
+.ficha-wrapper-v14 {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    width: 100% !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+}
+
+/* ==========================================================================
+   PARTE 2 CORRIGIDA: RESET DE INPUTS E CENTRALIZAÇÃO DE CAMPOS
+   ========================================================================== */
+
+/* Inputs Editáveis Gerais (Alinhados visualmente com a nova paleta) */
+.ffrpg3e.sheet.actor input[type="text"],
+.ffrpg3e.sheet.actor input[type="number"],
+.ffrpg3e.sheet.actor select {
+    background-color: #ffffff !important;
+    border: 1px solid #9c8469 !important;
+    border-radius: 4px !important;
+    padding: 2px 6px !important;
+    height: 28px !important;
+    box-sizing: border-box !important;
+    font-size: 13px !important;
+    color: #2b1a08 !important;
+    font-weight: 600 !important;
+    transition: all 0.15s ease !important;
+    box-shadow: inset 0 1px 2px rgba(74, 51, 25, 0.08) !important;
+}
+
+.ffrpg3e.sheet.actor input[type="text"] {
+    text-align: left !important;
+}
+
+.ffrpg3e.sheet.actor select option {
+    background-color: #ffffff !important;
+    color: #2b1a08 !important;
+}
+
+/* Foco Ativo Moderno */
+.ffrpg3e.sheet.actor input:focus,
+.ffrpg3e.sheet.actor select:focus {
+    border-color: #b57a1d !important;
+    box-shadow: 0 0 0 2px rgba(181, 122, 29, 0.2) !important;
+    outline: none !important;
+}
+
+/* Inputs Bloqueados e Trancados (Fundo bege sólido de leitura estática) */
+.ffrpg3e.sheet.actor input[readonly],
+.ffrpg3e.sheet.actor .field-locked {
+    background-color: #e5d5be !important;
+    border: 1px solid #ad9982 !important;
+    color: #3e2b12 !important;
+    font-weight: 700 !important;
+    cursor: default !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+}
+
+/* ==========================================================================
+   PARTE 3 CORRIGIDA: RETRATO, BOTÃO DE GIL E CARDS COM RELEVO (TOP-SECTION)
+   ========================================================================== */
+
+.ffrpg3e.sheet.actor .top-section {
+    display: flex !important;
+    width: 100% !important;
+    gap: 16px !important;
+    padding: 12px !important;
+    margin-bottom: 12px !important;
+    background: #faf6ec !important;
+    /* Painel superior em papiro limpo */
+    border: 1px solid #c7b9a8 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(107, 84, 58, 0.05) !important;
+    box-sizing: border-box !important;
+}
+
+/* Caixa do Avatar e Tratamento do Placeholder Transparente */
+.ffrpg3e.sheet.actor .top-section .left-box {
+    width: 190px !important;
+    flex-shrink: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .left-box .profile-img {
+    width: 190px !important;
+    height: 190px !important;
+    object-fit: cover !important;
+    border: 3px solid #9c8469 !important;
+    border-radius: 8px !important;
+    background-color: rgba(0, 0, 0, 0.35) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+    cursor: pointer;
+    contain: layout style paint !important;
+    will-change: transform !important;
+    backface-visibility: hidden !important;
+}
+
+/* Distribuição das Caixas de Informação */
+.ffrpg3e.sheet.actor .top-section .center-box,
+.ffrpg3e.sheet.actor .top-section .right-box {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .row-group {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .row-group label {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #735e47 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    flex: 0 0 60px !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .row-group .field-wrapper {
+    flex: 1 !important;
+    max-width: 260px !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .row-group .field-wrapper input[name="name"] {
+    width: 100% !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .row-group .field-wrapper input[name="system.level"] {
+    width: 60px !important;
+    text-align: center !important;
+}
+
+/* Divisores de Barras (HP/MP/EXP) */
+.ffrpg3e.sheet.actor .top-section .barra-split {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+    max-width: 260px !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .barra-split input {
+    flex: 1 !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .barra-split span {
+    font-weight: 800 !important;
+    color: #b3a28f !important;
+}
+
+/* ALINHAMENTO DO BOTÃO DE GIL (MOEDAS) */
+.ffrpg3e.sheet.actor .top-section .gil-field-wrapper {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 260px !important;
+    height: 24px !important;
+    border: 1px solid #9c8469 !important;
+    border-radius: 4px !important;
+    background: #e5d5be !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .gil-field-wrapper input.gil-readonly-input {
+    border: none !important;
+    background: transparent !important;
+    height: 100% !important;
+    padding: 0 35px 0 6px !important;
+    text-align: center !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .gil-field-wrapper .gerenciar-gil-btn {
+    position: absolute !important;
+    right: 0 !important;
+    top: -3px !important;
+    bottom: 0 !important;
+    width: 30px !important;
+    height: 100% !important;
+    border: none !important;
+    border-left: 1px solid #9c8469 !important;
+    background: rgba(138, 114, 87, 0.15) !important;
+    color: #4a3319 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .gil-field-wrapper .gerenciar-gil-btn:hover {
+    background: rgba(181, 122, 29, 0.2) !important;
+    color: #b57a1d !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .gil-field-wrapper .gerenciar-gil-btn:active {
+    background: rgba(181, 122, 29, 0.3) !important;
+}
+
+/* ALINHAMENTO DO BOTÃO DE HP (CURA/DANO) */
+.ffrpg3e.sheet.actor .top-section .barra-split {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .barra-split .gerenciar-hp-btn {
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 30px !important;
+    height: 100% !important;
+    border: none !important;
+    border-left: 1px solid #9c8469 !important;
+    background: rgba(138, 114, 87, 0.15) !important;
+    color: #4a3319 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: background 0.15s ease, color 0.15s ease !important;
+    z-index: 10 !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .barra-split .gerenciar-hp-btn:hover {
+    background: rgba(181, 122, 29, 0.2) !important;
+    color: #b57a1d !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .barra-split .gerenciar-hp-btn:active {
+    background: rgba(181, 122, 29, 0.3) !important;
+}
+
+/* --- DEVOLVENDO O RELEVO E EFEITO FIGURINHA NOS CARDS (RAÇA E JOB) --- */
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact {
+    display: flex !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-bottom: 2px !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card {
+    flex: 1 !important;
+    border: 1px solid #bda88f !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    position: relative !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+/* Cards VAZIOS: visual neutro, sem interatividade */
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card:has(.info-card-empty) {
+    background: #f5f0e6 !important;
+    cursor: default !important;
+    box-shadow: none !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card:has(.info-card-empty):hover {
+    transform: none !important;
+    border-color: #bda88f !important;
+    box-shadow: none !important;
+}
+
+/* Cards PREENCHIDOS: gradiente leve, cursor pointer, hover elevado */
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card:has(.info-card-name) {
+    background: linear-gradient(135deg, #fffdf7 0%, #f8f2e4 100%) !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 3px rgba(74, 51, 25, 0.15), 0 3px 6px rgba(74, 51, 25, 0.1) !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card:has(.info-card-name):hover {
+    border-color: #b57a1d !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(181, 122, 29, 0.2), 0 6px 12px rgba(74, 51, 25, 0.15) !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card label {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #8c7660 !important;
+    text-transform: uppercase !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card .info-card-name {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #2b1a08 !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card .remover-ficha-btn {
+    background: transparent !important;
+    border: none !important;
+    color: #a63232 !important;
+    cursor: pointer !important;
+    float: right !important;
+    font-size: 11px !important;
+}
+
+/* Ajustes nos inputs biográficos inferiores do topo */
+.ffrpg3e.sheet.actor .top-section .right-box .row-group input[type="text"],
+.ffrpg3e.sheet.actor .top-section .right-box .row-group input[type="number"] {
+    background-color: #ffffff !important;
+    border: 1px solid #9c8469 !important;
+    border-radius: 4px !important;
+    height: 24px !important;
+}
+
+
+/* ==========================================================================
+   PARTE 4: CARDS DE INFORMAÇÃO COMPACTOS (TOPO DIREITO) E SHEET TABS
+   ========================================================================== */
+
+/* --- CARDS DE RAÇA E JOB (SUPERIOR DIREITO) --- */
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact {
+    display: flex !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-bottom: 2px !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card {
+    flex: 1 !important;
+    background: #ffffff !important;
+    /* Destaca suavemente do painel de papiro */
+    border: 1px solid #d4c8b8 !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+    transition: border-color 0.15s ease !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card:hover {
+    border-color: #b57a1d !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card label {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #8c7660 !important;
+    text-transform: uppercase !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card .info-card-name {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #2b1a08 !important;
+}
+
+.ffrpg3e.sheet.actor .top-section .right-box .info-cards-compact .info-card .remover-ficha-btn {
+    background: transparent !important;
+    border: none !important;
+    color: #a63232 !important;
+    cursor: pointer !important;
+    float: right !important;
+    font-size: 11px !important;
+}
+
+/* Ajuste fino nos sub-rótulos biográficos da direita (Sangue, Altura) */
+.ffrpg3e.sheet.actor .top-section .right-box .row-group label+input+label {
+    margin-left: 10px !important;
+    flex: 0 0 50px !important;
+}
+
+/* --- BARRA DE ABAS CENTRAL (SHEET TABS MODERNA) --- */
+.ffrpg3e.sheet.actor .bottom-section {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    min-height: 0 !important;
+    margin-top: 4px !important;
+}
+
+.ffrpg3e.sheet.actor .sheet-tabs.tabs {
+    display: flex !important;
+    border: none !important;
+    background: transparent !important;
+    border-bottom: 2px solid #b3a28f !important;
+    gap: 4px !important;
+    margin-bottom: 12px !important;
+    line-height: 1 !important;
+}
+
+.ffrpg3e.sheet.actor .sheet-tabs.tabs .item {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 8px 0 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #735e47 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.15s ease !important;
+}
+
+.ffrpg3e.sheet.actor .sheet-tabs.tabs .item:hover {
+    color: #b57a1d !important;
+}
+
+.ffrpg3e.sheet.actor .sheet-tabs.tabs .item.active {
+    color: #2b1a08 !important;
+    background: #faf6ec !important;
+    border-radius: 6px 6px 0 0 !important;
+    border: 1px solid #b3a28f !important;
+    border-bottom: 2px solid #faf6ec !important;
+    margin-bottom: -2px !important;
+}
+
+.ffrpg3e.sheet.actor .sheet-body {
+    flex: 1 !important;
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+    min-height: 0 !important;
+    background: transparent !important;
+}
+
+/* ==========================================================================
+   PARTE 5: PAINEL DE ATRIBUTOS DA ESQUERDA [data-tab="atributos"]
+   ========================================================================== */
+
+/* Layout Grid de Duas Colunas da Aba Ativa */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributos-layout-moderno {
+    display: grid !important;
+    grid-template-columns: 1.10fr 0.90fr !important;
+    /* Esquerda levemente maior pelas colunas */
+    gap: 12px !important;
+    padding: 2px !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* O CARD DE PAPIRO SÓLIDO: Bloqueia fundos e vazamentos indesejados */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .card-painel {
+    background: #faf6ec !important;
+    /* Papiro Sólido Limpo */
+    border: 1px solid #c7b9a8 !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: 0 4px 12px rgba(107, 84, 58, 0.08) !important;
+    box-sizing: border-box !important;
+    height: 100% !important;
+    min-height: 0 !important;
+}
+
+/* Placa Interna de Pontos Disponíveis */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .card-painel-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background: #eebd7b !important;
+    /* Bronze polido antigo */
+    border-radius: 4px !important;
+    padding: 6px 12px !important;
+    margin-bottom: 8px !important;
+    flex-shrink: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .panel-title-txt {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #4a3319 !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .panel-title-val {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    color: #2b1a08 !important;
+    transition: color 0.12s ease-out !important;
+}
+
+/* --- GRID INTERNO DE ATRIBUTOS (ESQUERDA) --- */
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributos-grid-header,
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributo-row-item-pro {
+    display: grid !important;
+    grid-template-columns: 85px repeat(6, 1fr) !important;
+    /* Nome largo, colunas idênticas */
+    align-items: center !important;
+    gap: 2px !important;
+}
+
+/* Linha de Títulos das Colunas */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributos-grid-header {
+    border-bottom: 2px solid #b3a28f !important;
+    padding-bottom: 4px !important;
+    text-align: center !important;
+    flex-shrink: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .grid-lbl-txt {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #735e47 !important;
+    text-transform: uppercase !important;
+    text-align: left !important;
+    padding-left: 4px !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .grid-lbl-num {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #735e47 !important;
+    text-transform: uppercase !important;
+}
+
+/* Linhas Individuais dos Atributos */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributo-row-item-pro {
+    padding: 3px 0 !important;
+    border-bottom: 1px dashed rgba(179, 162, 143, 0.4) !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributo-row-item-pro:last-child {
+    border-bottom: none !important;
+}
+
+/* Botões de Rolagem Modernos (Apenas Texto Reativo Elegante) */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .btn-roll-moderno {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: left !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #4a3319 !important;
+    cursor: pointer !important;
+    transition: color 0.15s ease !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .btn-roll-moderno:hover {
+    color: #b57a1d !important;
+    text-decoration: underline !important;
+}
+
+/* Caixa Curta da Base (Encolhida para 3 Dígitos) */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .input-base-pro {
+    width: 34px !important;
+    height: 20px !important;
+    margin: 0 auto !important;
+    text-align: center;
+}
+
+/* Centralização Absoluta das Exibições Fixas */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .val-display-pro {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #5c4e3c !important;
+    text-align: center !important;
+    transition: color 0.12s ease-out !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-row-item-pro .val-display-pro {
+    display: inline-block !important;
+    width: auto !important;
+}
+
+/* Destaque para o valor TOTAL */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .val-display-pro.total-destaque-pro {
+    color: #2b1a08 !important;
+    font-weight: 800 !important;
+    font-size: 13px !important;
+}
+
+/* ==========================================================================
+   PARTE 6: CONTAINER DE SCROLL DOS NÍVEIS (INFERIOR ESQUERDA)
+   ========================================================================== */
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-scroll-container-pro {
+    margin-top: auto !important;
+    /* Cola a tabela na base do card esquerdo */
+    overflow-y: auto !important;
+    border: 1px solid #c7b9a8 !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+/* Customização fina da barra de rolagem interna */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-scroll-container-pro::-webkit-scrollbar {
+    width: 5px !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-scroll-container-pro::-webkit-scrollbar-track {
+    background: rgba(138, 114, 87, 0.05) !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-scroll-container-pro::-webkit-scrollbar-thumb {
+    background: rgba(138, 114, 87, 0.3) !important;
+    border-radius: 4px !important;
+}
+
+/* Alinhamento por Grid das colunas de Nível */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-grid-header-pro,
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-row-item-pro {
+    display: grid !important;
+    grid-template-columns: 50px repeat(4, 1fr) !important;
+    align-items: center !important;
+    text-align: center !important;
+}
+
+/* Cabeçalho Sticky Legítimo da Rolagem */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-grid-header-pro {
+    position: sticky !important;
+    top: 0 !important;
+    background: #faf6ec !important;
+    /* Fundo sólido para ocultar os números que sobem */
+    border-bottom: 1px solid #b3a28f !important;
+    padding: 4px 0 !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #735e47 !important;
+    text-transform: uppercase !important;
+    z-index: 5;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-row-item-pro {
+    padding: 2px 0 !important;
+    border-bottom: 1px dashed rgba(179, 162, 143, 0.3) !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .lvl-label-txt {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #4a3319 !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-input-pro {
+    width: 34px !important;
+    height: 18px !important;
+    font-size: 11px !important;
+    margin: 0 auto !important;
+    text-align: center;
+}
+
+/* ==========================================================================
+   PARTE 7: PAINEL DE COMBATE E SEPARADOR EXPERTS (DIREITA) [data-tab="atributos"]
+   ========================================================================== */
+
+/* Alinhamento por Grid Simétrico da Direita */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-grid-header,
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-row-item-pro {
+    display: grid !important;
+    grid-template-columns: 110px repeat(3, 1fr) !important;
+    /* Rótulo mais largo, colunas simétricas */
+    align-items: center !important;
+    text-align: center !important;
+    gap: 4px !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-grid-header {
+    border-bottom: 2px solid #b3a28f !important;
+    padding-bottom: 4px !important;
+    margin-bottom: 4px !important;
+    flex-shrink: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-lbl-txt-pro {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #4a3319 !important;
+    text-align: left !important;
+    padding-left: 4px;
+    transition: color 0.12s ease-out !important;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-row-item-pro {
+    padding: 3px 0 !important;
+    border-bottom: 1px dashed rgba(179, 162, 143, 0.4) !important;
+}
+
+/* Inputs de Combate (Padronizados com 22px de altura e 3 dígitos de largura) */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-row-item-pro input[type="number"] {
+    width: 35px !important;
+    height: 22px !important;
+    margin: 0 auto !important;
+    text-align: center;
+    transition: background-color 0.12s ease-out !important;
+}
+
+/* SEPARADOR DESIGN DE EXPERTS (TEXTO SOBRE LINHA TRAÇADA) */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .experts-separador-pro {
+    text-align: center !important;
+    margin: 10px 0 6px 0 !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
+}
+
+/* Linha horizontal fina de suporte que atravessa o fundo */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .experts-separador-pro::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 1px !important;
+    background: #b3a28f !important;
+    z-index: 1;
+}
+
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .experts-title-txt {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #735e47 !important;
+    letter-spacing: 1px !important;
+    background: #faf6ec !important;
+    /* Esconde a linha que passa por trás do texto */
+    padding: 0 10px !important;
+    position: relative !important;
+    z-index: 2;
+}
+
+/* Remove o tracejado inferior exclusivamente na linha de Expertise */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .row-expertise-pro {
+    border-bottom: none !important;
+    margin-bottom: 8px !important;
+}
+
+/* ==========================================================================
+   PARTE 8: DROPDOWNS CUSTOMIZADOS DO RODAPÉ DA DIREITA [data-tab="atributos"]
+   ========================================================================== */
+
+/* Fixa a linha dos selects no rodapé inferior do painel */
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .experts-selects-row-pro {
+    display: flex !important;
+    gap: 8px !important;
+    width: 100% !important;
+    flex-shrink: 0 !important;
+}
+
+/* ==========================================================================
+   PARTE 9: EDITOR PROSEMIRROR (BACKGROUND) TEMA CLARO
+   ========================================================================== */
+
+.ffrpg3e.sheet.actor .editor-container-v14 {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.ffrpg3e.sheet.actor .editor-container-v14 .prosemirror {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.ffrpg3e.sheet.actor .editor-container-v14 .pm-toolbar {
+    background: rgba(235, 220, 197, 0.6) !important;
+    border: 1px solid #c7b9a8 !important;
+    border-radius: 4px !important;
+    padding: 3px !important;
+    display: flex !important;
+    gap: 4px !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+.ffrpg3e.sheet.actor .editor-container-v14 .pm-toolbar button {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid #c7b9a8 !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+    cursor: pointer !important;
+    font-size: 11px !important;
+    color: #4a3319 !important;
+    transition: all 0.15s ease !important;
+    position: relative !important;
+    z-index: 6 !important;
+}
+
+.ffrpg3e.sheet.actor .editor-container-v14 .pm-toolbar button:hover {
+    background: rgba(181, 122, 29, 0.2) !important;
+    border-color: #b57a1d !important;
+    color: #b57a1d !important;
+}
+
+.ffrpg3e.sheet.actor .editor-container-v14 .pm-toolbar .active {
+    background: rgba(181, 122, 29, 0.3) !important;
+    border-color: #b57a1d !important;
+    color: #2b1a08 !important;
+    font-weight: bold !important;
+}
+
+.ffrpg3e.sheet.actor .editor-container-v14 .prosemirror-editor {
+    flex: 1 !important;
+    padding: 8px !important;
+    overflow-y: auto !important;
+    color: #2b1a08 !important;
+    background: transparent !important;
+}
+
+.ffrpg3e.sheet.actor .editor-container-v14 .prosemirror p {
+    margin: 0 0 8px 0 !important;
+}
+
+/* ==========================================================================
+   PARTE 10: ABAS STATUS E EXTRATO
+   ========================================================================== */
+
+/* Status */
+.ffrpg3e.sheet.actor .tab[data-tab="status"].active {
+    height: calc(100% - 10px);
+    display: flex !important;
+    background-color: rgb(0 0 0 / 0.35);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="status"] .status-aba-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ffrpg3e.sheet.actor .status-cabecalho {
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+    border-bottom: 1px solid #c7b9a8 !important;
+    margin-bottom: 8px !important;
+}
+
+.ffrpg3e.sheet.actor .status-cabecalho h3 {
+    margin: 0 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #4a3319 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.ffrpg3e.sheet.actor .status-lista {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    padding-right: 4px !important;
+}
+
+.ffrpg3e.sheet.actor .status-card-item {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    background: #fffdf7 !important;
+    border: 1px solid #d4c8b8 !important;
+    border-radius: 6px !important;
+    padding: 8px !important;
+    box-shadow: 0 1px 3px rgba(74, 51, 25, 0.08) !important;
+}
+
+.ffrpg3e.sheet.actor .status-icon-img {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 4px !important;
+    border: 1px solid #c7b9a8 !important;
+    object-fit: cover !important;
+    flex-shrink: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .status-text-block {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .status-title-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 2px !important;
+}
+
+.ffrpg3e.sheet.actor .status-nome-valor {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #2b1a08 !important;
+}
+
+.ffrpg3e.sheet.actor .status-badge-tempo {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #b57a1d !important;
+    background: rgba(181, 122, 29, 0.12) !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    white-space: nowrap !important;
+}
+
+.ffrpg3e.sheet.actor .status-descricao-linha {
+    font-size: 11px !important;
+    color: #5c4e3c !important;
+    font-style: italic !important;
+    line-height: 1.3 !important;
+}
+
+.ffrpg3e.sheet.actor .status-action-box {
+    flex-shrink: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .deletar-efeito-btn {
+    background: transparent !important;
+    border: none !important;
+    color: #a63232 !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    padding: 2px 4px !important;
+    transition: color 0.15s ease !important;
+}
+
+.ffrpg3e.sheet.actor .deletar-efeito-btn:hover {
+    color: #d63434 !important;
+}
+
+.ffrpg3e.sheet.actor .status-vazio-container {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #8c7660 !important;
+    font-size: 12px !important;
+    font-style: italic !important;
+    text-align: center !important;
+    gap: 8px !important;
+    padding: 20px !important;
+}
+
+.ffrpg3e.sheet.actor .status-vazio-container i {
+    font-size: 24px !important;
+    opacity: 0.5 !important;
+}
+
+/* Extrato */
+.ffrpg3e.sheet.actor .tab[data-tab="extrato"].active {
+    height: calc(100% - 10px);
+    display: flex !important;
+    background-color: rgb(0 0 0 / 0.35);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="extrato"] .extrato-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ffrpg3e.sheet.actor .extrato-cabecalho {
+    flex-shrink: 0 !important;
+    padding: 4px 8px !important;
+    border-bottom: 1px solid #c7b9a8 !important;
+    margin-bottom: 4px !important;
+}
+
+.ffrpg3e.sheet.actor .extrato-cabecalho h3 {
+    margin: 0 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #4a3319 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.ffrpg3e.sheet.actor .extrato-lista {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+
+.ffrpg3e.sheet.actor .extrato-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: #fffdf7 !important;
+    border: 1px solid #d4c8b8 !important;
+    border-radius: 6px !important;
+    padding: 8px !important;
+    box-shadow: 0 1px 3px rgba(74, 51, 25, 0.06) !important;
+}
+
+.ffrpg3e.sheet.actor .extrato-item.card-adicionado {
+    border-left: 3px solid #6d9b3a !important;
+}
+
+.ffrpg3e.sheet.actor .extrato-item.card-removido {
+    border-left: 3px solid #a63232 !important;
+}
+
+.ffrpg3e.sheet.actor .status-barra {
+    width: 4px !important;
+    height: 28px !important;
+    border-radius: 2px !important;
+    flex-shrink: 0 !important;
+    background: #c7b9a8 !important;
+}
+
+.ffrpg3e.sheet.actor .extrato-corpo {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .linha-principal {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 2px !important;
+}
+
+.ffrpg3e.sheet.actor .badge-acao {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    letter-spacing: 0.3px !important;
+}
+
+.ffrpg3e.sheet.actor .badge-acao.acao-adicionado {
+    background: rgba(109, 155, 58, 0.12) !important;
+    color: #4a6b1c !important;
+}
+
+.ffrpg3e.sheet.actor .badge-acao.acao-removido {
+    background: rgba(166, 50, 50, 0.12) !important;
+    color: #7a2222 !important;
+}
+
+.ffrpg3e.sheet.actor .valor-gil {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #2b1a08 !important;
+    transition: color 0.12s ease-out !important;
+}
+
+.ffrpg3e.sheet.actor .valor-gil small {
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    color: #735e47 !important;
+}
+
+.ffrpg3e.sheet.actor .linha-descricao {
+    font-size: 11px !important;
+    color: #5c4e3c !important;
+    font-style: italic !important;
+    line-height: 1.3 !important;
+}
+
+.ffrpg3e.sheet.actor .linha-descricao i {
+    margin-right: 4px !important;
+    font-size: 10px !important;
+    opacity: 0.7 !important;
+}
+
+.ffrpg3e.sheet.actor .extrato-meta {
+    text-align: right !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    font-size: 10px !important;
+}
+
+.ffrpg3e.sheet.actor .extrato-meta i {
+    margin-right: 3px !important;
+    font-size: 9px !important;
+}
+
+.ffrpg3e.sheet.actor .extrato-vazio {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #8c7660 !important;
+    font-size: 12px !important;
+    font-style: italic !important;
+    text-align: center !important;
+    gap: 8px !important;
+    padding: 20px !important;
+}
+
+.ffrpg3e.sheet.actor .extrato-vazio i {
+    font-size: 24px !important;
+    opacity: 0.5 !important;
+}
+
+/* Scroll refinado para listas das abas */
+.ffrpg3e.sheet.actor .status-lista::-webkit-scrollbar,
+.ffrpg3e.sheet.actor .extrato-lista::-webkit-scrollbar {
+    width: 5px !important;
+}
+
+.ffrpg3e.sheet.actor .status-lista::-webkit-scrollbar-track,
+.ffrpg3e.sheet.actor .extrato-lista::-webkit-scrollbar-track {
+    background: rgba(138, 114, 87, 0.05) !important;
+}
+
+.ffrpg3e.sheet.actor .status-lista::-webkit-scrollbar-thumb,
+.ffrpg3e.sheet.actor .extrato-lista::-webkit-scrollbar-thumb {
+    background: rgba(138, 114, 87, 0.3) !important;
+    border-radius: 4px !important;
+}
+
+.ffrpg3e.sheet.actor .atributos-layout-moderno,
+.ffrpg3e.sheet.actor .status-aba-wrapper,
+.ffrpg3e.sheet.actor .extrato-wrapper,
+.ffrpg3e.sheet.actor .background-style {
+    height: 100% !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="background"].active {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="background"].active .background-style {
+    flex: 1 !important;
+    min-height: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .atributos-layout-moderno,
+.ffrpg3e.sheet.actor .status-aba-wrapper,
+.ffrpg3e.sheet.actor .extrato-wrapper,
+.ffrpg3e.sheet.actor .background-style {
+    height: 100% !important;
+    background-color: rgb(0 0 0 / 0.35) !important;
+    backdrop-filter: blur(8px) !important;
+    border: 1px solid rgb(255 255 255 / 0.08) !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
+}
+
+/* Alvo específico: Aba Background dentro da Player Sheet */
+.ffrpg3e.sheet.actor [data-tab="background"] {
+    height: 100% !important;
+}
+
+.ffrpg3e.sheet.actor [data-tab="background"] .prose-mirror-style {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(0 0 0 / 0.35);
+    color: black;
+    padding: 5px;
+    border-radius: 5px
+}
+
+/* ==========================================================================
+   TRAVA DE SEGURANÇA: CSS EXCLUSIVO DA ABA STATUS DA PLAYER SHEET
+   ========================================================================== */
+
+/* Garante o empilhamento vertical correto e espaçamento dos blocos */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-aba-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+    padding: 10px !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Estilização de cada bloco/gaveta de seção */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-secao-bloco {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 6px !important;
+    padding: 10px !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Cabeçalhos internos das seções (Dourado clássico estilo Final Fantasy) */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-secao-titulo h4 {
+    margin: 0 0 10px 0 !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: #fff5e6 !important; /* Dourado/creme ligeiramente mais claro e radiante */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    padding-bottom: 5px !important;
+    flex-shrink: 0 !important;
+    
+    /* 🚨 O CONTORNO: Aplica 4 sombras em cruz + 1 sombra suave difusa para blindar o texto contra fundos escuros */
+    text-shadow: 
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000,
+         0px  2px 4px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Subtexto explicativo do cabeçalho */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-secao-titulo h4 small {
+    font-size: 11px !important;
+    color: #aaa !important; /* Um cinza mais claro para não sumir no fundo */
+    font-weight: normal !important;
+    text-transform: none !important;
+    letter-spacing: 0px !important;
+    margin-left: 5px !important;
+    /* Acompanha o mesmo contorno de segurança de forma sutil */
+    text-shadow: 1px 1px 1px #000 !important; 
+}
+
+/* Alerta visual levemente avermelhado para a seção de Debuffs/Penalidades */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-titulo-debuff h4 {
+    color: #ff8888 !important;
+}
+
+/* Mensagens discretas e elegantes para blocos vazios */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-vazio-mini {
+    padding: 12px !important;
+    text-align: center !important;
+    color: #777 !important;
+    font-size: 12px !important;
+    font-style: italic !important;
+}
+
+.ffrpg3e.sheet.actor [data-tab="status"] .status-vazio-mini i {
+    margin-right: 5px !important;
+}
+
+/* Contêiner interno que envelopa os cartões de efeitos de cada sub-lista */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-lista-sub {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+
+/* ==========================================================================
+   CORREÇÃO EXCLUSIVA: TRANCAR ALTURA DA ABA ATRIBUTOS (v14)
+   ========================================================================== */
+
+/* 1. Força a aba de Atributos ativa a respeitar rigorosamente o frame da ficha */
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    /* CRUCIAL: Impede o Flexbox de esticar o layout para o infinito */
+    overflow: hidden !important;
+}
+
+/* 2. Corrige o container moderno para se comportar como linha (lado a lado) e travar na tela */
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .atributos-layout-moderno {
+    display: flex !important;
+    flex-direction: row !important;
+    /* Força card esquerdo e direito a ficarem lado a lado */
+    gap: 15px !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+    /* Corta qualquer vazamento para baixo do rodapé */
+}
+
+/* 3. Força os dois painéis internos (esquerdo e direito) a dividirem o espaço e não vazarem */
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .card-painel {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    flex: 1 !important;
+    overflow: hidden !important;
+}
+
+/* 4. Ativa o scroll individual apenas nas listas internas (atributos e combate) se o conteúdo crescer */
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .atributos-lista-rows,
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .combate-lista-rows {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    /* Rola lindamente só dentro da caixinha se precisar */
+    min-height: 0 !important;
+}
+
+/* 5. Trava o container de níveis para ele criar scroll interno e não esmagar os Experts */
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .hpmp-scroll-container-pro {
+    max-height: 220px !important;
+    /* Ajuste essa altura para o scroll dos níveis se adequar ao seu visual */
+    overflow-y: auto !important;
+    flex-shrink: 0 !important;
+    /* Impede os níveis de tentarem "engolir" o resto do layout */
+}
+
+
+/* ==========================================================================
+   PARTE 1 CORRIGIDA: COLUNAS EM 100% DA LARGURA E TEXTOS DE AVISO CONTRAS-TADOS
+   ========================================================================== */
+
+/* Container Supremo: Forçado a ocupar 100% da largura útil e altura máxima da aba */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-aba-wrapper {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Divide a tela exatamente ao meio (50% / 50%) */
+    gap: 12px !important; /* Espaço de separação entre as duas colunas */
+    padding: 10px !important;
+    width: 100% !important; /* Força as colunas a se expandirem por toda a largura da ficha */
+    height: 100% !important; /* Trava a altura para acompanhar o frame da janela */
+    box-sizing: border-box !important;
+}
+
+/* Cada uma das duas colunas verticais (Esquerda e Direita) */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-coluna-lado {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important; /* Espaço vertical entre a gaveta de cima e a de baixo */
+    width: 100% !important; /* Garante que a coluna use todo o espaço dos seus 50% */
+    height: 100% !important;
+    min-height: 0 !important; /* Impede quebras de layout caso o flexbox tente esticar */
+}
+
+/* As 4 Gavetas Principais (Cada uma ganha metade exata da altura disponível) */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-secao-bloco {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: rgba(0, 0, 0, 0.2) !important; /* Seus 35% de opacidade com blur */
+    border-radius: 6px !important;
+    padding: 10px !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    min-height: 0 !important; /* Permite que o container reduza e force o surgimento do scroll */
+    box-sizing: border-box !important;
+}
+
+/* Cabeçalhos de Seção */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-secao-titulo h4 {
+    margin: 0 0 10px 0 !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: #dfd5c6 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding-bottom: 5px !important;
+    flex-shrink: 0 !important; /* Impede o título de sumir ou achatar quando o scroll ativar */
+}
+
+/* Subtexto explicativo do cabeçalho */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-secao-titulo h4 small {
+    font-size: 11px !important;
+    color: #888 !important;
+    font-weight: normal !important;
+    text-transform: none !important;
+    letter-spacing: 0px !important;
+    margin-left: 5px !important;
+}
+
+/* Ajustes de cores dos títulos da coluna da direita */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-titulo-curse h4 {
+    color: #e1d5ff !important;
+}
+.ffrpg3e.sheet.actor [data-tab="status"] .status-titulo-debuff h4 {
+    color: #ff9999 !important;
+}
+
+/* CONTÊINER EXCLUSIVO DE ROLAGEM: Onde a mágica do scroll acontece */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-scroll-container {
+    flex: 1 !important;
+    overflow-y: auto !important; /* O scroll vertical só aparece se os cards estourarem a altura da gaveta */
+    overflow-x: hidden !important;
+    min-height: 0 !important;
+    padding-right: 4px !important; /* Afasta os cards da barra de rolagem para não morder o botão */
+}
+
+/* Lista interna de cartões */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-lista-sub {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+
+/* CORRIGIDO: Mensagens de blocos vazios otimizadas para alta legibilidade */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-vazio-mini {
+    padding: 16px 12px !important;
+    text-align: center !important;
+    color: #b5aba0 !important; /* Tom cinza pergaminho claro de alto contraste */
+    font-size: 12px !important;
+    font-style: italic !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important; /* Projeta contorno escuro atrás das letras */
+}
+
+.ffrpg3e.sheet.actor [data-tab="status"] .status-vazio-mini i {
+    margin-right: 6px !important;
+    color: #dfd5c6 !important; /* Destaca o ícone com o dourado clássico */
+}
+
+/* ESTILIZAÇÃO DO SCROLLBAR (Discreto e integrado ao tema escuro) */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-scroll-container::-webkit-scrollbar {
+    width: 5px !important;
+}
+.ffrpg3e.sheet.actor [data-tab="status"] .status-scroll-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 4px !important;
+}
+.ffrpg3e.sheet.actor [data-tab="status"] .status-scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 4px !important;
+}
+.ffrpg3e.sheet.actor [data-tab="status"] .status-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ==========================================================================
+   PINTURA AUTOMATIZADA DAS BORDAS LATERAIS DO CARD (Baseado na Coluna/Gaveta)
+   ========================================================================== */
+/* Coluna 1, Bloco 1 - Passivas (Azul) */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-coluna-lado:nth-child(1) .status-secao-bloco:nth-child(1) .status-card-item::before {
+    content: "" !important; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; z-index: 1;
+    background: #2196F3 !important;
+}
+/* Coluna 1, Bloco 2 - Buffs Temporários (Verde) */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-coluna-lado:nth-child(1) .status-secao-bloco:nth-child(2) .status-card-item::before {
+    content: "" !important; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; z-index: 1;
+    background: #2a9d8f !important;
+}
+/* Coluna 2, Bloco 1 - Maldições (Roxo Místico) */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-coluna-lado:nth-child(2) .status-secao-bloco:nth-child(1) .status-card-item::before {
+    content: "" !important; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; z-index: 1;
+    background: #b39ddb !important;
+}
+/* Coluna 2, Bloco 2 - Debuffs Temporários (Vermelho) */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-coluna-lado:nth-child(2) .status-secao-bloco:nth-child(2) .status-card-item::before {
+    content: "" !important; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; z-index: 1;
+    background: #e63946 !important;
+}
+
+/* ==========================================================================
+   PARTE 2: DESIGN DOS CARDS INTERNOS, BOTÕES E TRAVA DE ATRIBUTOS
+   ========================================================================== */
+
+/* CONTAINER DO CARD: Une o corpo clicável e o botão da lixeira lado a lado */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-card-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important; /* Estica a lixeira de acordo com a altura do card */
+    background: #fffdf7 !important;
+    border: 1px solid #d4c8b8 !important;
+    border-radius: 6px !important;
+    padding: 0 !important;
+    box-shadow: 0 1px 3px rgba(74, 51, 25, 0.08) !important;
+    position: relative !important;
+    overflow: hidden !important; /* Corta as rebarbas das bordinhas coloridas */
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* CORPO INTERNO DO CARD: Organiza o ícone e os blocos de texto horizontalmente */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-corpo {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important; /* Centraliza ícone e textos na mesma linha vertical */
+    gap: 12px !important;
+    padding: 10px 10px 10px 14px !important; /* Afasta o conteúdo da barra colorida esquerda */
+    min-width: 0 !important;
+    cursor: pointer !important;
+}
+
+.ffrpg3e.sheet.actor [data-tab="status"] .status-corpo:hover {
+    background: transparent !important;
+}
+
+/* MOLDURA DO ÍCONE: Proteção para imagens PNG transparentes */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-icon-img {
+    width: 32px !important;
+    height: 32px !important;
+    background: #e9e5db !important; /* Fundo cinza pergaminho para manter contraste */
+    border: 1px solid #c7b9a8 !important;
+    border-radius: 5px !important;
+    object-fit: cover !important;
+    flex-shrink: 0 !important;
+    display: block !important;
+}
+
+/* BLOCO DE TEXTOS INTERNOS: Organização vertical em linhas controladas */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-text-block {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important; /* Espaçamento cirúrgico entre Nome e Turnos */
+}
+
+/* Linha 1: Nome do Efeito */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-title-row {
+    display: flex !important;
+    margin: 0 !important;
+}
+
+.ffrpg3e.sheet.actor [data-tab="status"] .status-nome-valor {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #2b1a08 !important; /* Tom marrom bem escuro e legível */
+    line-height: 1.2 !important;
+}
+
+/* Linha 2: Badge de Duração (Contador de Turnos) */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-badge-row {
+    display: flex !important;
+}
+
+.ffrpg3e.sheet.actor [data-tab="status"] .status-badge-tempo {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #b57a1d !important;
+    background: rgba(181, 122, 29, 0.12) !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+/* BOTÃO DE DELETAR VERTICAL (Separado do card clicável) */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-action-box {
+    display: flex !important;
+    flex-shrink: 0 !important;
+    width: 34px !important; /* Largura fixa e travada da coluna da lixeira */
+}
+
+.ffrpg3e.sheet.actor [data-tab="status"] .deletar-efeito-btn {
+    width: 100% !important;
+    height: 100% !important; /* Ocupa perfeitamente a altura dita pelo stretch do card */
+    background: #f1ede2 !important;
+    border: none !important;
+    border-left: 1px solid #d4c8b8 !important; /* Divisor vertical sutil */
+    color: #a63232 !important; /* Ícone vermelho de alerta */
+    cursor: pointer !important;
+    font-size: 13px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transition: all 0.15s ease !important;
+}
+
+.ffrpg3e.sheet.actor [data-tab="status"] .status-card-item:hover {
+    background: rgba(20, 20, 20, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important; /* Clareia a borda de leve para destacar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5) !important; /* Aumenta a sombra para dar efeito de elevação */
+    transition: all 0.2s ease !important; /* Suaviza a transição da cor */
+}
+
+/* Transiciona os textos internos para uma cor clara para manter o contraste perfeito no hover */
+.ffrpg3e.sheet.actor [data-tab="status"] .status-card-item:hover .status-nome-valor {
+    color: #dfd5c6 !important; /* Tom creme/pergaminho claro clássico da sua ficha */
+    transition: color 0.2s ease !important;
+}
+
+.ffrpg3e.sheet.actor [data-tab="status"] .status-card-item:hover .deletar-efeito-btn {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.2s ease !important;
+}
+
+.ffrpg3e.sheet.actor [data-tab="status"] .deletar-efeito-btn:hover {
+    background: #e64a4a !important;
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   CORREÇÃO EXCLUSIVA: TRANCAR ALTURA DA ABA ATRIBUTOS (v14)
+   ========================================================================== */
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .atributos-layout-moderno {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 15px !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .card-painel {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    flex: 1 !important;
+    overflow: hidden !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .atributos-lista-rows,
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .combate-lista-rows {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    min-height: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .hpmp-scroll-container-pro {
+    max-height: 220px !important;
+    overflow-y: auto !important;
+    flex-shrink: 0 !important;
+}

@@ -1,0 +1,412 @@
+<div class="aba-equipamentos-container">
+
+  <!-- 1. BLOCO SUPERIOR: EQUIPADOS -->
+  <div class="equipamentos-topo-container">
+    <div class="equipamento-linha-row manequim-header-row">
+      <span class="slot-tag">Slot</span>
+      <span class="slot-item-nome">Item</span>
+      <span class="slot-info">Informações</span>
+      <span class="slot-habilidade">Habilidade</span>
+      <span class="slot-action-box"></span>
+    </div>
+
+    {{#each slotsList}}
+    <div class="equipamento-linha-row">
+      <span class="slot-tag">{{this.label}}</span>
+      {{#if this.item}}
+        <span class="slot-item-nome" data-action="abrirSheetItem" data-item-id="{{this.item.id}}">
+          {{this.item.system.displayName}}
+        </span>
+        <span class="slot-info">{{this.item.system.combatDisplay}}</span>
+        <span class="slot-habilidade" title="{{this.item.system.abilityDisplay}}">
+          {{this.item.system.abilityDisplay}}
+        </span>
+        <div class="slot-action-box">
+          <button type="button" class="desequipar-item-btn" data-action="desequiparItem" data-item-id="{{this.item.id}}" title="Desequipar Item">
+            <i class="fas fa-arrow-down"></i>
+          </button>
+        </div>
+      {{else}}
+        <span class="slot-item-nome" style="color: #7a6b58; font-style: italic; opacity: 0.5;">[ Vazio ]</span>
+        <span class="slot-info"></span>
+        <span class="slot-habilidade"></span>
+        <div class="slot-action-box"></div>
+      {{/if}}
+    </div>
+    {{/each}}
+  </div>
+
+  <!-- 2. BLOCO INFERIOR: INVENTÁRIO SPLIT -->
+  <div class="inventario-layout-split">
+
+    <!-- COLUNA ESQUERDA: CONSUMÍVEIS + KEY ITEMS -->
+    <div class="inventario-painel-bolso">
+
+      <div class="inventario-grupo-bloco {{#if gruposVazios.keyItems}}is-collapsed{{/if}}" data-grupo="keyItems">
+        <div class="inventario-grupo-header" data-action="toggleGroup" data-target="keyItems">
+          <span>Itens Importantes</span>
+          <span class="grupo-collapse-icon">
+            <i class="far fa-minus-square"></i>
+            <i class="far fa-plus-square"></i>
+          </span>
+        </div>
+        <div class="sub-tabela-header-row">
+          <span style="flex: 1;">Nome</span>
+          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 28px;">Qtd</span>
+        </div>
+        {{#each keyItems}}
+          <div class="inventario-row-item">
+            <div class="inventario-item-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}">
+              <span class="bolso-nome">{{this.system.displayName}}</span>
+              <span class="bolso-quantidade">x{{this.system.quantidade}}</span>
+            </div>
+            <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div style="height: 2px;"></div>
+        {{/each}}
+      </div>
+
+      <div class="inventario-grupo-bloco {{#if gruposVazios.heal}}is-collapsed{{/if}}" data-grupo="heal">
+        <div class="inventario-grupo-header" data-action="toggleGroup" data-target="heal">
+          <span>Cura</span>
+          <span class="grupo-collapse-icon">
+            <i class="far fa-minus-square"></i>
+            <i class="far fa-plus-square"></i>
+          </span>
+        </div>
+        <div class="sub-tabela-header-row">
+          <span style="flex: 1;">Nome</span>
+          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 56px;">Qtd</span>
+        </div>
+        {{#each healList}}
+          <div class="inventario-row-item">
+            <div class="inventario-item-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}">
+              <span class="bolso-nome">{{this.system.displayName}}</span>
+              <span class="bolso-quantidade">x{{this.system.quantidade}}</span>
+            </div>
+            <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-usar" data-action="usarItem" data-item-id="{{this.id}}" title="Usar">
+                  <i class="fas fa-flask"></i>
+                </button>
+              </div>
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div style="height: 2px;"></div>
+        {{/each}}
+      </div>
+
+      <div class="inventario-grupo-bloco {{#if gruposVazios.support}}is-collapsed{{/if}}" data-grupo="support">
+        <div class="inventario-grupo-header" data-action="toggleGroup" data-target="support">
+          <span>Suporte</span>
+          <span class="grupo-collapse-icon">
+            <i class="far fa-minus-square"></i>
+            <i class="far fa-plus-square"></i>
+          </span>
+        </div>
+        <div class="sub-tabela-header-row">
+          <span style="flex: 1;">Nome</span>
+          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 28px;">Qtd</span>
+        </div>
+        {{#each supportList}}
+          <div class="inventario-row-item">
+            <div class="inventario-item-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}">
+              <span class="bolso-nome">{{this.system.displayName}}</span>
+              <span class="bolso-quantidade">x{{this.system.quantidade}}</span>
+            </div>
+            <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div style="height: 2px;"></div>
+        {{/each}}
+      </div>
+
+      <div class="inventario-grupo-bloco {{#if gruposVazios.combat}}is-collapsed{{/if}}" data-grupo="combat">
+        <div class="inventario-grupo-header" data-action="toggleGroup" data-target="combat">
+          <span>Batalha</span>
+          <span class="grupo-collapse-icon">
+            <i class="far fa-minus-square"></i>
+            <i class="far fa-plus-square"></i>
+          </span>
+        </div>
+        <div class="sub-tabela-header-row">
+          <span style="flex: 1;">Nome:</span>
+          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 56px;">Qtd</span>
+        </div>
+        {{#each combatList}}
+          <div class="inventario-row-item">
+            <div class="inventario-item-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}">
+              <span class="bolso-nome">{{this.system.displayName}}</span>
+              <span class="bolso-quantidade">x{{this.system.quantidade}}</span>
+            </div>
+            <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-usar" data-action="usarItem" data-item-id="{{this.id}}" title="Arremessar em Combate">
+                  <i class="fas fa-bomb"></i>
+                </button>
+              </div>
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div style="height: 2px;"></div>
+        {{/each}}
+      </div>
+
+      <div class="inventario-grupo-bloco {{#if gruposVazios.ammo}}is-collapsed{{/if}}" data-grupo="ammo">
+        <div class="inventario-grupo-header" data-action="toggleGroup" data-target="ammo">
+          <span>Munição</span>
+          <span class="grupo-collapse-icon">
+            <i class="far fa-minus-square"></i>
+            <i class="far fa-plus-square"></i>
+          </span>
+        </div>
+        <div class="sub-tabela-header-row">
+          <span style="flex: 1;">Nome</span>
+          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 28px;">Qtd</span>
+        </div>
+        {{#each ammoList}}
+          <div class="inventario-row-item">
+            <div class="inventario-item-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}">
+              <span class="bolso-nome">{{this.system.displayName}}</span>
+              <span class="bolso-quantidade">x{{this.system.quantidade}}</span>
+            </div>
+            <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div style="height: 2px;"></div>
+        {{/each}}
+      </div>
+
+      <div class="inventario-grupo-bloco {{#if gruposVazios.others}}is-collapsed{{/if}}" data-grupo="others">
+        <div class="inventario-grupo-header" data-action="toggleGroup" data-target="others">
+          <span>Outros</span>
+          <span class="grupo-collapse-icon">
+            <i class="far fa-minus-square"></i>
+            <i class="far fa-plus-square"></i>
+          </span>
+        </div>
+        <div class="sub-tabela-header-row">
+          <span style="flex: 1;">Nome</span>
+          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 28px;">Qtd</span>
+        </div>
+        {{#each othersList}}
+          <div class="inventario-row-item">
+            <div class="inventario-item-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}">
+              <span class="bolso-nome">{{this.system.displayName}}</span>
+              <span class="bolso-quantidade">x{{this.system.quantidade}}</span>
+            </div>
+            <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div style="height: 2px;"></div>
+        {{/each}}
+      </div>
+
+    </div>
+
+    <!-- COLUNA DIREITA: EQUIPAMENTOS -->
+    <div class="inventario-painel-tabela">
+
+      <div class="inventario-grupo-bloco {{#if gruposVazios.weapons}}is-collapsed{{/if}}" data-grupo="weapons">
+        <div class="inventario-grupo-header" data-action="toggleGroup" data-target="weapons">
+          <span>Armas</span>
+          <span class="grupo-collapse-icon">
+            <i class="far fa-minus-square"></i>
+            <i class="far fa-plus-square"></i>
+          </span>
+        </div>
+        <div class="sub-tabela-header-row">
+          <span style="flex: 3;">Nome</span>
+          <span style="flex: 2;">Informações</span>
+          <span style="flex: 2; margin-right: 56px;">Habilidade</span>
+        </div>
+        {{#each weapons}}
+          <div class="inventario-row-item">
+            <div class="inventario-item-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}">
+              <span class="tabela-nome">{{this.system.displayName}}</span>
+              <span class="tabela-info">{{this.system.combatDisplay}}</span>
+              <span class="tabela-habilidade" title="{{this.system.abilityDisplay}}">
+                {{this.system.abilityDisplay}}
+              </span>
+            </div>
+            <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-equipar" data-action="equiparItem" data-item-id="{{this.id}}" title="Equipar">
+                  <i class="fas fa-gavel"></i>
+                </button>
+              </div>
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div style="height: 2px;"></div>
+        {{/each}}
+      </div>
+
+      <div class="inventario-grupo-bloco {{#if gruposVazios.shields}}is-collapsed{{/if}}" data-grupo="shields">
+        <div class="inventario-grupo-header" data-action="toggleGroup" data-target="shields">
+          <span>Escudos</span>
+          <span class="grupo-collapse-icon">
+            <i class="far fa-minus-square"></i>
+            <i class="far fa-plus-square"></i>
+          </span>
+        </div>
+        <div class="sub-tabela-header-row">
+          <span style="flex: 3;">Nome</span>
+          <span style="flex: 2;">Informações</span>
+          <span style="flex: 2; margin-right: 56px;">Habilidade</span>
+        </div>
+        {{#each shields}}
+          <div class="inventario-row-item">
+            <div class="inventario-item-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}">
+              <span class="tabela-nome">{{this.system.displayName}}</span>
+              <span class="tabela-info">{{this.system.combatDisplay}}</span>
+              <span class="tabela-habilidade" title="{{this.system.abilityDisplay}}">
+                {{this.system.abilityDisplay}}
+              </span>
+            </div>
+            <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-equipar" data-action="equiparItem" data-item-id="{{this.id}}" title="Equipar">
+                  <i class="fas fa-shield-alt"></i>
+                </button>
+              </div>
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div style="height: 2px;"></div>
+        {{/each}}
+      </div>
+
+      <div class="inventario-grupo-bloco {{#if gruposVazios.armor}}is-collapsed{{/if}}" data-grupo="armor">
+        <div class="inventario-grupo-header" data-action="toggleGroup" data-target="armor">
+          <span>Armaduras</span>
+          <span class="grupo-collapse-icon">
+            <i class="far fa-minus-square"></i>
+            <i class="far fa-plus-square"></i>
+          </span>
+        </div>
+        <div class="sub-tabela-header-row">
+          <span style="flex: 1.2;">Slot</span>
+          <span style="flex: 2.8;">Nome</span>
+          <span style="flex: 2;">Informações</span>
+          <span style="flex: 2; margin-right: 56px;">Habilidade</span>
+        </div>
+        {{#each armor}}
+          <div class="inventario-row-item">
+            <div class="inventario-item-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}">
+              <span class="tabela-slot">{{traduzirSlot this.system.slot}}</span>
+              <span class="tabela-nome">{{this.system.displayName}}</span>
+              <span class="tabela-info">{{this.system.combatDisplay}}</span>
+              <span class="tabela-habilidade" title="{{this.system.abilityDisplay}}">
+                {{this.system.abilityDisplay}}
+              </span>
+            </div>
+            <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-equipar" data-action="equiparItem" data-item-id="{{this.id}}" title="Equipar">
+                  <i class="fas fa-tshirt"></i>
+                </button>
+              </div>
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div style="height: 2px;"></div>
+        {{/each}}
+      </div>
+
+      <div class="inventario-grupo-bloco {{#if gruposVazios.accessories}}is-collapsed{{/if}}" data-grupo="accessories">
+        <div class="inventario-grupo-header" data-action="toggleGroup" data-target="accessories">
+          <span>Acessórios</span>
+          <span class="grupo-collapse-icon">
+            <i class="far fa-minus-square"></i>
+            <i class="far fa-plus-square"></i>
+          </span>
+        </div>
+        <div class="sub-tabela-header-row">
+          <span style="flex: 3;">Nome</span>
+          <span style="flex: 2;">Informações</span>
+          <span style="flex: 2; margin-right: 56px;">Habilidade</span>
+        </div>
+        {{#each accessories}}
+          <div class="inventario-row-item">
+            <div class="inventario-item-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}">
+              <span class="tabela-nome">{{this.system.displayName}}</span>
+              <span class="tabela-info">{{this.system.combatDisplay}}</span>
+              <span class="tabela-habilidade" title="{{this.system.abilityDisplay}}">
+                {{this.system.abilityDisplay}}
+              </span>
+            </div>
+            <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-equipar" data-action="equiparItem" data-item-id="{{this.id}}" title="Equipar">
+                  <i class="fas fa-gem"></i>
+                </button>
+              </div>
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div style="height: 2px;"></div>
+        {{/each}}
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

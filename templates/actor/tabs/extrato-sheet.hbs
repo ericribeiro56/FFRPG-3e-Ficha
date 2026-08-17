@@ -1,0 +1,39 @@
+<div class="extrato-wrapper">
+    <div class="extrato-cabecalho">
+        <h3><i class="fas fa-history"></i> Histórico de Transações de Gil</h3>
+    </div>
+    
+    <ul class="extrato-lista">
+        {{#each system.extract_gil}}
+            <li class="extrato-item card-{{this.acao}}">
+                <!-- Indicador lateral colorido (verde ou vermelho) -->
+                <div class="status-barra"></div>
+                
+                <!-- Corpo principal do registro -->
+                <div class="extrato-corpo">
+                    <div class="linha-principal">
+                        <span class="badge-acao acao-{{this.acao}}">{{this.acao}}</span>
+                        <span class="valor-gil">{{this.valor}} <small>GIL</small></span>
+                    </div>
+                    
+                    {{#if this.descricao}}
+                        <div class="linha-descricao">
+                            <i class="fas fa-comment-alt"></i> <span>{{this.descricao}}</span>
+                        </div>
+                    {{/if}}
+                </div>
+                
+                <!-- Informações administrativas da direita -->
+                <div class="extrato-meta">
+                    <div class="meta-autor"><i class="fas fa-user-shield"></i> {{this.autor}}</div>
+                    <div class="meta-data"><i class="fas fa-clock"></i> {{this.data}}</div>
+                </div>
+            </li>
+        {{else}}
+            <div class="extrato-vazio">
+                <i class="fas fa-folder-open"></i>
+                <p>Nenhuma transação financeira foi registrada até o momento.</p>
+            </div>
+        {{/each}}
+    </ul>
+</div>

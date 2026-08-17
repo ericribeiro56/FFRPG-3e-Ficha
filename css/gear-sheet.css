@@ -1,0 +1,127 @@
+.gear-sheet-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  font-family: "Signika", "Helvetica Neue", Arial, sans-serif;
+  color: #2b1a08;
+}
+
+.gear-sheet-wrapper .sheet-header {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.gear-sheet-wrapper .profile-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #9c8469;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.gear-sheet-wrapper .header-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gear-sheet-wrapper .header-info input[type="text"] {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 6px 8px;
+  border: 1px solid #9c8469;
+  border-radius: 4px;
+  background: rgba(241, 235, 217, 0.75);
+  color: #2b1a08;
+}
+
+.gear-sheet-wrapper .header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gear-sheet-wrapper .header-row label {
+  font-weight: bold;
+  font-size: 12px;
+  min-width: 100px;
+  color: #5c4d3c;
+}
+
+.gear-sheet-wrapper .header-row input,
+.gear-sheet-wrapper .header-row select {
+  flex: 1;
+  padding: 4px 8px;
+  border: 1px solid #9c8469;
+  border-radius: 4px;
+  background: rgba(241, 235, 217, 0.75);
+  color: #2b1a08;
+  font-size: 12px;
+}
+
+.gear-sheet-wrapper .sheet-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid #9c8469;
+}
+
+.gear-sheet-wrapper .sheet-tabs .item {
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  color: #5c4d3c;
+  border-radius: 4px 4px 0 0;
+}
+
+.gear-sheet-wrapper .sheet-tabs .item.active {
+  background: rgba(181, 122, 29, 0.15);
+  color: #8b5a1b;
+}
+
+.gear-sheet-wrapper .sheet-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.gear-sheet-wrapper .tab {
+  display: none;
+}
+
+.gear-sheet-wrapper .tab.active {
+  display: block;
+}
+
+.gear-sheet-wrapper .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.gear-sheet-wrapper .form-group label {
+  font-weight: bold;
+  font-size: 12px;
+  color: #5c4d3c;
+}
+
+.gear-sheet-wrapper .form-group input[type="text"],
+.gear-sheet-wrapper .form-group select {
+  padding: 6px 8px;
+  border: 1px solid #9c8469;
+  border-radius: 4px;
+  background: rgba(241, 235, 217, 0.75);
+  color: #2b1a08;
+  font-size: 12px;
+}
+
+.gear-sheet-wrapper .form-group input:focus,
+.gear-sheet-wrapper .form-group select:focus {
+  border-color: #b57a1d;
+  outline: none;
+}

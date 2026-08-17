@@ -1,0 +1,115 @@
+<div class="job-sheet-wrapper">
+    
+    <!-- Cabeçalho Oficial do Item (Imagem à esquerda, campos Nome/Classe à direita) -->
+    <header class="sheet-header">
+        <div>
+            <!-- A classe profile-img responde ao FilePicker blindado do job-sheet.js -->
+            <img src="{{item.img}}" class="profile-img" data-edit="img" title="Clique para enviar a Arte do Job" />
+        </div>
+        <div class="header-fields">
+            <div class="form-group-custom">
+                <label>Nome do Job:</label>
+                <input type="text" name="name" value="{{item.name}}" placeholder="Ex: Archer, Black Mage..." />
+            </div>
+            <div class="form-group-custom">
+                <label>Classe:</label>
+                <input type="text" name="system.classe" value="{{system.classe}}" placeholder="Ex: Especialista, Mágico, Híbrido..." />
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegação de Abas do Item (Adicionado data-tab-group obrigatório da v14) -->
+    <nav class="sheet-tabs tabs" data-tab-group="primary">
+        <a class="item active" data-tab="general">Geral</a>
+        <a class="item" data-tab="skills">Habilidades (Skills)</a>
+    </nav>
+
+    <!-- Corpo Centralizador das Abas -->
+    <section class="sheet-body">
+        
+        <!-- ABA GERAL -->
+        <div class="tab active" data-tab="general">
+            
+            <!-- Soft Caps -->
+            <div class="config-section">
+                <h3><i class="fas fa-chart-line"></i> Atributos Máximos (Teto de Nível)</h3>
+                <div class="attributes-grid">
+                    <div class="form-group-custom">
+                        <label>STR Max:</label>
+                        <input type="number" name="system.forca_max" value="{{system.forca_max}}" min="0" max="30" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label>VIT Max:</label>
+                        <input type="number" name="system.vitalidade_max" value="{{system.vitalidade_max}}" min="0" max="30" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label>AGI Max:</label>
+                        <input type="number" name="system.agilidade_max" value="{{system.agilidade_max}}" min="0" max="30" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label>SPD Max:</label>
+                        <input type="number" name="system.velocidade_max" value="{{system.velocidade_max}}" min="0" max="30" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label>MAG Max:</label>
+                        <input type="number" name="system.magia_max" value="{{system.magia_max}}" min="0" max="30" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label>SPR Max:</label>
+                        <input type="number" name="system.espirito_max" value="{{system.espirito_max}}" min="0" max="30" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- HP/MP e Limitadores -->
+            <div class="flex-fields-row" style="margin-bottom: 12px;">
+                <div class="config-section" style="flex: 1; margin-bottom: 0;">
+                    <h3><i class="fas fa-dice"></i> Dados de Progressão</h3>
+                    <div class="flex-fields-row">
+                        <div class="form-group-custom">
+                            <label>HP Die:</label>
+                            <input type="text" name="system.hp_die" value="{{system.hp_die}}" placeholder="Ex: d10" />
+                        </div>
+                        <div class="form-group-custom">
+                            <label>MP Die:</label>
+                            <input type="text" name="system.mp_die" value="{{system.mp_die}}" placeholder="Ex: N/A, d4" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section" style="flex: 1; margin-bottom: 0;">
+                    <h3><i class="fas fa-star"></i> Recursos da Classe</h3>
+                    <div class="flex-fields-row">
+                        <div class="form-group-custom">
+                            <label>Skill Points:</label>
+                            <input type="number" name="system.skill_points" value="{{system.skill_points}}" min="0" />
+                        </div>
+                        <div class="form-group-custom">
+                            <label>Precisão:</label>
+                            <input type="number" name="system.skill_aptitude" value="{{system.skill_aptitude}}" min="0" placeholder="0" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção 4: Bloco de Conteúdo Narrativo Otimizado v14 -->
+            <div class="config-section" style="margin-bottom: 6px;">
+                <h3><i class="fas fa-book-open"></i> Descrição / Regras da Classe</h3>
+                    <!-- CORREÇÃO: Sintaxe estrita v14 usando a variável do context com as 3 chaves -->
+                    <prose-mirror name="system.descricao" data-target="system.descricao" value="{{system.descricao}}">
+                        {{{descricaoEnriquecida}}}
+                    </prose-mirror>
+            </div>
+        </div>
+
+        <!-- ABA SKILLS -->
+        <div class="tab" data-tab="skills">
+            <div class="empty-placeholder">
+                <i class="fas fa-shield-alt"></i>
+                <p class="title">Lista de Habilidades Vinculadas</p>
+                <p class="subtitle">O gerenciamento de vinculação de itens de Skill será integrado nesta seção futuramente.</p>
+            </div>
+        </div>
+
+    </section>
+</div>

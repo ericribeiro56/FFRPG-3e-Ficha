@@ -1,0 +1,78 @@
+<div class="gear-sheet-wrapper">
+  <div class="sheet-header">
+    <img src="{{item.img}}" class="profile-img" data-edit="img" title="Clique para alterar imagem" />
+    <div class="header-info">
+      <input type="text" name="name" value="{{item.name}}" placeholder="Nome do Consumível" />
+      <div class="header-row">
+        <label>Tier:</label>
+        <select name="system.tier">
+          <option value="T1" {{#if (eq system.tier "T1")}}selected{{/if}}>T1</option>
+          <option value="T2" {{#if (eq system.tier "T2")}}selected{{/if}}>T2</option>
+          <option value="T3" {{#if (eq system.tier "T3")}}selected{{/if}}>T3</option>
+          <option value="T4" {{#if (eq system.tier "T4")}}selected{{/if}}>T4</option>
+          <option value="T5" {{#if (eq system.tier "T5")}}selected{{/if}}>T5</option>
+          <option value="T6" {{#if (eq system.tier "T6")}}selected{{/if}}>T6</option>
+          <option value="T7" {{#if (eq system.tier "T7")}}selected{{/if}}>T7</option>
+          <option value="T8" {{#if (eq system.tier "T8")}}selected{{/if}}>T8</option>
+          <option value="T9" {{#if (eq system.tier "T9")}}selected{{/if}}>T9</option>
+          <option value="T10" {{#if (eq system.tier "T10")}}selected{{/if}}>T10</option>
+        </select>
+      </div>
+      <div class="header-row">
+        <label>Probabilidade:</label>
+        <input type="number" name="system.probability" value="{{system.probability}}" placeholder="%" min="0" />
+      </div>
+      <div class="header-row">
+        <label>Tags:</label>
+        <input type="text" name="system.tags" value="{{#each system.tags as |tag|}}{{tag}}, {{/each}}" placeholder="Ex: cura, batalha" />
+      </div>
+      <div class="header-row">
+        <label>Infinito:</label>
+        <label>
+          <input type="checkbox" name="system.infinity" {{#if system.infinity}}checked{{/if}} />
+          Quantidade infinita
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet-body">
+    <div class="form-group">
+      <label>Descrição:</label>
+      <prose-mirror name="system.descricao" data-target="system.descricao" value="{{system.descricao}}" class="prose-mirror-style">
+        {{{descricaoEnriquecida}}}
+      </prose-mirror>
+    </div>
+
+    <div class="form-group">
+      <label>Nome da Habilidade:</label>
+      <input type="text" name="system.abilities.0.name" value="{{#if system.abilities}}{{system.abilities.0.name}}{{/if}}" />
+    </div>
+    <div class="form-group">
+      <label>Descrição da Habilidade:</label>
+      <input type="text" name="system.abilities.0.description" value="{{#if system.abilities}}{{system.abilities.0.description}}{{/if}}" />
+    </div>
+
+    <div class="form-group">
+      <label>Efeitos:</label>
+      <div class="bonus-list">
+        {{#each system.effects as |effect idx|}}
+          <div class="bonus-entry">
+            <select name="system.effects.{{idx}}.status">
+              <option value="">Selecione...</option>
+              <option value="basic.hp.max" {{#if (eq effect.status "basic.hp.max")}}selected{{/if}}>HP Máximo</option>
+              <option value="basic.mp.max" {{#if (eq effect.status "basic.mp.max")}}selected{{/if}}>MP Máximo</option>
+              <option value="basic.hp.current" {{#if (eq effect.status "basic.hp.current")}}selected{{/if}}>HP Atual</option>
+              <option value="basic.mp.current" {{#if (eq effect.status "basic.mp.current")}}selected{{/if}}>MP Atual</option>
+            </select>
+            <input type="number" name="system.effects.{{idx}}.value" value="{{effect.value}}" />
+            <select name="system.effects.{{idx}}.mode">
+              <option value="flat" {{#if (eq effect.mode "flat")}}selected{{/if}}>Flat</option>
+              <option value="percent" {{#if (eq effect.mode "percent")}}selected{{/if}}>Percent</option>
+            </select>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>

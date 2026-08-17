@@ -1,0 +1,58 @@
+{
+  "id": "ffrpg3e",
+  "name": "ffrpg3e",
+  "title": "ffrpg-3e",
+  "description": "Sistema do ffrpg 3e para o foundry v14",
+  "version": "0.1",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "languages": [
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    }
+  ],
+  "esmodules": [
+    "module/main.js",
+    "module/core/utils.js",
+    "module/core/constants.js",
+    "module/core/message-service.js",
+    "module/core/drop-handler.js",
+    "module/core/context-builders.js",
+    "module/data-models.js",
+    "module/sheets/actor-sheet.js",
+    "module/sheets/effect-sheet.js",
+    "module/sheets/job-sheet.js",
+    "module/sheets/race-sheet.js",
+    "module/sheets/items/armor-sheet.js",
+    "module/sheets/items/weapon-sheet.js"
+  ],
+  "styles": [
+    "css/style.css",
+    "css/popups.css",
+    "css/inventario.css",
+    "css/gear-sheet.css",
+    "css/actor/actor-sheet.css",
+    "css/effect/effect-sheet.css",
+    "css/job/job-sheet.css",
+    "css/race/race-sheet.css",
+    "css/items/armor.css",
+    "css/items/weapon.css"
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {}
+    },
+    "Item": {
+      "effects": {},
+      "job": {},
+      "race": {},
+      "gear_weapon": {},
+      "gear_armor": {},
+      "gear_consumable": {}
+    }
+  }
+}

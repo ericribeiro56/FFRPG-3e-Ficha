@@ -1,0 +1,80 @@
+<div class="effects-manager-wrapper">
+    <header class="effects-header">
+        <h2><i class="fas fa-bolt"></i> Configurar Status do Item</h2>
+    </header>
+
+    {{#unless statusEfeitos}}
+    <div class="effects-creator-form">
+        <div class="form-field form-field-vertical">
+            <label>Nome do Efeito / Item:</label>
+            <!-- Injetada a trava isEditable -->
+            <input type="text" name="name" class="dark-input" placeholder="Ex: Agilidade Aumentada, Haste..."
+                value="{{item.name}}" {{#unless isEditable}}disabled{{/unless}} />
+        </div>
+
+        <div class="form-field">
+            <label>Status Base:</label>
+            <!-- Injetada a trava isEditable -->
+            <select id="status-selector" class="dark-input" {{#unless isEditable}}disabled{{/unless}}>
+                {{#each condicoesDisponiveis as |condicao|}}
+                <option value="{{condicao.id}}">{{condicao.name}}</option>
+                {{/each}}
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label>Duração (Turnos):</label>
+            <!-- Injetada a trava isEditable -->
+            <input type="number" id="status-duration" class="dark-input" value="3" min="1" max="99" {{#unless
+                isEditable}}disabled{{/unless}} />
+        </div>
+
+        <div class="form-field form-field-vertical">
+            <label>Descrição do Efeito:</label>
+            <!-- Injetada a trava isEditable -->
+            <textarea id="status-description" class="dark-input" placeholder="Ex: Aumenta a Agilidade em 25%..."
+                {{#unless isEditable}}disabled{{/unless}}></textarea>
+        </div>
+
+        <!-- Injetada a trava isEditable no botão de salvar -->
+        <button type="button" class="btn-add-effect" {{#unless isEditable}}disabled{{/unless}}>
+            <i class="fas fa-save"></i> Salvar e Fixar Status
+        </button>
+    </div>
+    {{/unless}}
+
+    <div class="effects-list-section">
+        <div class="effects-grid">
+            {{#each statusEfeitos as |efeito|}}
+            <div class="effect-card">
+                <img src="{{efeito.img}}" class="effect-icon" />
+
+                <div class="effect-info">
+                    <span class="effect-name">{{efeito.name}}</span>
+
+                    <span class="effect-time">
+                        <i class="fas fa-clock"></i> {{efeito.duracao}}
+                    </span>
+
+                    {{#if efeito.description}}
+                    <p class="effect-desc">{{efeito.description}}</p>
+                    {{/if}}
+                </div>
+
+                <!-- CRUCIAL: Usa ../isEditable para subir um nível fora do loop do each e travar o botão de exclusão interna -->
+                {{#if ../isEditable}}
+                <button type="button" class="btn-delete-effect" data-action="deletarEfeito"
+                    data-efeito-id="{{efeito.id}}" title="Remover Status completamente">
+                    <i class="fas fa-trash"></i>
+                </button>
+                {{/if}}
+            </div>
+            {{else}}
+            <p class="empty-text">
+                <i class="fas fa-info-circle"></i>
+                Nenhum status configurado neste item.
+            </p>
+            {{/each}}
+        </div>
+    </div>
+</div>

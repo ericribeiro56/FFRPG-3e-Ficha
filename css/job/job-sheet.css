@@ -1,0 +1,266 @@
+/* ==========================================================================
+   FFRPG 3E - CONFIGURADOR DE CLASSE / JOB (MODULAR COMPLETO v14)
+   ========================================================================== */
+
+/* 1. Base da Janela e Container Principal */
+.ffrpg3e.sheet.job-window {
+    background: #1a1a1c !important;
+    color: #eee !important;
+}
+
+.ffrpg3e .job-sheet-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+    font-family: 'Signika', sans-serif;
+    padding: 6px;
+}
+
+/* 2. Cabeçalho e Identidade (Sem Ícone) */
+.ffrpg3e .job-sheet-wrapper .sheet-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    border-bottom: 2px solid #ffb300;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.ffrpg3e .job-sheet-wrapper .header-fields {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 4px;
+}
+
+.ffrpg3e .job-sheet-wrapper .header-fields label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #ffb300;
+    font-weight: bold;
+}
+
+.ffrpg3e .job-sheet-wrapper .header-fields input {
+    background: #2a2a2c;
+    border: 1px solid #3a3a3c;
+    color: #fff;
+    border-radius: 4px;
+    height: 28px;
+    padding: 0 8px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 3. Abas de Navegação (Tabs) */
+.ffrpg3e .job-sheet-wrapper .sheet-tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid #3a3a3c;
+    margin-bottom: 12px;
+}
+
+.ffrpg3e .job-sheet-wrapper .sheet-tabs .item {
+    padding: 6px 12px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #bbb;
+    cursor: pointer;
+    border-radius: 4px 4px 0 0;
+    background: #2a2a2c;
+    border: 1px solid transparent;
+    border-bottom: none;
+}
+
+.ffrpg3e .job-sheet-wrapper .sheet-tabs .item.active {
+    background: #ffb300;
+    color: #000;
+    border-color: #ffb300;
+}
+
+/* 4. Corpo e Seções Emblocadas */
+.ffrpg3e .job-sheet-wrapper .sheet-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.ffrpg3e .job-sheet-wrapper .config-section {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid #3a3a3c;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 12px;
+}
+
+.ffrpg3e .job-sheet-wrapper .config-section h3 {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #ffb300;
+    margin: 0 0 10px 0;
+    border-bottom: 1px dashed #3a3a3c;
+    padding-bottom: 4px;
+}
+
+/* 5. Grids e Formulários Modulares */
+.ffrpg3e .job-sheet-wrapper .attributes-grid,
+.ffrpg3e .job-sheet-wrapper .combat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.ffrpg3e .job-sheet-wrapper .flex-fields-row {
+    display: flex;
+    gap: 10px;
+}
+
+.ffrpg3e .job-sheet-wrapper .form-group-custom {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.ffrpg3e .job-sheet-wrapper .form-group-custom label {
+    font-size: 11px;
+    font-weight: bold;
+    color: #aaa;
+}
+
+.ffrpg3e .job-sheet-wrapper .form-group-custom input {
+    background: #2a2a2c;
+    border: 1px solid #3a3a3c;
+    color: #ffb300;
+    font-weight: bold;
+    border-radius: 4px;
+    height: 24px;
+    text-align: center;
+}
+
+.ffrpg3e .job-sheet-wrapper .form-group-custom input[type="text"] {
+    color: #fff;
+    font-weight: normal;
+}
+
+/* 6. 🔒 CONTENÇÃO DO PROSEMIRROR EMBUTIDO NATIVO (v14) */
+.ffrpg3e .job-sheet-wrapper .editor-container-v14 .prosemirror {
+    background: #2a2a2c !important;
+    border: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 180px !important; /* Trava o tamanho do componente para não estourar a janela */
+}
+
+/* Fixa a barra flutuante do Word no topo interno da caixa cinza */
+.ffrpg3e .job-sheet-wrapper .editor-container-v14 .pm-toolbar {
+    background: #222224 !important;
+    border-bottom: 1px solid #3a3a3c !important;
+    padding: 3px !important;
+    display: flex !important;
+    gap: 4px !important;
+    align-items: center !important;
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+.ffrpg3e .job-sheet-wrapper .editor-container-v14 .pm-toolbar button {
+    background: rgba(241, 235, 217, 0.6) !important;
+    border: 1px solid rgba(74, 51, 25, 0.3) !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+    cursor: pointer !important;
+    font-size: 11px !important;
+    color: #2b1a08 !important;
+    transition: all 0.15s ease !important;
+    position: relative !important;
+    z-index: 6 !important;
+}
+
+.ffrpg3e .job-sheet-wrapper .editor-container-v14 .pm-toolbar button:hover {
+    background: rgba(181, 122, 29, 0.25) !important;
+    border-color: #b57a1d !important;
+    color: #b57a1d !important;
+}
+
+.ffrpg3e .job-sheet-wrapper .editor-container-v14 .pm-toolbar .active {
+    background: rgba(181, 122, 29, 0.35) !important;
+    border-color: #b57a1d !important;
+    color: #000 !important;
+    font-weight: bold !important;
+}
+
+/* Área interna de digitação e rolagem do texto abaixo da barra de ferramentas */
+.ffrpg3e .job-sheet-wrapper .editor-container-v14 .prosemirror-editor {
+    flex: 1 !important;
+    padding: 8px !important;
+    overflow-y: auto !important;
+    color: #eee !important;
+}
+
+/* 7. Telas Vazias / Placeholder (Aba Skills) */
+.ffrpg3e .job-sheet-wrapper .empty-placeholder {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid #3a3a3c;
+    border-radius: 6px;
+    padding: 15px;
+    text-align: center;
+}
+
+.ffrpg3e .job-sheet-wrapper .empty-placeholder i {
+    font-size: 28px;
+    color: #ffb300;
+    opacity: 0.5;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.ffrpg3e .job-sheet-wrapper .empty-placeholder .title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.ffrpg3e .job-sheet-wrapper .empty-placeholder .subtitle {
+    margin: 4px 0 0 0;
+    font-size: 11px;
+    color: #888;
+    font-style: italic;
+}
+
+
+.ffrpg3e .job-sheet-wrapper .profile-img{
+    width: 150px;
+    height: 150px;
+    display: block;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #7a6b58;
+    border-radius: 8px;
+    background-color: rgba(241, 235, 217, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.ffrpg3e .job-sheet-wrapper .profile-img:hover {
+    transform: scale(1.02);
+    border-color: #b57a1d;
+}
+
+.ffrpg3e .job-sheet-wrapper .profile-img[src=""], .profile-img:not([src]) {
+    display: none !important;
+}
+
+.ffrpg3e .job-sheet-wrapper .sheet-header .header-fields .form-group-custom label{
+    color: #ffb300;
+}
+
+.ffrpg3e .job-sheet-wrapper .sheet-header .header-fields .form-group-custom input {
+    width: 300px;
+}
+

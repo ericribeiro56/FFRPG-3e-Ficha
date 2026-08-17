@@ -1,0 +1,258 @@
+/* =========================================================================
+   1. CORE E ESTRUTURA BASE (Estilos Forçados e Padronizados)
+   ========================================================================= */
+
+/**
+ * .dialog-base
+ * Classe principal que envelopa todo o conteúdo interno do popup.
+ * Removemos travas rígidas de pixel pois a largura é ditada pelo JS (width: 320).
+ */
+.dialog-base {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: "Signika", "Helvetica Neue", Arial, sans-serif;
+    padding: 4px;
+    box-sizing: border-box;
+    width: 100% !important;
+}
+
+/**
+ * .dialog-row-full
+ * Linha padrão que ocupa 100% da largura útil do diálogo.
+ */
+.dialog-row-full {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.dialog-row-full label {
+    font-weight: bold;
+    width: 85px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+/**
+ * TRAVA MATRIZ DE ALTURA E INTERFACE BEGE:
+ * Força inputs e selects a operarem de forma simétrica com 24px de altura,
+ * limpando espaçamentos embutidos que o Foundry joga nos campos numéricos.
+ */
+.dialog-base input[type="number"],
+.dialog-base input[type="text"],
+.dialog-base select {
+    width: 100% !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+    line-height: 24px !important;
+    padding: 0px 8px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    background-color: rgba(241, 235, 217, 0.75) !important;
+    border: 1px solid #7a6b58 !important;
+    border-radius: 4px !important;
+    color: #2b1a08 !important;
+    font-size: 12px !important;
+}
+
+/* Feedback visual dourado ao receber foco ativo do cursor */
+.dialog-base input:focus,
+.dialog-base select:focus {
+    border-color: #b57a1d !important;
+    box-shadow: 0 0 4px rgba(181, 122, 29, 0.5) !important;
+    outline: none !important;
+}
+
+.dialog-base input::placeholder {
+    color: #5a4b38 !important;
+    opacity: 0.7;
+    font-style: italic;
+}
+
+
+/* =========================================================================
+   2. DIAGRAMAÇÃO DE LAYOUT (Alinhamentos e Largura Compacta da Taxa)
+   ========================================================================= */
+
+.dialog-base .dialog-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.dialog-base .dialog-group-vertical .dialog-section-title {
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 13px;
+    margin: 0 !important;
+}
+
+.dialog-base .dialog-radio-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding-left: 2px;
+}
+
+/**
+ * .dialog-row-split
+ * Alinha o Valor e a Taxa horizontalmente amarrando as bases dos campos,
+ * impedindo desalinhamentos verticais causados pelas tags de label.
+ */
+.dialog-row-split {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end !important;
+    gap: 12px;
+    width: 100%;
+}
+
+.dialog-field-half {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.dialog-field-tax {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 75px !important; /* Taxa encolhida e travada lateralmente */
+}
+
+.dialog-field-half label,
+.dialog-field-tax label {
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 13px;
+    margin: 0 !important;
+}
+
+
+/* =========================================================================
+   3. ESTILIZAÇÃO MODERNA DOS RADIO BUTTONS (Círculos Perfeitos Customizados)
+   ========================================================================= */
+
+.dialog-radio-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #dfd5c6;
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+    height: 20px;
+    position: relative;
+}
+
+.dialog-radio-row input[type="radio"] {
+    position: absolute !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    pointer-events: none;
+}
+
+/* Desenho geométrico da borda externa vazia do rádio */
+.dialog-radio-row span::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #7a6b58;
+    border-radius: 50%;
+    background: rgba(43, 26, 8, 0.4);
+    vertical-align: middle;
+    margin-right: 8px;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
+}
+
+/* Desenho da bolinha interna ativa preenchida com o dourado do jogo */
+.dialog-radio-row span::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%) scale(0);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #b57a1d;
+    transition: transform 0.15s ease;
+}
+
+.dialog-radio-row:hover span::before {
+    border-color: #b57a1d;
+}
+
+/* Gatilho reativo disparado ao marcar a opção (:checked) */
+.dialog-radio-row input[type="radio"]:checked + span::before {
+    border-color: #b57a1d;
+    box-shadow: 0 0 4px rgba(181, 122, 29, 0.4);
+}
+
+.dialog-radio-row input[type="radio"][name="gil-operacao"]:checked + span::after {
+    transform: translateY(-30%) scale(1);
+}
+
+.dialog-radio-row input[type="radio"]:checked + span::after {
+    transform: translateY(-50%) scale(1);
+}
+
+.dialog-radio-row:hover {
+    color: #ffffff;
+}
+
+
+/* =========================================================================
+   4. MODIFICADORES E CENTRALIZAÇÃO
+   ========================================================================= */
+
+.dialog-gil #gil-quantidade,
+.dialog-hp #vida-quantidade {
+    text-align: center !important;
+}
+
+
+/* =========================================================================
+   ESTILIZAÇÃO DOS NOVOS TÍTULOS FIXOS COM FUNDO
+   ========================================================================= */
+
+/* Bloco mestre do título: centralizado, maior e com espaçamento interno */
+.popup-header-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 14px; /* Aumentado o tamanho do título */
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+}
+
+/* Faixa de fundo temática para a Cura (Fundo degradê verde escuro) */
+.popup-header-block.header-cura {
+  background: linear-gradient(180deg, #193319 0%, #102010 100%);
+  border: 1px solid #336633;
+  color: #a3d9a3;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+/* Faixa de fundo temática para o Dano (Fundo degradê vermelho escuro) */
+.popup-header-block.header-dano {
+  background: linear-gradient(180deg, #3a1a1a 0%, #241010 100%);
+  border: 1px solid #733333;
+  color: #f2a6a6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+}

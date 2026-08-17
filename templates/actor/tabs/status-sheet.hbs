@@ -1,0 +1,181 @@
+<div class="status-aba-wrapper">
+
+    <!-- COLUNA DA ESQUERDA: ASPECTOS POSITIVOS -->
+    <div class="status-coluna-lado">
+        
+        <!-- SEÇÃO 1: EFEITOS PASSIVOS -->
+        <div class="status-secao-bloco">
+            <div class="status-secao-titulo">
+                <h4><i class="fas fa-shield-alt"></i> Buffs Permanentes </h4>
+            </div>
+            <div class="status-scroll-container">
+                <div class="status-lista-sub">
+                    {{#each statusEfeitosPassivos}}
+                    <div class="status-card-item" data-tooltip="{{this.description}}">
+                        <div class="status-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}" tabindex="0">
+                            {{#if this.img}}
+                                <img src="{{this.img}}" class="status-icon-img" />
+                            {{else}}
+                                <img src="icons/svg/book.svg" class="status-icon-img" title="Efeito Ativo" />
+                            {{/if}}
+                            <div class="status-text-block">
+                                <div class="status-title-row">
+                                    <span class="status-nome-valor">{{this.name}}</span>
+                                </div>
+                                <div class="status-badge-row">
+                                    <span class="status-badge-tempo"><i class="fas fa-clock"></i> Permanente</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="status-action-box">
+                            <button type="button" class="deletar-efeito-btn status-btn-lixeira" data-action="deletarStatusJogador" data-item-id="{{this.id}}" title="Remover Efeito">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="status-vazio-mini">
+                        <p><i class="fas fa-info-circle"></i> Nenhum Buff Permanente Aplicado.</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 2: BUFFS TEMPORÁRIOS -->
+        <div class="status-secao-bloco">
+            <div class="status-secao-titulo">
+                <h4><i class="fas fa-bolt"></i> Buffs Temporários</h4>
+            </div>
+            <div class="status-scroll-container">
+                <div class="status-lista-sub">
+                    {{#each statusEfeitosBuffs}}
+                    <div class="status-card-item" data-tooltip="{{this.description}}">
+                        <div class="status-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}" tabindex="0">
+                            {{#if this.img}}
+                                <img src="{{this.img}}" class="status-icon-img" />
+                            {{else}}
+                                <img src="icons/svg/book.svg" class="status-icon-img" title="Efeito Ativo" />
+                            {{/if}}
+                            <div class="status-text-block">
+                                <div class="status-title-row">
+                                    <span class="status-nome-valor">{{this.name}}</span>
+                                </div>
+                                {{#if this.duracao}}
+                                <div class="status-badge-row">
+                                    <span class="status-badge-tempo"><i class="fas fa-clock"></i> {{this.duracao}}</span>
+                                </div>
+                                {{else if this.duration}}
+                                <div class="status-badge-row">
+                                    <span class="status-badge-tempo"><i class="fas fa-clock"></i> {{this.duration}}</span>
+                                </div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="status-action-box">
+                            <button type="button" class="deletar-efeito-btn status-btn-lixeira" data-action="deletarStatusJogador" data-item-id="{{this.id}}" title="Remover Efeito">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="status-vazio-mini">
+                        <p><i class="fas fa-info-circle"></i> Nenhum Buff Temporário Aplicado.</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- COLUNA DA DIREITA: ASPECTOS NEGATIVOS -->
+    <div class="status-coluna-lado">
+        
+        <!-- SEÇÃO 3: MALDIÇÕES PERMANENTES -->
+        <div class="status-secao-bloco">
+            <div class="status-secao-titulo status-titulo-curse">
+                <h4><i class="fas fa-skull"></i> Debuffs Permanentes</h4>
+            </div>
+            <div class="status-scroll-container">
+                <div class="status-lista-sub">
+                    {{#each statusEfeitosCurses}}
+                    <div class="status-card-item" data-tooltip="{{this.description}}">
+                        <div class="status-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}" tabindex="0">
+                            {{#if this.img}}
+                                <img src="{{this.img}}" class="status-icon-img" />
+                            {{else}}
+                                <img src="icons/svg/book.svg" class="status-icon-img" title="Efeito Ativo" />
+                            {{/if}}
+                            <div class="status-text-block">
+                                <div class="status-title-row">
+                                    <span class="status-nome-valor">{{this.name}}</span>
+                                </div>
+                                <div class="status-badge-row">
+                                    <span class="status-badge-tempo"><i class="fas fa-clock"></i> Permanente</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="status-action-box">
+                            <button type="button" class="deletar-efeito-btn status-btn-lixeira" data-action="deletarStatusJogador" data-item-id="{{this.id}}" title="Remover Efeito">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="status-vazio-mini">
+                        <p><i class="fas fa-heart"></i> Nenhum Debuffs Permanente Ativo.</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 4: DEBUFFS TEMPORÁRIOS -->
+        <div class="status-secao-bloco">
+            <div class="status-secao-titulo status-titulo-debuff">
+                <h4><i class="fas fa-skull-crossbones"></i> Debuffs Temporários</h4>
+            </div>
+            <div class="status-scroll-container">
+                <div class="status-lista-sub">
+                    {{#each statusEfeitosDebuffs}}
+                    <div class="status-card-item" data-tooltip="{{this.description}}">
+                        <div class="status-corpo" data-action="abrirSheetItem" data-item-id="{{this.id}}" tabindex="0">
+                            {{#if this.img}}
+                                <img src="{{this.img}}" class="status-icon-img" />
+                            {{else}}
+                                <img src="icons/svg/book.svg" class="status-icon-img" title="Efeito Ativo" />
+                            {{/if}}
+                            <div class="status-text-block">
+                                <div class="status-title-row">
+                                    <span class="status-nome-valor">{{this.name}}</span>
+                                </div>
+                                {{#if this.duracao}}
+                                <div class="status-badge-row">
+                                    <span class="status-badge-tempo"><i class="fas fa-clock"></i> {{this.duracao}}</span>
+                                </div>
+                                {{else if this.duration}}
+                                <div class="status-badge-row">
+                                    <span class="status-badge-tempo"><i class="fas fa-clock"></i> {{this.duration}}</span>
+                                </div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="status-action-box">
+                            <button type="button" class="deletar-efeito-btn status-btn-lixeira" data-action="deletarStatusJogador" data-item-id="{{this.id}}" title="Remover Efeito">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="status-vazio-mini">
+                        <p><i class="fas fa-heart"></i> Nenhum Debuffs Temporário Ativo.</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

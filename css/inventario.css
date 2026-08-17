@@ -1,0 +1,406 @@
+/* ==========================================================================
+   INVENTARIO.CSS - PARTE 1: BASE DA ABA E TRAVA DE SIMETRIA DE COLUNAS DO TOPO
+   ========================================================================== */
+
+.tab[data-tab="inventario"].active {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.tab[data-tab="inventario"] {
+    opacity: 0;
+}
+
+.tab[data-tab="inventario"].active {
+    opacity: 1;
+}
+
+/* Painel mestre escuro da aba */
+.aba-equipamentos-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    gap: 12px !important;
+    padding: 12px 12px 14px 12px !important;
+    box-sizing: border-box !important;
+    background: rgba(0, 0, 0, 0.35) !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6) !important;
+}
+
+.inventario-row-item,
+.equipamento-linha-row {
+    transition: background-color 0.1s ease-out !important;
+}
+
+.inventario-item-corpo[data-action],
+.slot-item-nome[data-action],
+.tabela-nome[data-action],
+.bolso-nome[data-action] {
+    cursor: pointer !important;
+}
+
+/* Caixa do Manequim Superior (Creme/Pergaminho) */
+.equipamentos-topo-container {
+    display: flex !important;
+    flex-direction: column !important;
+    background: #fffdf7 !important;
+    border: 1px solid #d4c8b8 !important;
+    border-radius: 6px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden;
+    flex-shrink: 0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.equipamento-linha-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 4px 12px !important;
+    border-bottom: 1px solid rgba(212, 200, 184, 0.4) !important;
+    box-sizing: border-box !important;
+    min-height: 28px !important;
+}
+
+/* Travas rígidas de largura que alinharam perfeitamente as colunas */
+.slot-tag {
+    width: 110px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #4a3319 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    flex-shrink: 0 !important;
+    text-align: center !important;
+}
+
+.slot-item-nome {
+    width: 250px !important;
+    flex-shrink: 0 !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: #2b1a08 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    padding-right: 8px !important;
+    text-align: center !important;
+}
+
+.slot-info {
+    width: 200px !important;
+    flex-shrink: 0 !important;
+    color: black !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding-right: 8px !important;
+    text-align: center !important;
+}
+
+.slot-habilidade {
+    flex: 1 !important;
+    color: #5c4d3c !important;
+    font-size: 11.5px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    padding-right: 8px !important;
+    text-align: center !important;
+}
+
+.manequim-header-row {
+    background: rgba(74, 51, 25, 0.04) !important;
+    border-bottom: 2px solid #c7b9a8 !important;
+}
+.manequim-header-row span,
+.manequim-header-row .slot-tag,
+.manequim-header-row .slot-item-nome,
+.manequim-header-row .slot-info,
+.manequim-header-row .slot-habilidade {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: #2b1a08 !important;
+}
+
+.equipamento-linha-row:not(.manequim-header-row):not(:first-child):hover {
+    background: rgba(181, 122, 29, 0.1) !important;
+}
+
+.equipamento-linha-row:last-child {
+    border-bottom: none !important;
+}
+
+.slot-action-box {
+    display: flex !important;
+    flex-shrink: 0 !important;
+    width: 34px !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+}
+
+.desequipar-item-btn {
+    width: 22px !important;
+    height: 22px !important;
+    background: #f1ede2 !important;
+    border: 1px solid #d4c8b8 !important;
+    border-radius: 4px !important;
+    color: #b57a1d !important;
+    cursor: pointer !important;
+    font-size: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transition: all 0.15s ease !important;
+}
+
+.desequipar-item-btn:hover {
+    background: #b57a1d !important;
+    color: #ffffff !important;
+    border-color: #b57a1d !important;
+}
+/* ==========================================================================
+   INVENTARIO.CSS - PARTE 2: RESGATE DO ESPAÇO E SCROLL REATIVO DINÂMICO
+   ========================================================================== */
+
+.inventario-layout-split {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 16px !important;
+    width: 100% !important;
+    flex: 1 !important; /* Faz o contêiner ocupar todo o espaço vertical disponível */
+    min-height: 0 !important; /* Trava crítica para o overflow-y funcionar na V14 */
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+/* CORREÇÃO DOS PROBLEMAS DE ALTURA E BORDA DA PARTE INFERIOR:
+   Removemos os pixels fixos e deixamos o flexbox calcular a altura máxima contida! */
+.inventario-painel-bolso,
+.inventario-painel-tabela {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important; /* Estica verticalmente até as bordas */
+    height: 100% !important; /* Preenche a caixa pai de forma fluida */
+    overflow-y: auto !important; /* O scroll fino vai ligar perfeitamente */
+    padding: 8px !important; /* Margem interna restaurada para salvar as bordas */
+    box-sizing: border-box !important;
+    background: #fffdf7 !important;
+    border: 1px solid #d4c8b8 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.inventario-painel-bolso  { flex: 4 !important; } /* Proporção de largura horizontal 40% */
+.inventario-painel-tabela { flex: 6 !important; } /* Proporção de largura horizontal 60% */
+
+.inventario-grupo-header {
+    background: linear-gradient(180deg, #2b1a08 0%, #170e04 100%) !important;
+    border: 1px solid #4a3319 !important;
+    border-radius: 4px !important;
+    padding: 5px 12px !important;
+    color: #dfd5c6 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    margin: 8px 0 4px 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6) !important;
+    flex-shrink: 0 !important;
+}
+
+.inventario-grupo-header:first-child {
+    margin-top: 0 !important;
+}
+
+.inventario-grupo-header:hover {
+    border-color: #b57a1d !important;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8), 0 0 4px rgba(181, 122, 29, 0.2) !important;
+}
+
+.grupo-collapse-icon {
+    font-size: 11px !important;
+    color: #b57a1d !important;
+    transition: all 0.15s ease !important;
+}
+
+.sub-tabela-header-row {
+    display: flex !important;
+    flex-direction: row !important;
+    padding: 2px 10px !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #8c7b6a !important;
+    letter-spacing: 0.5px !important;
+    border-bottom: 1px solid rgba(212, 200, 184, 0.4) !important;
+    margin-bottom: 4px !important;
+    flex-shrink: 0 !important;
+}
+
+.inventario-grupo-bloco .fa-plus-square { display: none !important; }
+.inventario-grupo-bloco .fa-minus-square { display: inline-block !important; }
+.inventario-grupo-bloco.is-collapsed .inventario-row-item,
+.inventario-grupo-bloco.is-collapsed .sub-tabela-header-row { display: none !important; }
+.inventario-grupo-bloco.is-collapsed .fa-minus-square { display: none !important; }
+.inventario-grupo-bloco.is-collapsed .fa-plus-square { display: inline-block !important; color: #7a6b58 !important; }
+/* ==========================================================================
+   INVENTARIO.CSS - PARTE 3: CARDS DE ITENS INTERNOS E ESPAÇAMENTO DOS BOTÕES
+   ========================================================================== */
+
+.inventario-row-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    background: #fff8ee !important;
+    border: 1px solid #e1d5c3 !important;
+    border-radius: 4px !important;
+    margin-bottom: 4px !important;
+    min-height: 30px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    transition: all 0.15s ease !important;
+}
+
+.inventario-item-corpo {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 3px 10px !important;
+    min-width: 0 !important;
+    cursor: pointer;
+}
+
+.bolso-nome {
+    flex: 1 !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: #2b1a08 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.bolso-quantidade {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #b57a1d !important;
+    padding: 0 8px !important;
+    flex-shrink: 0 !important;
+}
+
+.tabela-slot {
+    width: 80px !important;
+    flex-shrink: 0 !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: #2b1a08 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.tabela-nome {
+    width: 145px !important;
+    flex-shrink: 0 !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: #2b1a08 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.tabela-info {
+    width: 110px !important;
+    flex-shrink: 0 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #b57a1d !important;
+}
+
+.tabela-habilidade {
+    flex: 1 !important;
+    font-size: 11.5px !important;
+    color: #5c4d3c !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.inventario-actions-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 0 6px !important;
+    flex-shrink: 0 !important;
+}
+
+.inventario-btn-box {
+    display: flex !important;
+    width: 24px !important;
+    height: 22px !important;
+    align-items: center !important;
+}
+
+.inventario-btn {
+    width: 100% !important;
+    height: 100% !important;
+    background: #f5eedf !important;
+    border: 1px solid #d4c8b8 !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transition: all 0.15s ease !important;
+}
+
+.inventario-btn.btn-usar     { color: #4a8f4a !important; }
+.inventario-btn.btn-equipar  { color: #b57a1d !important; }
+.inventario-btn.btn-excluir  { color: #a63232 !important; }
+
+.inventario-row-item:hover {
+    background: rgba(20, 20, 20, 0.8) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5) !important;
+}
+
+.inventario-row-item:hover .bolso-nome,
+.inventario-row-item:hover .tabela-nome,
+.inventario-row-item:hover .tabela-habilidade,
+.inventario-row-item:hover .bolso-quantidade,
+.inventario-row-item:hover .tabela-info {
+    color: #dfd5c6 !important;
+    transition: color 0.15s ease !important;
+}
+
+.inventario-row-item:hover .inventario-btn {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(212, 200, 184, 0.3) !important;
+}
+
+.inventario-btn.btn-usar:hover { background: #4a8f4a !important; color: #ffffff !important; border-color: #4a8f4a !important; }
+.inventario-btn.btn-equipar:hover { background: #b57a1d !important; color: #ffffff !important; border-color: #b57a1d !important; }
+.inventario-btn.btn-excluir:hover { background: #a63232 !important; color: #ffffff !important; border-color: #a63232 !important; border-left: 1px solid #a63232 !important;}

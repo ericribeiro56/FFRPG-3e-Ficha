@@ -1,0 +1,202 @@
+<div class="atributos-layout-moderno">
+    
+    <!-- CARD DA ESQUERDA: ATRIBUTOS E PROGRESSÃO -->
+    <div class="card-painel pro-painel-esquerdo">
+        <div class="card-painel-header">
+            <span class="panel-title-txt">Pontos Disponíveis</span>
+            <span class="panel-title-val">{{system.totalBaseAttr}} / {{system.totalBonusAttr}}</span>
+        </div>
+
+        <!-- Títulos das Colunas (Grid Simétrico) -->
+        <div class="atributos-grid-header">
+            <span class="grid-lbl-txt">Atributo</span>
+            <span class="grid-lbl-num">Base</span>
+            <span class="grid-lbl-num">Bonus</span>
+            <span class="grid-lbl-num">Total</span>
+            <span class="grid-lbl-num">Máx</span>
+            <span class="grid-lbl-num">Teste</span>
+            <span class="grid-lbl-num">Padrão</span>
+        </div>
+
+        <!-- Lista de Atributos -->
+        <div class="atributos-lista-rows">
+            <!-- FORÇA -->
+            <div class="atributo-row-item-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Força" data-teste="{{system.atributos.forca.teste}}">Força</button>
+                <input type="number" name="system.atributos.forca.base" value="{{system.atributos.forca.base}}" class="input-base-pro" />
+                <span class="val-display-pro">{{system.atributos.forca.bonus}}</span>
+                <span class="val-display-pro total-destaque-pro">{{system.atributos.forca.total}}</span>
+                <span class="val-display-pro">{{system.atributos.forca.max}}</span>
+                <span class="val-display-pro">{{system.atributos.forca.teste}}</span>
+                <span class="val-display-pro">{{system.atributos.forca.padrao}}</span>
+            </div>
+            <!-- VITALIDADE -->
+            <div class="atributo-row-item-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Vitalidade" data-teste="{{system.atributos.vitalidade.teste}}">Vitalidade</button>
+                <input type="number" name="system.atributos.vitalidade.base" value="{{system.atributos.vitalidade.base}}" class="input-base-pro" />
+                <span class="val-display-pro">{{system.atributos.vitalidade.bonus}}</span>
+                <span class="val-display-pro total-destaque-pro">{{system.atributos.vitalidade.total}}</span>
+                <span class="val-display-pro">{{system.atributos.vitalidade.max}}</span>
+                <span class="val-display-pro">{{system.atributos.vitalidade.teste}}</span>
+                <span class="val-display-pro">{{system.atributos.vitalidade.padrao}}</span>
+            </div>
+            <!-- AGILIDADE -->
+            <div class="atributo-row-item-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Agilidade" data-teste="{{system.atributos.agilidade.teste}}">Agilidade</button>
+                <input type="number" name="system.atributos.agilidade.base" value="{{system.atributos.agilidade.base}}" class="input-base-pro" />
+                <span class="val-display-pro">{{system.atributos.agilidade.bonus}}</span>
+                <span class="val-display-pro total-destaque-pro">{{system.atributos.agilidade.total}}</span>
+                <span class="val-display-pro">{{system.atributos.agilidade.max}}</span>
+                <span class="val-display-pro">{{system.atributos.agilidade.teste}}</span>
+                <span class="val-display-pro">{{system.atributos.agilidade.padrao}}</span>
+            </div>
+            <!-- VELOCIDADE -->
+            <div class="atributo-row-item-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Velocidade" data-teste="{{system.atributos.velocidade.teste}}">Velocidade</button>
+                <input type="number" name="system.atributos.velocidade.base" value="{{system.atributos.velocidade.base}}" class="input-base-pro" />
+                <span class="val-display-pro">{{system.atributos.velocidade.bonus}}</span>
+                <span class="val-display-pro total-destaque-pro">{{system.atributos.velocidade.total}}</span>
+                <span class="val-display-pro">{{system.atributos.velocidade.max}}</span>
+                <span class="val-display-pro">{{system.atributos.velocidade.teste}}</span>
+                <span class="val-display-pro">{{system.atributos.velocidade.padrao}}</span>
+            </div>
+            <!-- MAGIA -->
+            <div class="atributo-row-item-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Magia" data-teste="{{system.atributos.magia.teste}}">Magia</button>
+                <input type="number" name="system.atributos.magia.base" value="{{system.atributos.magia.base}}" class="input-base-pro" />
+                <span class="val-display-pro">{{system.atributos.magia.bonus}}</span>
+                <span class="val-display-pro total-destaque-pro">{{system.atributos.magia.total}}</span>
+                <span class="val-display-pro">{{system.atributos.magia.max}}</span>
+                <span class="val-display-pro">{{system.atributos.magia.teste}}</span>
+                <span class="val-display-pro">{{system.atributos.magia.padrao}}</span>
+            </div>
+            <!-- ESPÍRITO -->
+            <div class="atributo-row-item-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Espírito" data-teste="{{system.atributos.espirito.teste}}">Espírito</button>
+                <input type="number" name="system.atributos.espirito.base" value="{{system.atributos.espirito.base}}" class="input-base-pro" />
+                <span class="val-display-pro">{{system.atributos.espirito.bonus}}</span>
+                <span class="val-display-pro total-destaque-pro">{{system.atributos.espirito.total}}</span>
+                <span class="val-display-pro">{{system.atributos.espirito.max}}</span>
+                <span class="val-display-pro">{{system.atributos.espirito.teste}}</span>
+                <span class="val-display-pro">{{system.atributos.espirito.padrao}}</span>
+            </div>
+        </div>
+
+        <!-- CONTAINER DE SCROLL DOS NÍVEIS (FIXADO EM ALTURA) -->
+        <div class="hpmp-scroll-container-pro">
+            <div class="hpmp-grid-header-pro">
+                <span>Nível</span>
+                <span>dHP ({{system.progressao_somas_dhp}})</span>
+                <span>VIT ({{system.progressao_somas_vit}})</span>
+                <span>dMP ({{system.progressao_somas_dmp}})</span>
+                <span>ESP ({{system.progressao_somas_esp}})</span>
+            </div>
+            <div class="hpmp-lista-rows-pro">
+                {{#each listaNiveis}}
+                <div class="hpmp-row-item-pro">
+                    <span class="lvl-label-txt">{{this.label}}</span>
+                    <input type="number" name="system.progressao_niveis.{{this.id}}.dhp" value="{{this.dhp}}" class="hpmp-input-pro" />
+                    <input type="number" name="system.progressao_niveis.{{this.id}}.vit" value="{{this.vit}}" class="hpmp-input-pro" />
+                    <input type="number" name="system.progressao_niveis.{{this.id}}.dmp" value="{{this.dmp}}" class="hpmp-input-pro" />
+                    <input type="number" name="system.progressao_niveis.{{this.id}}.esp" value="{{this.esp}}" class="hpmp-input-pro" />
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <!-- CARD DA DIREITA: COMBATE E EXPERTS -->
+    <div class="card-painel pro-painel-direito">
+        <div class="combate-grid-header">
+            <span class="grid-lbl-txt">Atributo Secundário</span>
+            <span class="grid-lbl-num">Base</span>
+            <span class="grid-lbl-num">Bônus</span>
+            <span class="grid-lbl-num">Atual</span>
+        </div>
+
+            <div class="combate-lista-rows">
+            <!-- EVASÃO -->
+            <div class="combate-row-item-pro">
+                <span class="combate-lbl-txt-pro">Evasão</span>
+                <span class="val-display-pro">{{system.combate.evasao.base}}</span>
+                <span class="val-display-pro">{{system.combate.evasao.bonus}}</span>
+                <span class="val-display-pro">{{system.combate.evasao.total}}</span>
+            </div>
+            <!-- EVASÃO M. -->
+            <div class="combate-row-item-pro">
+                <span class="combate-lbl-txt-pro">Evasão M.</span>
+                <span class="val-display-pro">{{system.combate.evasao_magica.base}}</span>
+                <span class="val-display-pro">{{system.combate.evasao_magica.bonus}}</span>
+                <span class="val-display-pro">{{system.combate.evasao_magica.total}}</span>
+            </div>
+            <!-- ARMADURA -->
+            <div class="combate-row-item-pro">
+                <span class="combate-lbl-txt-pro">Armadura</span>
+                <span class="val-display-pro">{{system.combate.armadura.base}}</span>
+                <span class="val-display-pro">{{system.combate.armadura.bonus}}</span>
+                <span class="val-display-pro">{{system.combate.armadura.total}}</span>
+            </div>
+            <!-- ARMADURA M. -->
+            <div class="combate-row-item-pro">
+                <span class="combate-lbl-txt-pro">Armadura M.</span>
+                <span class="val-display-pro">{{system.combate.armadura_magica.base}}</span>
+                <span class="val-display-pro">{{system.combate.armadura_magica.bonus}}</span>
+                <span class="val-display-pro">{{system.combate.armadura_magica.total}}</span>
+            </div>
+            <!-- PRECISÃO -->
+            <div class="combate-row-item-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Precisão" data-teste="{{system.combate.precisao.total}}">Precisão</button>
+                <span class="val-display-pro">{{system.combate.precisao.base}}</span>
+                <span class="val-display-pro">{{system.combate.precisao.bonus}}</span>
+                <span class="val-display-pro">{{system.combate.precisao.total}}</span>
+            </div>
+            <!-- PRECISÃO M. -->
+            <div class="combate-row-item-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Precisão Mídica" data-teste="{{system.combate.precisao_magica.total}}">Precisão M.</button>
+                <span class="val-display-pro">{{system.combate.precisao_magica.base}}</span>
+                <span class="val-display-pro">{{system.combate.precisao_magica.bonus}}</span>
+                <span class="val-display-pro">{{system.combate.precisao_magica.total}}</span>
+            </div>
+            <!-- DESTREZA -->
+            <div class="combate-row-item-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Destreza" data-teste="{{system.combate.destreza.total}}">Destreza</button>
+                <span class="val-display-pro">{{system.combate.destreza.base}}</span>
+                <span class="val-display-pro">{{system.combate.destreza.bonus}}</span>
+                <span class="val-display-pro">{{system.combate.destreza.total}}</span>
+            </div>
+            <!-- MENTE -->
+            <div class="combate-row-item-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Mente" data-teste="{{system.combate.mente.total}}">Mente</button>
+                <span class="val-display-pro">{{system.combate.mente.base}}</span>
+                <span class="val-display-pro">{{system.combate.mente.bonus}}</span>
+                <span class="val-display-pro">{{system.combate.mente.total}}</span>
+            </div>
+
+            <!-- SEPARADOR DE EXPERTS MINIMALISTA -->
+            <div class="experts-separador-pro">
+                <span class="experts-title-txt">Experts</span>
+            </div>
+
+            <!-- EXPERTISE -->
+            <div class="combate-row-item-pro row-expertise-pro">
+                <button type="button" class="btn-roll-moderno" data-action="rolarAtributo" data-atributo="Expertise" data-teste="{{system.combate.expert.total}}">Expertise</button>
+                <span class="val-display-pro">{{system.combate.expert.base}}</span>
+                <span class="val-display-pro">{{system.combate.expert.bonus}}</span>
+                <span class="val-display-pro">{{system.combate.expert.total}}</span>
+            </div>
+
+
+            <!-- SELECTS DE FILTRO -->
+            <div class="experts-selects-row-pro">
+                <select name="system.expert_class.expert_atributo">
+                    {{selectOptions opcoesAtributos selected=system.expert_class.expert_atributo localize=false}}
+                </select>
+
+                <!-- Select de Perícia Dinâmico -->
+                <select name="system.expert_class.expert_pericia">
+                    {{selectOptions opcoesPericias selected=system.expert_class.expert_pericia localize=false}}
+                </select>
+            </div>
+        </div>
+    </div>
+
+</div>

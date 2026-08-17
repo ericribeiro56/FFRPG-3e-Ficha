@@ -1,0 +1,304 @@
+<!-- PARTE 1/2: templates/weapon-sheet.hbs (Os 5 Campos em Linha Única) -->
+<div class="sheet-container">
+
+  <!-- CABEÇALHO DO ITEM (LINHA HORIZONTAL ÚNICA) -->
+  <div class="sheet-header-wrapper">
+    <div class="img-wrapper">
+      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    </div>
+    
+    <div class="header-fields">
+      <div class="field-group name-field">
+        <label>Nome do Equipamento</label>
+        <input name="name" type="text" value="{{item.name}}" placeholder="Nome da Arma"/>
+      </div>
+      
+      <div class="field-group tier-field">
+        <label>Tier</label>
+        <select name="system.tier">
+          {{selectOptions tierOptions selected=system.tier}}
+        </select>
+      </div>
+
+      <div class="field-group prob-field">
+        <label>Probabilidade (%)</label>
+        <input name="system.probability" type="number" value="{{system.probability}}" min="0" max="999" placeholder="000"/>
+      </div>
+
+      <div class="field-group gil-field">
+        <label>Custo em Gil</label>
+        <div class="currency-input-wrapper">
+          <span class="currency-symbol">G</span>
+          <input name="system.current_gil" type="number" value="{{system.current_gil}}" min="0" max="9999999" placeholder="0"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORPO DA FICHA EM DUAS COLUNAS PRINCIPAIS -->
+  <div class="sheet-main-content">
+    
+    <!-- COLUNA ESQUERDA: DADOS DA ARMA -->
+    <div class="column-left-data">
+      
+      <div class="weapon-basic-row-grid">
+
+        <div class="field-group custom-weapon-field">
+          <label>Tipo de Dano</label>
+          <select name="system.weapon.type">
+            {{#each weaponDamageType}}
+            <option value="{{this.value}}" {{#if (eq ../system.weapon.type this.value)}}selected{{/if}}>{{this.label}}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        <div class="field-group custom-weapon-field">
+          <label>Tipo de Arma</label>
+          <select name="system.weapon.group">
+            {{#each weaponTypes}}
+            <option value="{{this.value}}" {{#if (eq ../system.weapon.group this.value)}}selected{{/if}}>{{this.label}}</option>
+            {{/each}}
+          </select>
+        </div>
+      
+        <div class="field-group custom-weapon-field-checkbox">
+          <label>Duas Mãos</label>
+          <input name="system.weapon.twoHanded" type="checkbox" value="{{system.weapon.twoHanded}}"/>
+        </div>
+      </div>
+
+      <div class="weapon-attributes-row-grid">
+
+        <div class="field-group custom-weapon-field">
+          <label>Dado</label>
+          <input name="system.damage.dice"  type="text" value="{{system.damage.dice}}" placeholder="d6"/>
+        </div>
+      
+        <div class="field-group custom-weapon-field">
+          <label>Multiplicador</label>
+          <input name="system.damage.multiplier" type="number" value="{{system.damage.multiplier}}" placeholder="0"/>
+        </div>
+      
+        <div class="field-group custom-weapon-field">
+          <label>Atributo</label>
+          <select name="system.damage.atribute">
+            {{#each attributeList}}
+            <option value="{{this.value}}" {{#if (eq ../system.damage.atribute this.value)}}selected{{/if}}>{{this.label}}</option>
+            {{/each}}
+          </select>
+        </div>
+      
+      </div>
+
+      <!-- Bloco de Propriedades Gerais (Tags e Materiais) -->
+      <div class="properties-section-grid">
+        <div class="property-block-vertical">
+          <span class="block-title-tag">Tags Gerais</span>
+          <div class="block-adder-row">
+            <input type="text" class="add-tag-input" placeholder="Nova tag..."/>
+            <button type="button" class="action-btn-add" data-action="addGeneralTag">+</button>
+          </div>
+          <div class="vertical-scroll-list">
+            {{#each system.tags as |tag index|}}
+            <div class="list-item-row">
+              <span class="item-text-content">{{tag}}</span>
+              {{#unless (eq tag "weapon")}}
+              <button type="button" class="action-btn-remove" data-action="removeGeneralTag" data-index="{{index}}">×</button>
+              {{/unless}}
+            </div>
+            {{/each}}
+          </div>
+        </div>
+
+        <div class="property-block-vertical">
+          <span class="block-title-tag">Materiais</span>
+          <div class="block-adder-row">
+            <input type="text" class="add-material-input" placeholder="Novo material..."/>
+            <button type="button" class="action-btn-add" data-action="addMaterial">+</button>
+          </div>
+          <div class="vertical-scroll-list">
+            {{#each system.materials as |material index|}}
+            <div class="list-item-row">
+              <span class="item-text-content">{{material}}</span>
+              <button type="button" class="action-btn-remove" data-action="removeMaterial" data-index="{{index}}">×</button>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+      <!-- Descrição Principal aproveita todo o fundo restante -->
+      <div class="field-group description-field major-height">
+        <label>Descrição Principal</label>
+        <prose-mirror name="system.description" 
+                      data-target="system.description" 
+                      value="{{system.description}}"
+                      class="prose-mirror-style">
+          {{{descricaoEnriquecida}}}
+        </prose-mirror>
+      </div>
+    </div>
+
+<!-- PARTE 2/2: Coluna Direita (Criador com Accordion Detalhado) -->
+    <!-- COLUNA DIREITA: GERENCIADOR DE HABILIDADES -->
+    <div class="column-right-abilities">
+      
+      <!-- ATUALIZADO: Painel de criação envelopado em um Accordion (Fica aberto por padrão via 'open') -->
+      <details class="ability-creation-accordion-box" open>
+        <summary class="creation-accordion-header">
+          <div class="summary-left-clickable">
+            <span class="accordion-chevron">▶</span>
+            <span class="form-section-header-text">Adicionar Nova Habilidade</span>
+          </div>
+        </summary>
+        
+        <div class="creation-accordion-expanded-content">
+          <div class="field-group inner-form-field">
+            <label>Nome da Habilidade</label>
+            <input type="text" class="new-ability-name" placeholder="Ex: Impacto Defensivo"/>
+          </div>
+
+          <div class="field-group inner-form-field">
+            <label>Descrição da Habilidade</label>
+            <prose-mirror name="system.tempAbilities.description" 
+                          data-target="system.tempAbilities.description" 
+                          value="{{system.tempAbilities.description}}"
+                          class="prose-mirror-style">
+              {{{tempAbilities.descriptionEnriched}}}
+            </prose-mirror>
+          </div>
+
+          <div class="properties-section-grid">
+            <div class="property-block-vertical">
+              <span class="block-title-tag">Tags da Habilidade</span>
+              <div class="block-adder-row">
+                <input type="text" class="add-ability-tag-input" placeholder="Tag..."/>
+                <button type="button" class="action-btn-add" data-action="addTempAbilityTag">+</button>
+              </div>
+              <div class="vertical-scroll-list compact-height">
+                {{#each system.tempAbilities.tags as |tTag tIndex|}}
+                <div class="list-item-row">
+                  <span class="item-text-content">{{tTag}}</span>
+                  <button type="button" class="action-btn-remove" data-action="removeTempAbilityTag" data-index="{{tIndex}}">×</button>
+                </div>
+                {{/each}}
+              </div>
+            </div>
+
+            <div class="property-block-vertical">
+              <span class="block-title-tag">Modificadores de Status</span>
+              <div class="block-adder-triple-row">
+                <select class="add-modifier-status">
+                  {{#each statusOptions}}
+                  <option value="{{this.key}}">{{this.display}}</option>
+                  {{/each}}
+                </select>
+                <input type="number" class="add-modifier-value" placeholder="0"/>
+                <select class="add-modifier-mode">
+                  <option value="flat">Flat</option>
+                  <option value="percent">Porc</option>
+                </select>
+                <button type="button" class="action-btn-add" data-action="addTempModifier">+</button>
+              </div>
+               <div class="vertical-scroll-list compact-height">
+                {{#each system.tempAbilities.bonusList as |tBonus bIndex|}}
+                <div class="list-item-row triple-display">
+                  <span class="modifier-badge target-badge">{{tBonus.status}}</span>
+                  <span class="modifier-badge value-badge">{{tBonus.value}}</span>
+                  <span class="modifier-badge mode-badge">{{tBonus.mode}}</span>
+                  <button type="button" class="action-btn-remove" data-action="removeTempModifier" data-index="{{bIndex}}">×</button>
+                </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="save-ability-submit-btn" data-action="saveNewAbility">Salvar Habilidade</button>
+        </div>
+      </details>
+
+      <!-- LISTA DE HABILIDADES SALVAS (SISTEMA ACCORDION RETRÁTIL) -->
+      <div class="saved-abilities-container">
+        <span class="form-section-header">Habilidades Cadastradas</span>
+        
+        {{#each abilities as |ability aIndex|}}
+        <details class="ability-accordion-item" name="weapon-abilities-group" data-ability-index="{{aIndex}}">
+          <summary class="ability-accordion-summary-header">
+            <div class="summary-left-clickable">
+              <span class="accordion-chevron">▶</span>
+              <span class="ability-title-text">{{ability.name}}</span>
+            </div>
+            <button type="button" class="action-btn-remove-ability" data-action="deleteAbility" data-index="{{aIndex}}">Remover Habilidade ×</button>
+          </summary>
+          
+          <div class="ability-accordion-expanded-content">
+            <div class="field-group inner-form-field">
+              <label>Nome do Efeito</label>
+              <input type="text" name="system.abilities.{{aIndex}}.name" value="{{ability.name}}"/>
+            </div>
+
+            <div class="field-group inner-form-field">
+              <label>Descrição do Efeito</label>
+              <prose-mirror name="system.abilities.{{aIndex}}.description" 
+                            data-target="system.abilities.{{aIndex}}.description" 
+                            value="{{ability.description}}"
+                            class="prose-mirror-style">
+                {{{ability.descriptionEnriched}}}
+              </prose-mirror>
+            </div>
+
+            <div class="properties-section-grid">
+              <div class="property-block-vertical">
+                <span class="block-title-tag">Tags Individuais</span>
+                <div class="block-adder-row">
+                  <input type="text" class="add-saved-ability-tag-input" data-ability-index="{{aIndex}}"/>
+                  <button type="button" class="action-btn-add" data-action="addSavedAbilityTag" data-ability-index="{{aIndex}}">+</button>
+                </div>
+                <div class="vertical-scroll-list compact-height">
+                  {{#each ability.tags as |aTag tIndex|}}
+                  <div class="list-item-row">
+                    <span class="item-text-content">{{aTag}}</span>
+                    <button type="button" class="action-btn-remove" data-action="removeSavedAbilityTag" data-ability-index="{{../aIndex}}" data-tag-index="{{tIndex}}">×</button>
+                  </div>
+                  {{/each}}
+                </div>
+              </div>
+
+              <div class="property-block-vertical">
+                <span class="block-title-tag">Modificadores Ativos</span>
+                <div class="block-adder-triple-row">
+                  <select class="add-saved-modifier-status" data-ability-index="{{aIndex}}">
+                    {{#each ../statusOptions}}
+                    <option value="{{this.key}}">{{this.display}}</option>
+                    {{/each}}
+                  </select>
+                  <input type="number" class="add-saved-modifier-value" data-ability-index="{{aIndex}}" placeholder="0"/>
+                  <select class="add-saved-modifier-mode" data-ability-index="{{aIndex}}">
+                    <option value="flat">Flat</option>
+                    <option value="percent">Porc</option>
+                  </select>
+                  <button type="button" class="action-btn-add" data-action="addSavedModifier" data-ability-index="{{aIndex}}">+</button>
+                </div>
+                <div class="vertical-scroll-list compact-height">
+                  {{#each ability.bonusList as |bonus bIndex|}}
+                  <div class="list-item-row triple-display">
+                    <span class="modifier-badge target-badge">{{bonus.status}}</span>
+                    <span class="modifier-badge value-badge">{{bonus.value}}</span>
+                    <span class="modifier-badge mode-badge">{{bonus.mode}}</span>
+                    <button type="button" class="action-btn-remove" data-action="removeSavedModifier" data-ability-index="{{../aIndex}}" data-bonus-index="{{bIndex}}">×</button>
+                  </div>
+                  {{/each}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+        {{else}}
+        <p class="empty-abilities-notice">Nenhuma habilidade cadastrada para esta Arma.</p>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>

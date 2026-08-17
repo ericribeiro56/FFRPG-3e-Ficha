@@ -1,0 +1,65 @@
+/* ==========================================================================
+   FFRPG 3E - ESTILOS GERAIS DO SISTEMA
+   Reset e componentes reutilizáveis globais
+   ========================================================================== */
+
+/* Customização da borda interna da janela nativa do Foundry */
+.window-content {
+    padding: 3px !important;
+    border: 1px solid black;
+    margin: 1px;
+    border-radius: 5px;
+}
+
+* {
+    scrollbar-width: auto;
+}
+
+/* ==========================================================================
+   RESET COMPLETO DE TOOLTIP (FOUNDRY VTT)
+   Força o desaparecimento cirúrgico e imediato na saída do mouse
+   ========================================================================== */
+
+/* Quando a tooltip está ativa (mouse sobre o card) */
+body #tooltip.active {
+    transition: none !important;
+    transition-delay: 0s !important;
+    animation: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: none !important; /* CRUCIAL: Impede o mouse de "segurar" a tooltip aberta */
+}
+
+/* Estado padrão da tooltip (quando o mouse sai) */
+body #tooltip {
+    transition: none !important;
+    transition-delay: 0s !important;
+    animation: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important; /* Evita colisões invisíveis com o ponteiro */
+}
+
+/* ==========================================================================
+   REMOÇÃO GLOBAL DE OUTLINE NO PROJETO INTEIRO (.ffrpg3e.sheet.actor)
+   ========================================================================== */
+
+/* Remove o contorno vermelho/nativo de QUALQUER elemento focado dentro da ficha */
+.ffrpg3e.sheet.actor *:focus,
+.ffrpg3e.sheet.actor button:focus,
+.ffrpg3e.sheet.actor input:focus,
+.ffrpg3e.sheet.actor select:focus,
+.ffrpg3e.sheet.actor textarea:focus,
+.ffrpg3e.sheet.actor [role="button"]:focus {
+    outline: none !important;
+    box-shadow: none !important; /* Anula sombras que simulam contornos falsos */
+}
+
+/* Garante a remoção no momento exato da pressão do clique */
+.ffrpg3e.sheet.actor *:active,
+.ffrpg3e.sheet.actor button:active,
+.ffrpg3e.sheet.actor input:active,
+.ffrpg3e.sheet.actor [role="button"]:active {
+    outline: none !important;
+    box-shadow: none !important;
+}

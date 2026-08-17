@@ -1,0 +1,77 @@
+<div class="race-sheet-wrapper">
+    
+    <!-- Cabeçalho Oficial do Item -->
+    <header class="sheet-header">
+        <!-- O atributo data-edit="img" ativa o FilePicker nativo do Foundry v14 automaticamente -->
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="Mudar Ícone da Raça" />
+        <div class="header-fields">
+            <label>Nome da Raça:</label>
+            <!-- O input nativo name="name" salva o nome do item automaticamente no banco de dados -->
+            <input type="text" name="name" value="{{item.name}}" placeholder="Ex: Human, Elf, Bangaa..." />
+        </div>
+    </header>
+
+    <!-- Navegação de Abas do Item (Adicionado data-tab-group obrigatório da v14) -->
+    <nav class="sheet-tabs tabs" data-tab-group="primary">
+        <a class="item active" data-tab="general">Geral</a>
+        <a class="item" data-tab="traits">Características Raciais (Traits)</a>
+    </nav>
+
+    <!-- Corpo Centralizador das Abas -->
+    <section class="sheet-body">
+        
+        <!-- Bloco de Conteúdo da ABA GERAL -->
+        <div class="tab active" data-tab="general">
+            
+            <!-- Seção 1: Configuração dos Soft Caps Raciais (Limites Máximos) -->
+            <div class="config-section">
+                <h3><i class="fas fa-chart-line"></i> Atributos Máximos Raciais (Teto de Nível)</h3>
+                <div class="attributes-grid">
+                    <div class="form-group-custom">
+                        <label>STR Max:</label>
+                        <input type="number" name="system.forca_max" value="{{system.forca_max}}" min="0" max="30" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label>VIT Max:</label>
+                        <input type="number" name="system.vitalidade_max" value="{{system.vitalidade_max}}" min="0" max="30" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label>AGI Max:</label>
+                        <input type="number" name="system.agilidade_max" value="{{system.agilidade_max}}" min="0" max="30" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label>SPD Max:</label>
+                        <input type="number" name="system.velocidade_max" value="{{system.velocidade_max}}" min="0" max="30" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label>MAG Max:</label>
+                        <input type="number" name="system.magia_max" value="{{system.magia_max}}" min="0" max="30" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label>SPR Max:</label>
+                        <input type="number" name="system.espirito_max" value="{{system.espirito_max}}" min="0" max="30" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção 2: Editor de Texto Rico Enriquecido HTML (v14) -->
+            <div class="config-section" style="margin-bottom: 6px;">
+                <h3><i class="fas fa-book-open"></i> Detalhes da Raça (Vital Data, Senses & Traits)</h3>
+                    <!-- CORREÇÃO: Puxa o value e o conteúdo interno a partir da variável enriquecida no JS -->
+                    <prose-mirror name="system.descricao" data-target="system.descricao" value="{{system.descricao}}">
+                        {{{descricaoEnriquecida}}}
+                    </prose-mirror>
+            </div>
+        </div>
+
+        <!-- ABA DE TRAITS VINCULADOS (ESTÁTICA POR ENQUANTO) -->
+        <div class="tab" data-tab="traits">
+            <div class="empty-placeholder">
+                <i class="fas fa-dna"></i>
+                <p class="title">Lista de Traits Raciais Ativas</p>
+                <p class="subtitle">O gerenciamento e exibição de Traits físicas em formato de sub-itens será integrado aqui futuramente.</p>
+            </div>
+        </div>
+
+    </section>
+</div>
