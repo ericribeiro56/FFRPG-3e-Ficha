@@ -1,0 +1,215 @@
+/* PARTE 1/2: css/ability-solo-sheet.css (Janela, Resets e Grade de Parâmetros) */
+
+/* ==========================================================================
+   RESOLUÇÃO TRAVADA COMPACTA (VENCE OS ESTILOS INLINE DO FOUNDRY APPLICATIONV2)
+   ========================================================================== */
+
+/* Intercepta a janela externa (.window-app) de qualquer instância de efeito aberta */
+div.window-app.effect-window,
+div.window-app:has(.custom-effect),
+.window-app:has(form.custom-effect) {
+  width: 500px !important;
+  height: 740px !important;
+}
+
+/* Força a área interna de conteúdo da janela a ceder ao tamanho dinâmico */
+div.window-app:has(.custom-effect) .window-content,
+.window-app:has(form.custom-effect) .window-content,
+.effect-window .window-content {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 5px !important; /* Margem de segurança para afastar do frame */
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Intercepta a tag form do efeito e anula larguras inline ou herdadas do pai */
+form.custom-effect,
+.custom-effect {
+  width: 480px !important;
+  height: 720px !important;
+}
+
+/* Intercepta a janela externa (.window-app) de QUALQUER instância aberta de Efeito */
+div.window-app.effect-window,
+div.window-app:has(.custom-effect),
+.window-app:has(form.custom-effect) {
+  min-width: 450px !important;
+  width: 450px !important;
+  max-width: 450px !important;
+  min-height: auto !important; /* Desliga a altura mínima forçada */
+  height: auto !important;     /* Ficha encolhe e cola perfeitamente no final do ProseMirror */
+  max-height: 740px !important;
+}
+
+/* Base Geral do Formulário Customizado */
+.custom-effect {
+  background: rgba(26, 26, 30, 0.85) !important;
+  backdrop-filter: blur(14px) !important;
+  color: #e2e2e9 !important;
+  font-family: "Inter", "Roboto", sans-serif !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  height: auto !important; /* Desliga o flex stretching vertical geral */
+  max-height: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+
+.custom-effect .solo-ability-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  height: auto !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
+/* Elementos Básicos de Formulário (Visual Dark) */
+.custom-effect input[type="text"],
+.custom-effect input[type="number"],
+.custom-effect select {
+  background: rgba(42, 42, 50, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  color: #ffffff !important;
+  padding: 6px 10px !important;
+  height: 32px !important;
+  font-size: 13px !important;
+  box-sizing: border-box !important;
+}
+.custom-effect input:focus, .custom-effect select:focus { border-color: #9d4edd !important; background: rgba(50, 50, 62, 0.9) !important; outline: none !important; }
+.custom-effect label { font-size: 11px !important; text-transform: uppercase !important; letter-spacing: 0.8px !important; color: rgba(255, 255, 255, 0.5) !important; margin-bottom: 4px !important; display: block !important; }
+.custom-effect .field-group { display: flex !important; flex-direction: column !important; }
+
+/* Customização de Scrollbars Internas */
+.custom-effect .vertical-scroll-list::-webkit-scrollbar { width: 5px !important; }
+.custom-effect .vertical-scroll-list::-webkit-scrollbar-thumb { background: rgba(157, 78, 221, 0.3) !important; border-radius: 10px !important; }
+
+/* Cabeçalho da Ficha */
+.custom-effect .sheet-header-wrapper { display: flex !important; gap: 12px !important; align-items: center !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; padding-bottom: 12px !important; width: 100% !important; }
+.custom-effect .sheet-header-wrapper .img-wrapper { width: 48px !important; height: 48px !important; border-radius: 6px !important; overflow: hidden !important; border: 2px solid rgba(157, 78, 221, 0.4) !important; }
+.custom-effect .sheet-header-wrapper .profile-img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+.custom-effect .sheet-header-wrapper .header-fields { display: grid !important; grid-template-columns: 1fr !important; flex: 1 !important; }
+
+/* AS DUAS LINHAS HORIZONTAIS DE PARÂMETROS (3 COLUNAS CADA) */
+.custom-effect .triple-columns-row {
+  display: grid !important;
+  grid-template-columns: 1.0fr 1.6fr 1fr !important; /* Distribuição simétrica e firme para os 450px */
+  gap: 10px !important;
+  background: rgba(30, 30, 36, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-radius: 8px !important;
+  padding: 8px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* CORREGIDO: Centralização total e nivelamento dos cartões de Checkbox com os Inputs vizinhos */
+.custom-effect .center-check { align-items: center !important; justify-content: center !important; }
+.custom-effect .checkbox-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 32px !important; /* Mesma altura dos inputs de texto */
+  gap: 8px !important;
+  margin-top: 2px !important;
+}
+.custom-effect .checkbox-wrapper input[type="checkbox"] {accent-color: #8a2be2 !important; cursor: pointer !important; margin: auto !important; }
+.custom-effect .check-label-box { font-size: 12px !important; font-weight: 600 !important; text-transform: uppercase !important; color: #ffffff !important; margin: 0 !important; line-height: 1 !important; cursor: pointer !important; }
+/* PARTE 2/2: css/ability-solo-sheet.css (Mecânicas e Fim do Espaço Fantasma do ProseMirror) */
+
+/* Propriedades Mecânicas (Assimétrico: Tags 40% vs Modificadores 60%) */
+.custom-effect .properties-section-grid.asymmetric-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1.5fr !important;
+  gap: 10px !important;
+}
+
+.custom-effect .property-block-vertical { background: rgba(30, 30, 36, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 8px !important; padding: 8px !important; display: flex !important; flex-direction: column !important; gap: 6px !important; }
+.custom-effect .block-title-tag { font-size: 10px !important; font-weight: bold !important; text-transform: uppercase !important; color: rgba(255, 255, 255, 0.4) !important; }
+.custom-effect .block-adder-row { display: flex !important; gap: 4px !important; }
+.custom-effect .block-adder-triple-row { display: grid !important; grid-template-columns: 1.3fr 0.6fr 0.8fr auto !important; gap: 4px !important; }
+.custom-effect .action-btn-add { background: #8a2be2 !important; color: white !important; border: none !important; border-radius: 6px !important; width: 32px !important; height: 32px !important; font-weight: bold; cursor: pointer; }
+
+.custom-effect .vertical-scroll-list.compact-height { background: rgba(0, 0, 0, 0.2) !important; border-radius: 6px !important; height: 95px !important; overflow-y: auto !important; display: flex !important; flex-direction: column !important; padding: 4px !important; gap: 4px !important; }
+.custom-effect .list-item-row { display: flex !important; justify-content: space-between !important; align-items: center !important; background: rgba(255, 255, 255, 0.04) !important; padding: 4px 6px !important; border-radius: 4px !important; border-left: 2px solid #8a2be2 !important; }
+.custom-effect .item-text-content { font-size: 12px !important; color: #d1d1db !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+.custom-effect .action-btn-remove { background: transparent !important; border: none !important; color: rgba(255, 255, 255, 0.3) !important; font-size: 14px !important; cursor: pointer; }
+.custom-effect .action-btn-remove:hover { color: #ff4d4d !important; }
+
+/* Grid Interno Triplo de Exibição dos Modificadores */
+.custom-effect .list-item-row.triple-display { display: grid !important; grid-template-columns: 1.4fr 1fr 1fr auto !important; gap: 4px !important; justify-items: start !important; }
+.custom-effect .modifier-badge { font-size: 11px !important; padding: 2px 4px !important; border-radius: 4px !important; background: rgba(255, 255, 255, 0.05) !important; width: 100% !important; text-align: center !important; box-sizing: border-box !important; }
+.custom-effect .target-badge { color: #88c0d0 !important; font-weight: bold !important; }
+.custom-effect .value-badge { color: #a3be8c !important; }
+.custom-effect .mode-badge { color: #ebcb8b !important; font-style: italic !important; }
+
+/* ==========================================================================
+   CORREÇÃO DEFINITIVA DO PROSEMIRROR: PREENCHE A CAIXA FIXA DE 120PX SEM VÁCUO
+   ========================================================================== */
+.custom-effect .prosemirror, .custom-effect prose-mirror { gap: 0; }
+
+/* Remove o esticamento flex no container do editor */
+.custom-effect .description-field.major-height.flex-description,
+.custom-effect .editor-container {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: none !important;
+  height: auto !important;
+}
+
+/* Caixa Cinza de Digitação: Altura compacta travada em 120px e bordas restauradas */
+.custom-effect .description-field.major-height .editor-content {
+  position: relative !important; /* Desliga o position: absolute nativo do foundry.css */
+  display: block !important;
+  flex: none !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  
+  /* Altura controlada para matar o espaço vazio do rodapé */
+  min-height: 120px !important;
+  height: 120px !important;
+  max-height: 160px !important;
+  
+  /* Borda delimitadora suave restabelecida */
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 0 0 6px 6px !important; /* Encaixe perfeito abaixo do menu */
+  background: rgba(0, 0, 0, 0.15) !important;
+  padding: 10px 12px !important;
+}
+
+/* Força a área clicável real do ProseMirror a preencher toda a caixa de 120px */
+.custom-effect .editor-content .ProseMirror {
+  position: relative !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+}
+
+/* Barra de ferramentas (menu superior) com contorno sutil correspondente */
+.custom-effect prose-mirror .menu-container {
+  background: rgba(42, 42, 50, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-bottom: none !important;
+  border-top-left-radius: 6px !important;
+  border-top-right-radius: 6px !important;
+}
+.custom-effect prose-mirror .menu-container + .editor-container .editor-content {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+/* Eliminação de Margens Residuais e Parágrafos Fantasmas */
+.custom-effect prose-mirror, .custom-effect .editor-container, .custom-effect .editor-content { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+.custom-effect .editor-content .ProseMirror p:last-child { margin-bottom: 0 !important; }

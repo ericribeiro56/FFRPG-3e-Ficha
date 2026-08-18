@@ -1,0 +1,116 @@
+<div class="solo-ability-container">
+
+  <!-- CABEÇALHO DA HABILIDADE -->
+  <div class="sheet-header-wrapper">
+    <div class="img-wrapper">
+      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    </div>
+    
+    <div class="header-fields">
+      <div class="field-group name-field">
+        <label>Nome da Habilidade / Efeito</label>
+        <input name="name" type="text" value="{{item.name}}" placeholder="Nome do Efeito"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARÂMETROS DA HABILIDADE: LINHA 1 (Tipo, Duração, Permanente) -->
+  <div class="armor-attributes-row-grid triple-columns-row">
+    <div class="field-group custom-attr-field">
+      <label>Tipo de Efeito</label>
+      <select name="system.effectType">
+        <option value="buff" {{#if (eq system.effectType "buff")}}selected{{/if}}>Buff</option>
+        <option value="debuff" {{#if (eq system.effectType "debuff")}}selected{{/if}}>Debuff</option>
+      </select>
+    </div>
+
+    <div class="field-group custom-attr-field">
+      <label>Duração</label>
+      <input name="system.duration" type="number" value="{{system.duration}}" placeholder="X Turnos"/>
+    </div>
+
+    <div class="field-group custom-attr-field center-check">
+      <label>Permanente</label>
+      <div class="checkbox-wrapper">
+        <input type="checkbox" name="system.permanent" {{#if system.permanent}}checked{{/if}} id="check-perm"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="armor-attributes-row-grid triple-columns-row">
+    <div class="field-group custom-attr-field center-check">
+      <label>Em Área?</label>
+      <div class="checkbox-wrapper">
+        <input type="checkbox" name="system.area" {{#if system.area}}checked{{/if}} id="check-area"/>
+      </div>
+    </div>
+
+    <div class="field-group custom-attr-field">
+      <label>Informar Área</label>
+      <input name="system.range" type="number" value="{{system.range}}" placeholder="X Metros"/>
+    </div>
+
+    <div class="field-group custom-attr-field center-check">
+      <label>Afeta Aliados</label>
+      <div class="checkbox-wrapper">
+        <input type="checkbox" name="system.safeAllies" {{#if system.safeAllies}}checked{{/if}} id="check-allies"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARÂMETROS DA HABILIDADE: LINHA 2 (Tags e Modificadores) -->
+  <div class="properties-section-grid asymmetric-grid">
+    <!-- Bloco de Tags -->
+    <div class="property-block-vertical">
+      <span class="block-title-tag">Tags da Habilidade</span>
+      <div class="block-adder-row">
+        <input type="text" class="add-ability-tag-input" placeholder="Nova tag..."/>
+        <button type="button" class="action-btn-add" data-action="addAbilityTag">+</button>
+      </div>
+      <div class="vertical-scroll-list compact-height">
+        {{#each system.tags as |tag index|}}
+        <div class="list-item-row">
+          <span class="item-text-content">{{tag}}</span>
+          <button type="button" class="action-btn-remove" data-action="removeAbilityTag" data-index="{{index}}">×</button>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="property-block-vertical">
+      <span class="block-title-tag">Effeitos</span>
+      <div class="block-adder-triple-row">
+        <select class="add-modifier-status">
+          {{#each statusOptions}}
+          <option value="{{this.key}}">{{this.display}}</option>
+          {{/each}}
+        </select>
+        <input type="number" class="add-modifier-value" placeholder="0"/>
+        <select class="add-modifier-mode">
+          <option value="flat">Flat</option>
+          <option value="percent">Porc</option>
+        </select>
+        <button type="button" class="action-btn-add" data-action="addModifier">+</button>
+      </div>
+      <div class="vertical-scroll-list compact-height">
+        {{#each system.effect as |bonus index|}}
+        <div class="list-item-row triple-display">
+          <span class="modifier-badge target-badge">{{statusDisplay bonus.status}}</span>
+          <span class="modifier-badge value-badge">{{bonus.value}}</span>
+          <span class="modifier-badge mode-badge">{{modeDisplay bonus.mode}}</span>
+          <button type="button" class="action-btn-remove" data-action="removeModifier" data-index="{{index}}">×</button>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+
+  <!-- DESCRIÇÃO DETALHADA NO RODAPÉ -->
+  <div class="field-group description-field major-height flex-description">
+    <label>Descrição Detalhada do Efeito</label>
+    <prose-mirror name="system.description" data-target="system.description" value="{{system.description}}" class="prose-mirror-style">
+      {{{descricaoEnriquecida}}}
+    </prose-mirror>
+  </div>
+
+</div> <!-- FECHAMENTO .solo-ability-container -->

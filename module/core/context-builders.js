@@ -1,4 +1,4 @@
-import { EFFECT_CATEGORIES } from "./constants.js";
+import { EFFECT_TYPES } from "./constants.js";
 
 const effectContextCache = new WeakMap();
 
@@ -18,31 +18,32 @@ export function buildEffectContext(actor) {
   const effects = actor.appliedEffects || [];
   const categories = {
     unified: [],
-    buffs: [],
-    debuffs: [],
-    permanentes: [],
-    condicionais: []
+    passiveBuffEffectList: [],
+    buffEffectList: [],
+    passiveDebuffEffectList: [],
+    debuffEffectList: []
   };
 
   effects.forEach(efeito => {
     if (efeito.disabled) return;
 
-    const statusArray = Array.isArray(efeito.statuses) ? efeito.statuses : Array.from(efeito.statuses || []);
-    if (statusArray.includes("ffrpg3e-equipment")) return;
-    if (efeito.flags?.ffrpg3e?.sourceItemId) return;
-    const statusId = statusArray[0];
-    const chaveIdentificadora = statusId || efeito.name?.toLowerCase().trim();
+    const flags = efeito.flags?.ffrpg3e || {};
+    if (flags.sourceType === "item" && flags.sourceItemId) return;
 
-    const jaExiste = categories.unified.some(e => e.id === efeito.id || (e.statusId && e.statusId === chaveIdentificadora));
+    const jaExiste = categories.unified.some(e => e.id === efeito.id);
     if (jaExiste) return;
 
-    const duracaoObjeto = efeito.duration;
-    const temTurnos = duracaoObjeto?.units === "turns" || duracaoObjeto?.units === "rounds";
-    const valorTurnos = duracaoObjeto?.turns || duracaoObjeto?.value || duracaoObjeto?.seconds;
+    const effectType = flags.effectType || "buff";
+    const isPermanent = flags.permanent === true;
+    const duration = efeito.duration;
 
     let turnosRestantes = "Permanente";
-    if (temTurnos && valorTurnos) {
-      turnosRestantes = `${valorTurnos} Turnos Restantes`;
+    if (!isPermanent && duration) {
+      const temTurnos = duration.units === "turns" || duration.units === "rounds";
+      const valorTurnos = duration.turns || duration.value || duration.seconds;
+      if (temTurnos && valorTurnos) {
+        turnosRestantes = `${valorTurnos} Turnos Restantes`;
+      }
     }
 
     const item = {
@@ -51,25 +52,24 @@ export function buildEffectContext(actor) {
       img: efeito.img || "icons/svg/hazard.svg",
       duration: turnosRestantes,
       description: efeito.description || "",
-      statusId: chaveIdentificadora,
-      category: EFFECT_CATEGORIES.BUFF,
+      category: effectType,
       sourceType: "item"
     };
 
     categories.unified.push(item);
 
-    if (turnosRestantes === "Permanente") {
-      categories.permanentes.push(item);
-    } else {
-      categories.condicionais.push(item);
-    }
-
-    if (efeito.statuses?.includes("agility_up") || efeito.statuses?.includes("spirit_up")) {
-      categories.buffs.push(item);
-    } else if (efeito.statuses?.includes("agility_down") || efeito.statuses?.includes("spirit_down") || efeito.statuses?.includes("agility_break") || efeito.statuses?.includes("spirit_break")) {
-      categories.debuffs.push(item);
-    } else {
-      categories.buffs.push(item);
+    if (effectType === "buff") {
+      if (isPermanent) {
+        categories.passiveBuffEffectList.push(item);
+      } else {
+        categories.buffEffectList.push(item);
+      }
+    } else if (effectType === "debuff") {
+      if (isPermanent) {
+        categories.passiveDebuffEffectList.push(item);
+      } else {
+        categories.debuffEffectList.push(item);
+      }
     }
   });
 

@@ -36,13 +36,6 @@ export const MODIFICADORES_STATUS = {
   spirit_break: 0.50
 };
 
-export const EFFECT_CATEGORIES = {
-  BUFF: "buff",
-  DEBUFF: "debuff",
-  PERMANENTE: "permanente",
-  CONDICIONAL: "condicional"
-};
-
 export const ITEM_TYPES = {
   JOB: "job",
   RACE: "race",
@@ -72,10 +65,14 @@ export const INVENTORY_SLOT_TAG_MAP = {
   ammo: "ammo"
 };
 
-
 export const WEAPON_DAMAGE_TYPE = {
   magic: "Mágico",
   physical: "Físico"
+}
+
+export const EFFECT_TYPES = {
+  buff: "Buff",
+  debuff: "Debuff"
 }
 
 export const WEAPON_TYPES = {
