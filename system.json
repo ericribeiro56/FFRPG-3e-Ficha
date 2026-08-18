@@ -24,9 +24,9 @@
     "module/core/context-builders.js",
     "module/data-models.js",
     "module/sheets/actor-sheet.js",
-    "module/sheets/effect-sheet.js",
     "module/sheets/job-sheet.js",
     "module/sheets/race-sheet.js",
+    "module/sheets/items/effect-sheet.js",
     "module/sheets/items/item-core.js",
     "module/sheets/items/armor-sheet.js",
     "module/sheets/items/weapon-sheet.js"
@@ -37,10 +37,10 @@
     "css/inventario.css",
     "css/gear-sheet.css",
     "css/actor/actor-sheet.css",
-    "css/effect/effect-sheet.css",
     "css/job/job-sheet.css",
     "css/race/race-sheet.css",
     "css/items/armor.css",
+    "css/items/effect.css",
     "css/items/weapon.css"
   ],
   "documentTypes": {

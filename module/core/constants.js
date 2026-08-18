@@ -72,10 +72,14 @@ export const INVENTORY_SLOT_TAG_MAP = {
   ammo: "ammo"
 };
 
-
 export const WEAPON_DAMAGE_TYPE = {
   magic: "Mágico",
   physical: "Físico"
+}
+
+export const EFFECT_TYPES = {
+  buff: "Buff",
+  debuff: "Debuff"
 }
 
 export const WEAPON_TYPES = {

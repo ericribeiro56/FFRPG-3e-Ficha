@@ -1,7 +1,7 @@
 import { RACAS_INICIAIS } from "../resources/defaults-data.js";
 import { PlayerSheet } from "./sheets/actor-sheet.js";
-import { CharacterData, JobDataModel, RaceDataModel, EffectsItemModel, WeaponModel, ArmorModel, ConsumableBasicModel, StatusBonusBase, ItemAbilityBase, ModificadorEstrutura } from "./data-models.js";
-import { EffectsSheet } from "./sheets/effect-sheet.js";
+import { CharacterData, JobDataModel, RaceDataModel, EffectModel, WeaponModel, ArmorModel, ConsumableBasicModel, StatusBonusBase, ItemAbilityBase } from "./data-models.js";
+import { EffectsSheet } from "./sheets/items/effect-sheet.js";
 import { JobSheet } from "./sheets/job-sheet.js";
 import { RaceSheet } from "./sheets/race-sheet.js";
 import { WeaponSheet as WeaponSheetCustom } from "./sheets/items/weapon-sheet.js";
@@ -12,12 +12,10 @@ Hooks.once("preInit", async function() {
   CONFIG.dataModels = CONFIG.dataModels || {};
   CONFIG.dataModels.StatusBonusBase = StatusBonusBase;
   CONFIG.dataModels.ItemAbilityBase = ItemAbilityBase;
-  CONFIG.dataModels.ModificadorEstrutura = ModificadorEstrutura;
 
   game.dataModels = game.dataModels || {};
   game.dataModels.StatusBonusBase = StatusBonusBase;
   game.dataModels.ItemAbilityBase = ItemAbilityBase;
-  game.dataModels.ModificadorEstrutura = ModificadorEstrutura;
 });
 
 Hooks.once("init", async function() {
@@ -59,7 +57,7 @@ Hooks.once("init", async function() {
   };
 
   CONFIG.Item.dataModels = {
-    effects: EffectsItemModel,
+    effects: EffectModel,
     job: JobDataModel,
     race: RaceDataModel,
     gear_weapon: WeaponModel,

@@ -481,36 +481,6 @@ export class RaceDataModel extends foundry.abstract.TypeDataModel {
   }
 }
 
-export class EffectsItemModel extends foundry.abstract.TypeDataModel {
-  static defineSchema() {
-    return {
-      descricao: Field.Rich(),
-      tipo_status: Field.String("buff")
-    };
-  }
-}
-
-export class ModificadorEstrutura extends foundry.abstract.DataModel {
-  static defineSchema() {
-    return {
-      tipoModificador: Field.String(""),
-      campo_modificador: Field.String(""),
-      formula: Field.String("+5"),
-      tipo_status: Field.String("buff")
-    };
-  }
-}
-
-export class EffectsItemModelTest extends foundry.abstract.TypeDataModel {
-  static defineSchema() {
-    return {
-      descricao: Field.Rich(),
-      duracao_turnos: Field.Number(3, true, false, { min: 0 }),
-      modificadores: Field.Array(Field.Object())
-    };
-  }
-}
-
 export class ItemModel extends foundry.abstract.TypeDataModel {
 
   static defineSchema() {
@@ -668,11 +638,6 @@ export class ArmorModel extends GearBasicModel {
     }
   }
 
-  /**
-   * Getter dinâmico que gera a string de resumo para o combate.
-   * Executado apenas uma vez no momento do Drop Canvas/Actor.
-   * @returns {string} Ex: "ARM[+5] | ARMM[+50] | EVAM[-3]"
-   */
   get computeInfoDisplay() {
     const labelMap = {
       armadura: "ARM",
@@ -716,6 +681,26 @@ export class ConsumableBasicModel extends ItemModel {
       infinity: Field.Boolean(),
       effects: Field.Array(StatusBonusBase)
     }
+
+    return obj;
+  }
+}
+
+export class EffectModel extends foundry.abstract.TypeDataModel {
+
+  static defineSchema() {
+
+    let obj = {
+      description: Field.Rich(),
+      effectType: Field.String("buff"),
+      duration: Field.Number(0),
+      permanent: Field.Boolean(false),
+      area:Field.Boolean(false),
+      range: Field.Number(0),
+      safeAllies: Field.Boolean(false),
+      tags: Field.Array(),
+      effect: Field.Array(StatusBonusBase)
+    };
 
     return obj;
   }
