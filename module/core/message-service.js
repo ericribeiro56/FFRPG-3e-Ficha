@@ -1,26 +1,24 @@
 export const MessageService = {
   async createEffectAppliedMessage(actor, item) {
-    const descricao = item.system.descricao || "Nenhuma descrição fornecida.";
-
-    const chatTemplate = `
-      <div class="ffrpg3e-chat-card effect-card">
-        <header class="card-header flexrow" style="display: flex; align-items: center; gap: 8px;">
-          <img src="${item.img || 'icons/svg/book.svg'}" width="24" height="24" style="border: none; border-radius: 4px;"/>
-          <h3 style="margin: 0; font-size: 14px; font-weight: bold; color: #dfd5c6;">Status Aplicado: ${item.name}</h3>
-        </header>
-        <div class="card-content" style="margin-top: 8px; font-size: 12px; font-style: italic; color: #ccc;">
-          ${descricao}
-        </div>
-        <footer class="card-footer" style="margin-top: 6px; font-size: 11px; text-align: right; color: #888;">
-          Alvo: <strong>${actor.name}</strong>
-        </footer>
-      </div>
-    `;
+    const effectType = item.system?.effectType === "debuff" ? "debuff" : "buff";
+    const durationText = item.system?.permanent ? "" : ` por ${item.system?.duration || 0} turno(s)`;
+    const message = `${actor.name} recebeu o ${effectType} ${item.name}${durationText}`;
 
     return ChatMessage.create({
-      user: game.user.id,
-      speaker: ChatMessage.getSpeaker({ actor: actor }),
-      content: chatTemplate,
+      user: CONST.BROADCAST_USER_ID,
+      speaker: { alias: "Sistema" },
+      content: message,
+      style: CONST.CHAT_MESSAGE_STYLES.OOC
+    });
+  },
+
+  async createEffectRemovedMessage(actor, effectName) {
+    const message = `${effectName} removido do ${actor.name}`;
+
+    return ChatMessage.create({
+      user: CONST.BROADCAST_USER_ID,
+      speaker: { alias: "Sistema" },
+      content: message,
       style: CONST.CHAT_MESSAGE_STYLES.OOC
     });
   },

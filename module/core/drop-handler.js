@@ -2,6 +2,7 @@ import { ITEM_TYPES } from "./constants.js";
 import { MessageService } from "./message-service.js";
 import { safeInt } from "./utils.js";
 import { GearBasicModel } from "../data-models.js";
+import { getEquipBonusTarget } from "./equipment-service.js";
 
 export class DropDispatcher {
   static async dispatch(actor, item, event, data) {
@@ -51,11 +52,54 @@ class RaceDropHandler {
 
 class EffectDropHandler {
   static async handle(actor, item) {
-    const existingEffect = actor.items.find(i => i.type === ITEM_TYPES.EFFECT && i.name === item.name);
-    if (existingEffect) {
-      await actor.deleteEmbeddedDocuments("Item", [existingEffect.id], { render: false });
+    const effectData = item.toObject();
+    const effectName = effectData.name;
+    const effectImg = effectData.img || "icons/svg/hazard.svg";
+    const effectDescription = effectData.system?.description || "";
+    const effectType = effectData.system?.effectType || "buff";
+    const permanent = effectData.system?.permanent === true;
+    const duration = effectData.system?.duration || 0;
+    const effectBonuses = effectData.system?.effect || [];
+
+    const existingActive = actor.appliedEffects.find(e => 
+      e.name === effectName && e.flags?.ffrpg3e?.sourceItemId === item.id
+    );
+    if (existingActive) {
+      await actor.deleteEmbeddedDocuments("ActiveEffect", [existingActive.id], { render: false });
     }
-    await actor.createEmbeddedDocuments("Item", [item.toObject()]);
+
+    const changes = effectBonuses.map(bonus => {
+      const target = getEquipBonusTarget(bonus.status);
+      if (!target) return null;
+
+      let targetPath = bonus.mode === "percent" ? target.percentTarget : target.flatTarget;
+      if ((bonus.status === "armadura" || bonus.status === "armadura_magica") && bonus.mode !== "percent") {
+        targetPath = targetPath.replace(".bonus", ".base");
+      }
+
+      return {
+        key: targetPath,
+        mode: bonus.mode === "percent" ? 2 : 1,
+        value: bonus.value
+      };
+    }).filter(Boolean);
+
+    const activeEffectData = {
+      name: effectName,
+      img: effectImg,
+      description: effectDescription,
+      duration: permanent ? {} : { turns: duration, units: "turns" },
+      changes: changes,
+      flags: {
+        ffrpg3e: {
+          sourceItemId: item.id,
+          effectType: effectType,
+          permanent: permanent
+        }
+      }
+    };
+
+    await actor.createEmbeddedDocuments("ActiveEffect", [activeEffectData]);
     await MessageService.createEffectAppliedMessage(actor, item);
   }
 }

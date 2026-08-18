@@ -36,13 +36,6 @@ export const MODIFICADORES_STATUS = {
   spirit_break: 0.50
 };
 
-export const EFFECT_CATEGORIES = {
-  BUFF: "buff",
-  DEBUFF: "debuff",
-  PERMANENTE: "permanente",
-  CONDICIONAL: "condicional"
-};
-
 export const ITEM_TYPES = {
   JOB: "job",
   RACE: "race",

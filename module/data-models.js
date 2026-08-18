@@ -704,4 +704,15 @@ export class EffectModel extends foundry.abstract.TypeDataModel {
 
     return obj;
   }
+
+  static async preCreate(data, options, userId) {
+    super.preCreate?.(data, options, userId);
+
+    if (!data.system?.tags) {
+      data.updateSource({ "system.tags": [] });
+    }
+    if (!data.system?.effect) {
+      data.updateSource({ "system.effect": [] });
+    }
+  }
 }

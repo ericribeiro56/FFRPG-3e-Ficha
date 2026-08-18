@@ -99,10 +99,10 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     context.statusEfeitos = this._buildEffectContext();
     const effectCategories = context.statusEfeitos;
-    context.statusEfeitosPassivos = effectCategories.permanentes || [];
-    context.statusEfeitosBuffs = effectCategories.buffs || [];
-    context.statusEfeitosCurses = effectCategories.permanentes || [];
-    context.statusEfeitosDebuffs = effectCategories.debuffs || [];
+    context.passiveBuffEffectList = effectCategories.passiveBuffEffectList || [];
+    context.buffEffectList = effectCategories.buffEffectList || [];
+    context.passiveDebuffEffectList = effectCategories.passiveDebuffEffectList || [];
+    context.debuffEffectList = effectCategories.debuffEffectList || [];
     context.listaNiveis = this._buildLevelProgressionContext();
 
     const equipmentContext = this._buildEquipmentContext();
@@ -866,7 +866,9 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       await itemAplicador.delete();
       return;
     }
+
     await efeitoNoJogador.delete();
+    await MessageService.createEffectRemovedMessage(this.document, efeitoNoJogador.name);
   }
 
 }

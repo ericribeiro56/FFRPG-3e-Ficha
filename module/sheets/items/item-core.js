@@ -78,13 +78,6 @@ export class ItemSheetBase extends HandlebarsApplicationMixin(ItemSheetV2) {
     context.system = this.document.system;
     context.editable = this.document.isOwner;
 
-    const tag = ITEM_TYPE_CATEGORY_MAP[this.document.type] || this.document.type;
-    const tags = this.document.system?.tags || [];
-    if (!tags.includes(tag)) {
-      tags.push(tag);
-      await this.document.update({ "system.tags": tags });
-    }
-
     context.descricaoEnriquecida = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
       this.document.system?.description || "",
       {
