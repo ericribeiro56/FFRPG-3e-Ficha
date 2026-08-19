@@ -386,7 +386,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       const masteryPath = group.groupMastery;
       const relativeMasteryPath = masteryPath.replace(/^system\./, "");
       const masteryValue = getSafeValue(foundry.utils.getProperty(this, relativeMasteryPath), 0);
-      const masteryBonus = masteryValue ? 20 : 0;
+      const hasMastery = !!masteryValue;
 
       for (const skill of group.list) {
         const relativeSkillPath = skill.key.replace(/^system\./, "");
@@ -395,7 +395,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
         const base = getSafeValue(skillData.base);
         const bonus = getSafeValue(skillData.bonus);
-        skillData.total = base + bonus + masteryBonus;
+        skillData.total = hasMastery ? (2 * base) + bonus : base + bonus;
       }
     }
 
