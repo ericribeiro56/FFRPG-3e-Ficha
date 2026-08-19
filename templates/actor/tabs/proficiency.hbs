@@ -1,0 +1,216 @@
+<div class="pericias-layout-moderno">
+
+    <!-- ==========================================================================
+         🎨 BARRA SUPERIOR DE INFORMAÇÕES GERAIS (BLOCO VERTICAL FLUIDO)
+         ========================================================================== -->
+    <div class="top-bar-pericias">
+        <div class="info-block-top">
+            <span class="info-block-lbl">Pontos Máx</span>
+            <input type="number" name="system.proficiency.max_points" value="{{system.proficiency.max_points}}"
+                class="input-base-pro input-top-val" />
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         🏛️ CONTÊINER DE EMPILHAMENTO VERTICAL ÚNICO E FLUIDO
+         ========================================================================== -->
+    <div class="pericias-corpo-colunas-unificado">
+
+        <!-- 🔄 LOOP MESTRE ÚNICO: Processa todas as categorias da sua constante sequencialmente -->
+        {{#each proficiencyListData}}
+        <div
+            class="card-painel card-pericia-secao {{#if ../system.proficiency.weapons.inaptitude}}{{#if this.isWeapons}}secao-armas-bloqueada{{/if}}{{/if}}">
+
+            <!-- Camada 1: Linha de Título com Check de Maestria Isolado na Direita -->
+            <div class="camada-1-header">
+                <span class="font-titulo-secao">{{this.groupLabel}}</span>
+                <input type="checkbox" name="{{this.groupMastery}}" {{checked (getProperty ../actor this.groupMastery)}}
+                    class="check-maestria-topo" />
+            </div>
+
+            <!-- Camada 2 Opcional: Renderiza os modificadores de armas apenas se hasModifiers for true -->
+            {{#if this.hasModifiers}}
+            <div class="sub-barra-controles-camada-2">
+                <label class="lbl-mod-weapon-check"><input type="checkbox" name="system.proficiency.weapons.ambimestry"
+                        {{checked (getProperty ../actor 'system.proficiency.weapons.ambimestry' )}} />
+                    Ambidestria</label>
+                <label class="lbl-mod-weapon-check check-alerta-vermelho"><input type="checkbox"
+                        name="system.proficiency.weapons.inaptitude" {{checked (getProperty
+                        ../actor 'system.proficiency.weapons.inaptitude' )}} /> Inabilidade</label>
+            </div>
+            {{/if}}
+
+            <!-- Camada 3: Tabela de dados (Liga scroll interno se for a categoria isWeapons) -->
+            <div class="{{#if this.isWeapons}}tabela-com-scroll-travado{{/if}}">
+                <table class="tabela-pericias-pro">
+                    <thead>
+                        <tr>
+                            <th class="th-nome"></th>
+                            <th class="th-num">Base</th>
+                            <th class="th-num">Bônus</th>
+                            <th class="th-num">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each this.list}}
+                        <tr
+                            class="{{#if ../../this.isWeapons}}{{#if (pValue ../../actor this.key 'active')}}row-pericia-ativa{{/if}}{{/if}}">
+                            <td>
+                                <div class="wrapper-nome-atv-inline">
+                                    {{#if ../../this.isWeapons}}
+                                      {{#unless this.isBlocked}}
+                                        <input type="checkbox" name="{{this.key}}.active" class="check-arma-atv" />
+                                      {{/unless}}
+                                    {{/if}}
+                                    <button type="button" class="btn-roll-moderno" data-action="rolarPericia"
+                                        data-pericia="{{this.label}}"
+                                        data-teste="{{pValue ../../actor this.key 'total'}}">
+                                        {{this.label}}
+                                    </button>
+                                </div>
+                            </td>
+                            <!-- O atributo 'disabled' tranca o input de base se isBlocked for verdadeiro -->
+                            <td>
+                                {{#if this.isBlocked}}
+                                <span class="val-display-pro">{{pValue ../../actor this.key 'base'}}</span>
+                                {{else}}
+                                <input type="number" name="{{this.key}}.base"
+                                    value="{{pValue ../../actor this.key 'base'}}"
+                                    class="input-base-pro input-pericia-pts"/>
+                                {{/if}}
+                            </td>
+                            <td>
+                                <span class="val-display-pro">{{pValue ../../actor this.key 'bonus'}}</span>
+                            </td>
+                            <td>
+                                <span class="val-display-pro total-destaque-pro">{{pValue ../../actor this.key 'total'}}</span>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {{/each}} <!-- 🏁 FIM DO LOOP MESTRE ÚNICO -->
+        <!-- ==========================================================================
+             🌐 SEÇÃO DE ARRAYS DINÂMICOS MANUAIS (RENDERIZADOS FORA DO LOOP MESTRE)
+             ========================================================================== -->
+
+        <!-- Idiomas (Array Dinâmico - Isolado Fora do Loop) -->
+        <div class="card-painel card-pericia-secao">
+            <div class="camada-1-header">
+                <span class="font-titulo-secao">Idiomas</span>
+                <input type="checkbox" name="system.proficiency.language.mastery" {{checked
+                    system.proficiency.language.mastery}} class="check-maestria-topo" />
+            </div>
+            <div class="sub-barra-controles-camada-2 flex-controles-array">
+                <div class="agrupamento-miniblocos-pontos">
+
+                    <span>P.G</span>
+                    <input type="number" name="system.proficiency.language.general_points"
+                        value="{{system.proficiency.language.general_points}}"
+                        class="input-base-pro input-array-ponto" />
+
+                    <span>P.E</span>
+                    <input type="number" name="system.proficiency.language.especialized_points"
+                        value="{{system.proficiency.language.especialized_points}}"
+                        class="input-base-pro input-array-ponto" />
+                </div>
+                <button type="button" class="btn-add-array-item" data-action="adicionarIdioma"><i
+                        class="fas fa-plus"></i> Add</button>
+            </div>
+            <div class="tabela-com-scroll-travado">
+                <table class="tabela-pericias-pro">
+                    <thead>
+                        <tr>
+                            <th class="th-nome">Nome do Idioma</th>
+                            <th class="th-num">Gasto</th>
+                            <th class="th-num">Total</th>
+                            <th class="th-del"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each system.proficiency.language.list}}
+                        <tr>
+                            <td><input type="text" name="system.proficiency.language.list.{{@index}}.name"
+                                    value="{{this.name}}" placeholder="Idioma..." class="input-text-nome-dinamico" />
+                            </td>
+                            <td><input type="number" name="system.proficiency.language.list.{{@index}}.invisted"
+                                    value="{{this.invisted}}" class="input-base-pro input-pericia-pts" /></td>
+                            <td><input type="number" name="system.proficiency.language.list.{{@index}}.total"
+                                    value="{{this.total}}" class="input-base-pro input-pericia-pts" /></td>
+                            <td><button type="button" class="btn-deletar-linha-dinamica" data-action="removerIdioma"
+                                    data-index="{{@index}}"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="4">
+                                <div class="status-vazio-mini"><i class="fas fa-language"></i> Vazio</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Conhecimentos (Array Dinâmico - Isolado Fora do Loop) -->
+        <div class="card-painel card-pericia-secao">
+            <div class="camada-1-header">
+                <span class="font-titulo-secao">Conhecimentos</span>
+                <input type="checkbox" name="system.proficiency.knowledge.mastery" {{checked
+                    system.proficiency.knowledge.mastery}} class="check-maestria-topo" />
+            </div>
+            <div class="sub-barra-controles-camada-2 flex-controles-array">
+                <div class="agrupamento-miniblocos-pontos">
+                    <span>P.G</span>
+                    <input type="number" name="system.proficiency.knowledge.general_points"
+                        value="{{system.proficiency.knowledge.general_points}}"
+                        class="input-base-pro input-array-ponto" />
+
+                    <span>P.E</span>
+                    <input type="number" name="system.proficiency.knowledge.especialized_points"
+                        value="{{system.proficiency.knowledge.especialized_points}}"
+                        class="input-base-pro input-array-ponto" />
+
+                </div>
+                <button type="button" class="btn-add-array-item" data-action="adicionarConhecimento"><i
+                        class="fas fa-plus"></i> Add</button>
+            </div>
+            <div class="tabela-com-scroll-travado">
+                <table class="tabela-pericias-pro">
+                    <thead>
+                        <tr>
+                            <th class="th-nome">Nome do Saber / Área</th>
+                            <th class="th-num">Gasto</th>
+                            <th class="th-num">Total</th>
+                            <th class="th-del"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each system.proficiency.knowledge.list}}
+                        <tr>
+                            <td><input type="text" name="system.proficiency.knowledge.list.{{@index}}.name"
+                                    value="{{this.name}}" placeholder="Ex: Herbalismo..."
+                                    class="input-text-nome-dinamico" /></td>
+                            <td><input type="number" name="system.proficiency.knowledge.list.{{@index}}.invisted"
+                                    value="{{this.invisted}}" class="input-base-pro input-pericia-pts" /></td>
+                            <td><input type="number" name="system.proficiency.knowledge.list.{{@index}}.total"
+                                    value="{{this.total}}" class="input-base-pro input-pericia-pts" /></td>
+                            <td><button type="button" class="btn-deletar-linha-dinamica"
+                                    data-action="removerConhecimento" data-index="{{@index}}"><i
+                                        class="fas fa-trash"></i></button></td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="4">
+                                <div class="status-vazio-mini"><i class="fas fa-book"></i> Vazio</div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div> <!-- FIM DO CONTÊINER DE EMPILHAMENTO UNIFICADO -->
+</div> <!-- FIM DO WRAPPER MESTRE DE LAYOUT -->

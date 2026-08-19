@@ -52,6 +52,47 @@ Hooks.once("init", async function() {
     return mode;
   });
 
+  Handlebars.registerHelper("getProperty", (obj, path) => {
+        if (!obj || typeof path !== "string" || !path) return "";
+        return foundry.utils.getProperty(obj, path);
+    });
+
+  Handlebars.registerHelper("pValue", (actor, key, field) => {
+        if (!actor || !key || !field) return "";
+        const relativePath = key.replace(/^system\./, "");
+        const fullPath = `system.${relativePath}.${field}`;
+        return foundry.utils.getProperty(actor, fullPath) ?? "";
+    });
+
+  Handlebars.registerHelper("canActivateWeapon", (actor, weaponKey) => {
+    if (!actor || !weaponKey) return false;
+
+    const prof = actor.system?.proficiency;
+    if (!prof?.weapons) return false;
+
+    const inaptitude = !!prof.weapons.inaptitude;
+    const ambimestry = !!prof.weapons.ambimestry;
+
+    if (inaptitude) return false;
+
+    const shortKey = weaponKey.split('.').pop();
+    const activeWeapons = [];
+    for (const key of Object.keys(prof.weapons)) {
+      if (key === 'mastery' || key === 'ambimestry' || key === 'inaptitude') continue;
+      if (prof.weapons[key] && typeof prof.weapons[key] === 'object' && prof.weapons[key].active === true) {
+        activeWeapons.push(key);
+      }
+    }
+
+    if (activeWeapons.includes(shortKey)) return true;
+
+    if (ambimestry) {
+      return activeWeapons.length < 2;
+    }
+
+    return activeWeapons.length < 1;
+  });
+
   CONFIG.Actor.dataModels = {
     character: CharacterData
   };

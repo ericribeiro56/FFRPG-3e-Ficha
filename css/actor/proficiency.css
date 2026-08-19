@@ -1,0 +1,346 @@
+/* ==========================================================================
+   PARTE 1: FRAME MESTRE DA JANELA, ROlAGEM DE PÁGINA E REDIRECIONAMENTO GRID
+   ========================================================================== */
+
+/* Fixa a aba de proficiências em 520px de altura útil, ativando um scroll vertical único de página */
+.ffrpg3e.sheet.actor .pericias-layout-moderno {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 520px !important; /* Limita a altura física da aba na janela do Foundry */
+    width: 100% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important; /* Ativa a rolagem vertical de página inteira */
+    overflow-x: hidden !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+    background-color: rgb(0 0 0 / 0.35) !important;
+    border-radius: 5px !important;
+}
+
+/* Customização fina e sutil da barra de rolagem principal da aba */
+.ffrpg3e.sheet.actor .pericias-layout-moderno::-webkit-scrollbar {
+    width: 5px !important;
+}
+.ffrpg3e.sheet.actor .pericias-layout-moderno::-webkit-scrollbar-thumb {
+    background: rgba(138, 114, 87, 0.3) !important;
+    border-radius: 4px !important;
+}
+
+/* 🎨 BARRA SUPERIOR DE INFORMAÇÕES BIOGRÁFICAS/CONTROLE GERAL */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .top-bar-pericias {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important; 
+    align-items: center !important;
+    gap: 16px !important;
+    flex-wrap: wrap !important;
+    background:rgb(237 235 235 / 61%) !important;
+    border: 1px solid #9c8469 !important; 
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    margin-bottom: 14px !important;
+    flex-shrink: 0 !important; 
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .info-block-top {
+    display: flex !important;
+    flex-direction: column !important; 
+    align-items: center !important;    
+    gap: 2px !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .info-block-lbl {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: #735e47 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .input-top-val {
+    width: 65px !important;
+    height: 22px !important;
+    text-align: center !important;
+    font-size: 13px !important;
+}
+
+/* 🏛️ PROPORÇÃO DE COLUNAS: Força o loop contínuo do HBS a se distribuir em 3 colunas laterais compactas */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .pericias-corpo-colunas-unificado {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* Força 3 colunas de 33.3% de largura na tela */
+    gap: 12px !important;
+    width: 100% !important;
+    height: auto !important; 
+    box-sizing: border-box !important;
+    align-items: start !important; /* Faz com que as caixas NÃO estiquem verticalmente de forma irregular */
+}
+/* ==========================================================================
+   PARTE 2: TRAVA SUPREMA DE ALTURA SIMÉTRICA (195PX) E FIXED TABLE ENGINE
+   ========================================================================== */
+
+/* Força cada card de categoria a ter exatamente a mesma altura fixa de 195px (Simetria de Fileira) */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .card-painel.card-pericia-secao {
+    background: #faf6ec !important;
+    border: 1px solid #c7b9a8 !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: 0 4px 12px rgba(107, 84, 58, 0.08) !important;
+    box-sizing: border-box !important;
+    flex: 0 0 auto !important; 
+    height: 205px !important; /* Altura padrão simétrica baseada no bloco de Atributos */
+    overflow: hidden !important; /* Corta vazamentos para fora do card */
+    margin-bottom: 10px;
+}
+
+/* Linha do Cabeçalho da Gaveta (Título à esquerda, Check de Maestria isolado à direita) */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .camada-1-header {
+    display: flex !important;
+    justify-content: space-between !important; 
+    align-items: center !important;
+    border-bottom: 2px solid #b3a28f !important;
+    padding-bottom: 4px !important;
+    margin-bottom: 6px !important;
+    flex-shrink: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .font-titulo-secao {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #4a3319 !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* 🏛️ ARQUITETURA FIXED DE TABELAS (TRAVA FÍSICA SUPREMA CONTRA DESALINHAMENTOS) */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro {
+    width: 100% !important;
+    table-layout: fixed !important; /* MÁGICA: Obriga o navegador a respeitar a largura das colunas em pixels */
+    border-collapse: collapse !important;
+    border: none !important;
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove a barra escura nativa que o core do Foundry injeta nas tags thead/th */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro thead,
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro thead tr,
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro th {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Estilização das legendas sem a barra escura nativa */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro th {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #735e47 !important; 
+    text-transform: uppercase !important;
+    text-align: center !important;
+    padding: 2px 0 4px 0 !important;
+    border-bottom: 1px solid rgba(179, 162, 143, 0.5) !important;
+}
+
+/* Garante o alinhamento da primeira coluna (Nome) e deixa ela fluida */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro th:first-child,
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro td:first-child {
+    text-align: left !important;
+    width: auto !important;
+}
+
+/* Preserva as colunas numéricas fixas e confortáveis na ponta direita da caixinha */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro th:nth-child(2),
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro th:nth-child(3),
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro th:nth-child(4),
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro td:nth-child(2),
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro td:nth-child(3),
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro td:nth-child(4) {
+    width: 42px !important; /* Largura compacta para as colunas numéricas respirarem sem esmagar o Bôn */
+    min-width: 42px !important;
+    max-width: 42px !important;
+    text-align: center !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro td {
+    padding: 4px 0 !important;
+    border-bottom: 1px dashed rgba(179, 162, 143, 0.3) !important;
+    vertical-align: middle !important;
+    background: transparent !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro tbody tr:last-child td {
+    border-bottom: none !important;
+}
+/* ==========================================================================
+   PARTE 3: BOTÕES EM NANQUIM À ESQUERDA, CONTROLES E TRAVA DE SCROLL LOCAL
+   ========================================================================== */
+
+/* Alinhamento Flex horizontal para o check inline de ativo das Armas */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .wrapper-nome-atv-inline {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+}
+
+/* 💎 Botão de rolar perícia ocupar espaço restante, não 100% fixo */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro td button.btn-roll-moderno {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #4a3319 !important;
+    cursor: pointer !important;
+    transition: color 0.12s ease !important;
+    display: inline-flex !important;
+    width: auto !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    height: auto;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .btn-roll-moderno:hover {
+    color: #b57a1d !important;
+    text-decoration: underline !important;
+}
+
+/* Inputs Numéricos de Edição Base (Pts) */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .input-pericia-pts {
+    width: 34px !important;
+    height: 18px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+    display: block !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .check-arma-atv {
+    width: 14px !important;
+    height: 14px !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+}
+
+/* Exibições Textuais Estáticas de Bônus e Totais */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .val-display-pro {
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    color: #5c4e3c !important;
+    text-align: center !important;
+    display: block !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .val-display-pro.total-destaque-pro {
+    color: #2b1a08 !important;
+    font-weight: 800 !important;
+    font-size: 12.5px !important;
+}
+
+/* 🎯 MODIFICADORES LADO A LADO (AMBIDESTRIA / INABILIDADE) */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .sub-barra-controles-camada-2 {
+    display: flex !important;
+    flex-direction: row !important; /* Garante que fiquem pareados na horizontal */
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 4px 6px !important;
+    background: rgba(138, 114, 87, 0.06) !important;
+    border-radius: 4px !important;
+    margin-bottom: 6px !important;
+    flex-shrink: 0 !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .lbl-mod-weapon-check {
+    font-size: 9.5px !important; 
+    font-weight: 600 !important;
+    color: #4a3319 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .check-alerta-vermelho { color: #a63232 !important; }
+
+/* Trava Visual de Inabilidade: Escurece e desativa cliques se a flag do actor estiver ligada */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .secao-armas-bloqueada .tabela-com-scroll-travado {
+    opacity: 0.35 !important;
+    pointer-events: none !important;
+}
+
+/* Highlight de Linha Ativa (Pinta a linha da Arma Equipada) */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .row-pericia-ativa td {
+    background-color: rgba(181, 122, 29, 0.04) !important;
+}
+.ffrpg3e.sheet.actor .pericias-layout-moderno .row-pericia-ativa td:first-child .wrapper-nome-atv-inline {
+    border-left: 2px solid #b57a1d !important;
+    padding-left: 4px !important;
+}
+
+/* 🔒 SUPORTE TOTAL AO ISBLOCKED: Aplica o visual travado nos campos desativados */
+.ffrpg3e.sheet.actor .pericias-layout-moderno input[disabled] {
+    opacity: 0.45 !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+    pointer-events: none !important;
+}
+.ffrpg3e.sheet.actor .pericias-layout-moderno tr:has(input[disabled]) .btn-roll-moderno,
+.ffrpg3e.sheet.actor .pericias-layout-moderno tr:has(input[disabled]) .val-display-pro {
+    opacity: 0.5 !important;
+    pointer-events: none !important;
+}
+
+/* CONTROLES DE ARRAYS DINÂMICOS (IDIOMAS & CONHECIMENTOS) */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .flex-controles-array { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center; }
+.ffrpg3e.sheet.actor .pericias-layout-moderno .agrupamento-miniblocos-pontos { display: flex !important; gap: 6px !important; }
+.ffrpg3e.sheet.actor .pericias-layout-moderno .minibloco-ponto-vertical { display: flex !important; flex-direction: column !important; align-items: center !important; font-size: 9px !important; font-weight: 700 !important; color: #735e47 !important; text-transform: uppercase !important; }
+.ffrpg3e.sheet.actor .pericias-layout-moderno .input-array-ponto { width: 32px !important; height: 18px !important; font-size: 11px !important; text-align: center !important; padding: 0 !important; }
+.ffrpg3e.sheet.actor .pericias-layout-moderno .btn-add-array-item { background: #b57a1d !important; border: none !important; color: #ffffff !important; font-size: 10px !important; font-weight: 700 !important; text-transform: uppercase !important; padding: 3px 6px !important; border-radius: 4px !important; cursor: pointer !important; width: auto !important; }
+.ffrpg3e.sheet.actor .pericias-layout-moderno .input-text-nome-dinamico { background: transparent !important; border: none !important; border-bottom: 1px dashed #c7b9a8 !important; border-radius: 0 !important; height: 22px !important; padding: 0 4px !important; font-size: 11px !important; font-weight: 600 !important; color: #2b1a08 !important; width: 95% !important; }
+.ffrpg3e.sheet.actor .pericias-layout-moderno .input-text-nome-dinamico:focus { border-bottom: 1px solid #b57a1d !important; background: rgba(255, 255, 255, 0.4) !important; outline: none !important; }
+.ffrpg3e.sheet.actor .pericias-layout-moderno .btn-deletar-linha-dinamica { background: transparent !important; border: none !important; color: #a63232 !important; cursor: pointer !important; font-size: 11px !important; display: block !important; margin: 0 auto !important; }
+
+/* 🚨 TRAVA DE ALTURA INTERNA DAS TABELAS (GERENCIA O SCROLL SE ENTRAR EM LOOP LONGO) */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .card-pericia-secao .tabela-com-scroll-travado,
+.ffrpg3e.sheet.actor .pericias-layout-moderno .card-pericia-secao table.tabela-pericias-pro {
+    display: block !important;
+    height: stretch !important; /* Altura de dados útil descontando o cabeçalho mestre */
+    max-height: 140px !important;
+    overflow-y: auto !important; /* Se estourar 4 linhas, ativa o scroll interno discreto */
+    overflow-x: hidden !important;
+    width: 100% !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .card-pericia-secao table.tabela-pericias-pro thead,
+.ffrpg3e.sheet.actor .pericias-layout-moderno .card-pericia-secao table.tabela-pericias-pro tbody {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important; /* Mantém o alinhamento das colunas numéricas fixo */
+}
+
+/* Customização fina do scrollbar minúsculo interno das tabelas */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .card-pericia-secao table.tabela-pericias-pro::-webkit-scrollbar,
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-com-scroll-travado::-webkit-scrollbar {
+    width: 3px !important;
+}
+.ffrpg3e.sheet.actor .pericias-layout-moderno .card-pericia-secao table.tabela-pericias-pro::-webkit-scrollbar-thumb,
+.ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-com-scroll-travado::-webkit-scrollbar-thumb {
+    background: rgba(138, 114, 87, 0.2) !important;
+    border-radius: 4px !important;
+}
+
+/* ==========================================================================
+   FIM DO ARQUIVO CSS COMPLETAMENTE CORRIGIDO, SIMÉTRICO E PROJETADO CONTRA QUEBRAS
+   ========================================================================== */

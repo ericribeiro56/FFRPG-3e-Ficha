@@ -129,6 +129,7 @@
     <div class="bottom-section">
         <nav class="sheet-tabs tabs" data-tab-group="primary">
             <a class="item" data-tab="atributos">Atributos/Combate</a>
+            <a class="item" data-tab="proficiency">Proeficiência</a>
             <a class="item" data-tab="inventario">Inventário</a>
             <a class="item" data-tab="status">Status</a>
             <a class="item" data-tab="extrato">Extrato</a>
@@ -138,6 +139,9 @@
         <section class="sheet-body">
             <div class="tab" data-tab="atributos">
                 {{> "systems/ffrpg3e/templates/actor/tabs/atributos-sheet.hbs"}}
+            </div>
+            <div class="tab" data-tab="proficiency">
+                {{> "systems/ffrpg3e/templates/actor/tabs/proficiency.hbs"}}
             </div>
             <div class="tab" data-tab="inventario">
                 {{> "systems/ffrpg3e/templates/generics/inventory-sheet.hbs"}}
