@@ -54,17 +54,17 @@
                     <tbody>
                         {{#each this.list}}
                         <tr
-                            class="{{#if ../this.isWeapons}}{{#if (getProperty ../../../actor (concat this.key '.active'))}}row-pericia-ativa{{/if}}{{/if}}">
+                            class="{{#if ../../this.isWeapons}}{{#if (pValue ../../actor this.key 'active')}}row-pericia-ativa{{/if}}{{/if}}">
                             <td>
                                 <div class="wrapper-nome-atv-inline">
-                                    <!-- Renderiza o check de Ativo inline ao lado do label apenas se isWeapons for verdadeiro -->
-                                    {{#if ../this.isWeapons}}
-                                    <input type="checkbox" name="{{this.key}}.active" {{checked (getProperty
-                                        ../../../actor (concat this.key '.active' ))}} class="check-arma-atv" />
+                                    {{#if ../../this.isWeapons}}
+                                      {{#unless this.isBlocked}}
+                                        <input type="checkbox" name="{{this.key}}.active" class="check-arma-atv" />
+                                      {{/unless}}
                                     {{/if}}
                                     <button type="button" class="btn-roll-moderno" data-action="rolarPericia"
                                         data-pericia="{{this.label}}"
-                                        data-teste="{{getProperty ../../../actor (concat this.key '.total')}}">
+                                        data-teste="{{pValue ../../actor this.key 'total'}}">
                                         {{this.label}}
                                     </button>
                                 </div>
@@ -72,21 +72,18 @@
                             <!-- O atributo 'disabled' tranca o input de base se isBlocked for verdadeiro -->
                             <td>
                                 {{#if this.isBlocked}}
-                                <span class="val-display-pro">{{getProperty ../../../actor (concat this.key
-                                    '.base')}}</span>
-                                {{/else}}
+                                <span class="val-display-pro">{{pValue ../../actor this.key 'base'}}</span>
+                                {{else}}
                                 <input type="number" name="{{this.key}}.base"
-                                    value="{{getProperty ../../../actor (concat this.key '.base')}}"
+                                    value="{{pValue ../../actor this.key 'base'}}"
                                     class="input-base-pro input-pericia-pts"/>
                                 {{/if}}
                             </td>
                             <td>
-                                <span class="val-display-pro">{{getProperty ../../../actor (concat this.key
-                                    '.bonus')}}</span>
+                                <span class="val-display-pro">{{pValue ../../actor this.key 'bonus'}}</span>
                             </td>
                             <td>
-                                <span class="val-display-pro total-destaque-pro">{{getProperty ../../../actor (concat
-                                    this.key '.total')}}</span>
+                                <span class="val-display-pro total-destaque-pro">{{pValue ../../actor this.key 'total'}}</span>
                             </td>
                         </tr>
                         {{/each}}
@@ -140,7 +137,8 @@
                             </td>
                             <td><input type="number" name="system.proficiency.language.list.{{@index}}.invisted"
                                     value="{{this.invisted}}" class="input-base-pro input-pericia-pts" /></td>
-                            <td><span class="val-display-pro total-destaque-pro">{{this.total}}</span></td>
+                            <td><input type="number" name="system.proficiency.language.list.{{@index}}.total"
+                                    value="{{this.total}}" class="input-base-pro input-pericia-pts" /></td>
                             <td><button type="button" class="btn-deletar-linha-dinamica" data-action="removerIdioma"
                                     data-index="{{@index}}"><i class="fas fa-trash"></i></button></td>
                         </tr>
@@ -196,7 +194,8 @@
                                     class="input-text-nome-dinamico" /></td>
                             <td><input type="number" name="system.proficiency.knowledge.list.{{@index}}.invisted"
                                     value="{{this.invisted}}" class="input-base-pro input-pericia-pts" /></td>
-                            <td><span class="val-display-pro total-destaque-pro">{{this.total}}</span></td>
+                            <td><input type="number" name="system.proficiency.knowledge.list.{{@index}}.total"
+                                    value="{{this.total}}" class="input-base-pro input-pericia-pts" /></td>
                             <td><button type="button" class="btn-deletar-linha-dinamica"
                                     data-action="removerConhecimento" data-index="{{@index}}"><i
                                         class="fas fa-trash"></i></button></td>

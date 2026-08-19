@@ -13,7 +13,8 @@
     overflow-x: hidden !important;
     padding: 10px !important;
     box-sizing: border-box !important;
-    background-color: rgb(0 0 0 / 0.35) !important
+    background-color: rgb(0 0 0 / 0.35) !important;
+    border-radius: 5px !important;
 }
 
 /* Customização fina e sutil da barra de rolagem principal da aba */
@@ -182,26 +183,28 @@
 .ffrpg3e.sheet.actor .pericias-layout-moderno .wrapper-nome-atv-inline {
     display: flex !important;
     align-items: center !important;
-    gap: 4px !important; 
+    gap: 6px !important;
     width: 100% !important;
 }
 
-/* 💎 ALINHAMENTO COMPACTO E EXCLUSIVO À ESQUERDA PARA OS BOTÕES DE ROLAGEM */
+/* 💎 Botão de rolar perícia ocupar espaço restante, não 100% fixo */
 .ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro td button.btn-roll-moderno {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
     margin: 0 !important;
-    text-align: left !important; /* CORREÇÃO SOLICITADA: Força o nome na extrema esquerda */
+    text-align: left !important;
     justify-content: flex-start !important;
-    font-size: 12px !important; 
+    font-size: 12px !important;
     font-weight: 700 !important;
-    color: #4a3319 !important; /* Marrom escuro rústico nanquim */
+    color: #4a3319 !important;
     cursor: pointer !important;
     transition: color 0.12s ease !important;
-    display: block !important;
-    width: 100% !important;
+    display: inline-flex !important;
+    width: auto !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
     white-space: normal !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -220,6 +223,13 @@
     margin: 0 auto !important;
     text-align: center !important;
     display: block !important;
+}
+
+.ffrpg3e.sheet.actor .pericias-layout-moderno .check-arma-atv {
+    width: 14px !important;
+    height: 14px !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
 }
 
 /* Exibições Textuais Estáticas de Bônus e Totais */

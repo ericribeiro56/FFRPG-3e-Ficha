@@ -1,5 +1,5 @@
 import { safeInt, obterModificadorArmadura, getSafeValue, safeArray } from "./core/utils.js";
-import { ATTRIBUTES_KEYS, COMBAT_KEYS, ITEM_TYPE_CATEGORY_MAP, MODIFICADORES_STATUS, DEFAULT_BONUS_LIST, EQUIPPABLE_BONUS_TARGETS } from "./core/constants.js";
+import { ATTRIBUTES_KEYS, COMBAT_KEYS, ITEM_TYPE_CATEGORY_MAP, MODIFICADORES_STATUS, DEFAULT_BONUS_LIST, EQUIPPABLE_BONUS_TARGETS, PROFICIENCY_BASIC_MAP } from "./core/constants.js";
 import { Field } from "./core/fields-utils.js";
 
 
@@ -324,6 +324,9 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
     // 10. Aplica modificador de armadura por atributo (só armadura e armadura_magica)
     this._applyArmorModifiers();
+
+    // 11. Calcula totais de proficiência (base + bonus + mastery)
+    this._calculateProficiency();
   }
 
   _applyAttributePercentBonuses() {
@@ -373,6 +376,31 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       const mod = obterModificadorArmadura(espirito);
       this.combate.armadura_magica.total = Math.round(getSafeValue(this.combate.armadura_magica.total) * mod);
     }
+  }
+
+  _calculateProficiency() {
+    const prof = this.proficiency;
+    if (!prof) return;
+
+    for (const group of PROFICIENCY_BASIC_MAP) {
+      const masteryPath = group.groupMastery;
+      const relativeMasteryPath = masteryPath.replace(/^system\./, "");
+      const masteryValue = getSafeValue(foundry.utils.getProperty(this, relativeMasteryPath), 0);
+      const masteryBonus = masteryValue ? 20 : 0;
+
+      for (const skill of group.list) {
+        const relativeSkillPath = skill.key.replace(/^system\./, "");
+        const skillData = foundry.utils.getProperty(this, relativeSkillPath);
+        if (!skillData) continue;
+
+        const base = getSafeValue(skillData.base);
+        const bonus = getSafeValue(skillData.bonus);
+        skillData.total = base + bonus + masteryBonus;
+      }
+    }
+
+    // TODO: Quando jobs aplicarem bônus de perícia como ActiveEffect,
+    // integrar aqui somando os efeitos ativos antes de calcular o total.
   }
 
   _recalculateMaxHpMpByTable() {

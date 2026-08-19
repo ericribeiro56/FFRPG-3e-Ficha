@@ -176,7 +176,6 @@ export const CLASS_LIST = {
 
 export const PROFICIENCY_BASIC_MAP = [
     {
-      groupkey: "system.proficiency.performances",
       groupLabel: "Perícias Artísticas",
       groupMastery: "system.proficiency.performances.mastery",
       list: [
@@ -188,32 +187,29 @@ export const PROFICIENCY_BASIC_MAP = [
       ]
     },
     {
-      groupkey: "system.proficiency.basics",
       groupLabel: "Perícias Gerais",
       groupMastery: "system.proficiency.basics.mastery",
       list: [
-        { key: "system.proficiency.acrobatics", label: "Acrobacias", isBlocked: false },
-        { key: "system.proficiency.awareness", label: "Prontidão", isBlocked: false },
-        { key: "system.proficiency.coocking", label: "Culinária", isBlocked: false },
-        { key: "system.proficiency.bargain", label: "Negociar", isBlocked: false }
+        { key: "system.proficiency.basics.acrobatics", label: "Acrobacias", isBlocked: false },
+        { key: "system.proficiency.basics.awareness", label: "Prontidão", isBlocked: false },
+        { key: "system.proficiency.basics.coocking", label: "Culinária", isBlocked: false },
+        { key: "system.proficiency.basics.bargain", label: "Negociar", isBlocked: false }
       ]
     },
     {
-      groupkey: "system.proficiency.crafts",
       groupLabel: "Perícias Técnicas",
       groupMastery: "system.proficiency.crafts.mastery",
       list: [
-        { key: "system.proficiency.achemic", label: "Alquimia", isBlocked: false },
-        { key: "system.proficiency.explosive", label: "Explosivos", isBlocked: false },
-        { key: "system.proficiency.heal", label: "Cura", isBlocked: false },
-        { key: "system.proficiency.tinkering", label: "Inventar", isBlocked: false },
-        { key: "system.proficiency.repair", label: "Reparos", isBlocked: false },
-        { key: "system.proficiency.system", label: "Sistemas", isBlocked: false },
-        { key: "system.proficiency.vehicle", label: "Veículos", isBlocked: false }
+        { key: "system.proficiency.crafts.achemic", label: "Alquimia", isBlocked: false },
+        { key: "system.proficiency.crafts.explosive", label: "Explosivos", isBlocked: false },
+        { key: "system.proficiency.crafts.heal", label: "Cura", isBlocked: false },
+        { key: "system.proficiency.crafts.tinkering", label: "Inventar", isBlocked: false },
+        { key: "system.proficiency.crafts.repair", label: "Reparos", isBlocked: false },
+        { key: "system.proficiency.crafts.system", label: "Sistemas", isBlocked: false },
+        { key: "system.proficiency.crafts.vehicle", label: "Veículos", isBlocked: false }
       ]
     },
     {
-      groupkey: "system.proficiency.social",
       groupLabel: "Perícias Sociais",
       groupMastery: "system.proficiency.social.mastery",
       list: [
@@ -225,7 +221,6 @@ export const PROFICIENCY_BASIC_MAP = [
       ]
     },
     {
-      groupkey: "system.proficiency.weapons",
       groupLabel: "Perícias com Armas",
       groupMastery: "system.proficiency.weapons.mastery",
       isWeapons: true,
@@ -247,22 +242,20 @@ export const PROFICIENCY_BASIC_MAP = [
       ]
     },
     {
-      groupkey: "system.proficiency.wilds",
       groupLabel: "Perícias Selvagens",
       groupMastery: "system.proficiency.wilds.mastery",
       list: [
-        { key: "system.proficiency.animal_training", label: "Treinar Animais", isBlocked: false },
-        { key: "system.proficiency.climbing", label: "Escalada", isBlocked: false },
-        { key: "system.proficiency.navigation", label: "Navegação", isBlocked: false },
-        { key: "system.proficiency.loot", label: "Pilhagem", isBlocked: false },
-        { key: "system.proficiency.ride", label: "Cavalgar", isBlocked: false },
-        { key: "system.proficiency.survival", label: "Sobrevivência", isBlocked: false },
-        { key: "system.proficiency.swimming", label: "Natação", isBlocked: false },
-        { key: "system.proficiency.tracker", label: "Rastreamento", isBlocked: false }
+        { key: "system.proficiency.wilds.animal_training", label: "Treinar Animais", isBlocked: false },
+        { key: "system.proficiency.wilds.climbing", label: "Escalada", isBlocked: false },
+        { key: "system.proficiency.wilds.navigation", label: "Navegação", isBlocked: false },
+        { key: "system.proficiency.wilds.loot", label: "Pilhagem", isBlocked: false },
+        { key: "system.proficiency.wilds.ride", label: "Cavalgar", isBlocked: false },
+        { key: "system.proficiency.wilds.survival", label: "Sobrevivência", isBlocked: false },
+        { key: "system.proficiency.wilds.swimming", label: "Natação", isBlocked: false },
+        { key: "system.proficiency.wilds.tracker", label: "Rastreamento", isBlocked: false }
       ]
     },
     {
-      groupkey: "system.proficiency.underworld",
       groupLabel: "Perícias Ladinas",
       groupMastery: "system.proficiency.underworld.mastery",
       list: [
@@ -277,7 +270,6 @@ export const PROFICIENCY_BASIC_MAP = [
       ]
     },
     {
-      groupkey: "system.proficiency.academics",
       groupLabel: "Ofícios",
       groupMastery: "system.proficiency.academics.mastery",
       list: [

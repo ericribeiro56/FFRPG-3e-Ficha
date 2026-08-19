@@ -49,7 +49,12 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       deletarStatusJogador: PlayerSheet.prototype.deletarStatusJogador,
       toggleGroup: PlayerSheet.prototype.toggleGroup,
       equiparItem: PlayerSheet.prototype.equiparItem,
-      desequiparItem: PlayerSheet.prototype.desequiparItem
+      desequiparItem: PlayerSheet.prototype.desequiparItem,
+      rolarPericia: PlayerSheet.prototype.rolarPericia,
+      adicionarIdioma: PlayerSheet.prototype.adicionarIdioma,
+      removerIdioma: PlayerSheet.prototype.removerIdioma,
+      adicionarConhecimento: PlayerSheet.prototype.adicionarConhecimento,
+      removerConhecimento: PlayerSheet.prototype.removerConhecimento
     }
   };
 
@@ -130,6 +135,60 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this._bindTabs();
     this._bindImagePicker();
     this._restoreProfileImage();
+    this._restoreProficiencyScroll();
+    this._applyWeaponActiveLimits();
+  }
+
+  _restoreProficiencyScroll() {
+    if (this._pendingProficiencyScrollTop) {
+      const container = this.element.querySelector(".pericias-layout-moderno");
+      if (container) {
+        container.scrollTop = this._pendingProficiencyScrollTop;
+      }
+      this._pendingProficiencyScrollTop = 0;
+    }
+  }
+
+  _applyWeaponActiveLimits() {
+    const actor = this.document;
+    const prof = actor.system?.proficiency;
+    if (!prof?.weapons) return;
+
+    const inaptitude = !!prof.weapons.inaptitude;
+    const ambimestry = !!prof.weapons.ambimestry;
+
+    const activeWeapons = [];
+    for (const key of Object.keys(prof.weapons)) {
+      if (key === 'mastery' || key === 'ambimestry' || key === 'inaptitude') continue;
+      if (prof.weapons[key] && typeof prof.weapons[key] === 'object' && prof.weapons[key].active === true) {
+        activeWeapons.push(key);
+      }
+    }
+
+    const checkboxes = this.element.querySelectorAll('.check-arma-atv');
+    checkboxes.forEach((checkbox) => {
+      const name = checkbox.getAttribute('name');
+      if (!name) return;
+
+      const key = name.replace('.active', '');
+      const shortKey = key.split('.').pop();
+
+      if (inaptitude) {
+        checkbox.disabled = true;
+        return;
+      }
+
+      if (activeWeapons.includes(shortKey)) {
+        checkbox.disabled = false;
+        checkbox.checked = true;
+      } else if (ambimestry) {
+        checkbox.disabled = activeWeapons.length >= 2;
+        checkbox.checked = false;
+      } else {
+        checkbox.disabled = activeWeapons.length >= 1;
+        checkbox.checked = false;
+      }
+    });
   }
 
   _restoreProfileImage() {
@@ -161,6 +220,16 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       });
     }
     this.controladorAbas.bind(this.element);
+
+    if (!this._proficiencyScrollFixBound) {
+      this._proficiencyScrollFixBound = true;
+      this.element.addEventListener("change", (event) => {
+        const container = this.element.querySelector(".pericias-layout-moderno");
+        if (container) {
+          this._pendingProficiencyScrollTop = container.scrollTop;
+        }
+      });
+    }
   }
 
   _abrirDialogGil(event, target) {
@@ -871,6 +940,102 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     await efeitoNoJogador.delete();
     await MessageService.createEffectRemovedMessage(this.document, efeitoNoJogador.name);
+  }
+
+  async rolarPericia(event, target) {
+    const nomePericia = target.dataset.pericia;
+    const valorTeste = target.dataset.teste;
+    if (!nomePericia || !valorTeste) return;
+
+    const rollFormula = `${valorTeste}-d100`;
+    const roll = await new Roll(rollFormula).evaluate();
+
+    await roll.toMessage({
+      flavor: `Teste de ${nomePericia}`,
+      speaker: ChatMessage.getSpeaker({ actor: this.document })
+    });
+  }
+
+  async adicionarIdioma(event, target) {
+    event.preventDefault();
+    if (!this.document.isOwner && !game.user.isGM) {
+      ui.notifications.warn("Sem permissão para editar idiomas.");
+      return;
+    }
+
+    const scrollContainer = this.element.querySelector(".pericias-layout-moderno");
+    const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+
+    const list = safeArrayCopy(this.document.system.proficiency.language.list || []);
+    list.push({ name: "", invisted: 0, total: 0 });
+
+    await this.document.update({ "system.proficiency.language.list": list });
+    await this.render();
+
+    if (scrollContainer) scrollContainer.scrollTop = scrollTop;
+  }
+
+  async removerIdioma(event, target) {
+    event.preventDefault();
+    if (!this.document.isOwner && !game.user.isGM) {
+      ui.notifications.warn("Sem permissão para remover idiomas.");
+      return;
+    }
+
+    const scrollContainer = this.element.querySelector(".pericias-layout-moderno");
+    const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+
+    const index = safeInt(target.dataset.index, -1);
+    if (index < 0) return;
+
+    const list = safeArrayCopy(this.document.system.proficiency.language.list || []);
+    list.splice(index, 1);
+
+    await this.document.update({ "system.proficiency.language.list": list });
+    await this.render();
+
+    if (scrollContainer) scrollContainer.scrollTop = scrollTop;
+  }
+
+  async adicionarConhecimento(event, target) {
+    event.preventDefault();
+    if (!this.document.isOwner && !game.user.isGM) {
+      ui.notifications.warn("Sem permissão para editar conhecimentos.");
+      return;
+    }
+
+    const scrollContainer = this.element.querySelector(".pericias-layout-moderno");
+    const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+
+    const list = safeArrayCopy(this.document.system.proficiency.knowledge.list || []);
+    list.push({ name: "", invisted: 0, total: 0 });
+
+    await this.document.update({ "system.proficiency.knowledge.list": list });
+    await this.render();
+
+    if (scrollContainer) scrollContainer.scrollTop = scrollTop;
+  }
+
+  async removerConhecimento(event, target) {
+    event.preventDefault();
+    if (!this.document.isOwner && !game.user.isGM) {
+      ui.notifications.warn("Sem permissão para remover conhecimentos.");
+      return;
+    }
+
+    const scrollContainer = this.element.querySelector(".pericias-layout-moderno");
+    const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+
+    const index = safeInt(target.dataset.index, -1);
+    if (index < 0) return;
+
+    const list = safeArrayCopy(this.document.system.proficiency.knowledge.list || []);
+    list.splice(index, 1);
+
+    await this.document.update({ "system.proficiency.knowledge.list": list });
+    await this.render();
+
+    if (scrollContainer) scrollContainer.scrollTop = scrollTop;
   }
 
 }
