@@ -173,3 +173,120 @@ export const CLASS_LIST = {
   mage: "Mago",
   adept: "Adepto"
 }
+
+export const PROFICIENCY_BASIC_MAP = [
+    {
+      groupkey: "system.proficiency.performances",
+      groupLabel: "Perícias Artísticas",
+      groupMastery: "system.proficiency.basics.mastery",
+      list: [
+        { key: "system.proficiency.performances.arts", label: "Artes", isBlocked: false },
+        { key: "system.proficiency.performances.dance", label: "Dança", isBlocked: false },
+        { key: "system.proficiency.performances.instruments", label: "Instrumentos", isBlocked: false },
+        { key: "system.proficiency.performances.vocal", label: "Canto", isBlocked: false },
+        { key: "system.proficiency.performances.acting", label: "Atuação", isBlocked: false }
+      ]
+    },
+    {
+      groupkey: "system.proficiency.basics",
+      groupLabel: "Perícias Gerais",
+      groupMastery: "system.proficiency.basics.mastery",
+      list: [
+        { key: "system.proficiency.acrobatics", label: "Acrobacias", isBlocked: false },
+        { key: "system.proficiency.awareness", label: "Prontidão", isBlocked: false },
+        { key: "system.proficiency.coocking", label: "Culinária", isBlocked: false },
+        { key: "system.proficiency.bargain", label: "Negociar", isBlocked: false }
+      ]
+    },
+    {
+      groupkey: "system.proficiency.crafts",
+      groupLabel: "Perícias Técnicas",
+      groupMastery: "system.proficiency.crafts.mastery",
+      list: [
+        { key: "system.proficiency.achemic", label: "Alquimia", isBlocked: false },
+        { key: "system.proficiency.explosive", label: "Explosivos", isBlocked: false },
+        { key: "system.proficiency.heal", label: "Cura", isBlocked: false },
+        { key: "system.proficiency.tinkering", label: "Inventar", isBlocked: false },
+        { key: "system.proficiency.repair", label: "Reparos", isBlocked: false },
+        { key: "system.proficiency.system", label: "Sistemas", isBlocked: false },
+        { key: "system.proficiency.vehicle", label: "Veículos", isBlocked: false }
+      ]
+    },
+    {
+      groupkey: "system.proficiency.social",
+      groupLabel: "Perícias Sociais",
+      groupMastery: "system.proficiency.social.mastery",
+      list: [
+        { key: "system.proficiency.social.etiquette", label: "Etiqueta", isBlocked: false },
+        { key: "system.proficiency.social.intimation", label: "Intimidação", isBlocked: false },
+        { key: "system.proficiency.social.leadership", label: "Liderança", isBlocked: false },
+        { key: "system.proficiency.social.deception", label: "Lábia", isBlocked: false },
+        { key: "system.proficiency.social.seduction", label: "Sedução", isBlocked: false }
+      ]
+    },
+    {
+      groupkey: "system.proficiency.weapons",
+      groupLabel: "Perícias com Armas",
+      groupMastery: "system.proficiency.weapons.mastery",
+      isWeapons: true,
+      hasModifiers: true,
+      list: [
+        { key: "system.proficiency.weapons.axe", label: "Machados", isBlocked: false },
+        { key: "system.proficiency.weapons.bow", label: "Arcos", isBlocked: false },
+        { key: "system.proficiency.weapons.fight", label: "Briga", isBlocked: false },
+        { key: "system.proficiency.weapons.staff", label: "Cajados", isBlocked: false },
+        { key: "system.proficiency.weapons.whip", label: "Chicotes", isBlocked: false },
+        { key: "system.proficiency.weapons.fire_weapon", label: "Armas de Fogo", isBlocked: false },
+        { key: "system.proficiency.weapons.knife", label: "Facas", isBlocked: false },
+        { key: "system.proficiency.weapons.haste", label: "Armas de Haste", isBlocked: false },
+        { key: "system.proficiency.weapons.sword", label: "Espadas", isBlocked: false },
+        { key: "system.proficiency.weapons.throw", label: "Armas de Arremesso", isBlocked: false },
+        { key: "system.proficiency.weapons.two_weapon", label: "Duas Armas", isBlocked: false },
+        { key: "system.proficiency.weapons.fixed_weapon", label: "S. de Armas", isBlocked: false },
+        { key: "system.proficiency.performances.instruments", label: "Instrumentos" , isBlocked: true },
+      ]
+    },
+    {
+      groupkey: "system.proficiency.wilds",
+      groupLabel: "Perícias Selvagens",
+      groupMastery: "system.proficiency.wilds.mastery",
+      list: [
+        { key: "system.proficiency.animal_training", label: "Treinar Animais", isBlocked: false },
+        { key: "system.proficiency.climbing", label: "Escalada", isBlocked: false },
+        { key: "system.proficiency.navigation", label: "Navegação", isBlocked: false },
+        { key: "system.proficiency.loot", label: "Pilhagem", isBlocked: false },
+        { key: "system.proficiency.ride", label: "Cavalgar", isBlocked: false },
+        { key: "system.proficiency.survival", label: "Sobrevivência", isBlocked: false },
+        { key: "system.proficiency.swimming", label: "Natação", isBlocked: false },
+        { key: "system.proficiency.tracker", label: "Rastreamento", isBlocked: false }
+      ]
+    },
+    {
+      groupkey: "system.proficiency.underworld",
+      groupLabel: "Perícias Ladinas",
+      groupMastery: "system.proficiency.underworld.mastery",
+      list: [
+        { key: "system.proficiency.underworld.disguise", label: "Disfarces", isBlocked: false },
+        { key: "system.proficiency.underworld.escape", label: "Fuga", isBlocked: false },
+        { key: "system.proficiency.underworld.games", label: "Jogos", isBlocked: false },
+        { key: "system.proficiency.underworld.lockpick", label: "Abrir Fechaduras", isBlocked: false },
+        { key: "system.proficiency.underworld.pickpocket", label: "Punga", isBlocked: false },
+        { key: "system.proficiency.underworld.stealth", label: "Furtividade", isBlocked: false },
+        { key: "system.proficiency.underworld.streetwise", label: "Manha", isBlocked: false },
+        { key: "system.proficiency.underworld.trap", label: "Armadilhas", isBlocked: false }
+      ]
+    },
+    {
+      groupkey: "system.proficiency.academics",
+      groupLabel: "Ofícios",
+      groupMastery: "system.proficiency.academics.mastery",
+      list: [
+        { key: "system.proficiency.academics.investigation", label: "Investigação", isBlocked: false },
+        { key: "system.proficiency.academics.carpinter", label: "Carpinteiro", isBlocked: false },
+        { key: "system.proficiency.academics.jeweler", label: "Joalheiro", isBlocked: false },
+        { key: "system.proficiency.academics.armorsmith", label: "Armeiro", isBlocked: false },
+        { key: "system.proficiency.academics.tailor", label: "Alfaiate", isBlocked: false },
+        { key: "system.proficiency.academics.sculpor", label: "Escultor", isBlocked: false }
+      ]
+    }
+  ];

@@ -52,6 +52,11 @@ Hooks.once("init", async function() {
     return mode;
   });
 
+  Handlebars.registerHelper("getProperty", (obj, path) => {
+        if (!obj || typeof path !== "string" || !path) return "";
+        return foundry.utils.getProperty(obj, path);
+    });
+
   CONFIG.Actor.dataModels = {
     character: CharacterData
   };

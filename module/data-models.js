@@ -162,6 +162,109 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         damage_bonus: Field.Number(1)
       }),
 
+      proficiency:Field.Schema({
+        max_points:Field.Number(0),
+        language:Field.Schema({
+          general_points:Field.Number(0),
+          especialized_points:Field.Number(0),
+          list:Field.Array(Field.Schema({
+            name:Field.String(""),
+            invisted:Field.Number(0),
+            total:Field.Number(0)
+          })),
+        }),
+        knowledge:Field.Schema({
+          general_points:Field.Number(0),
+          especialized_points:Field.Number(0),
+          list:Field.Array(Field.Schema({
+            name:Field.String(""),
+            invisted:Field.Number(0),
+            total:Field.Number(0)
+          })),
+        }),
+        performances:Field.Schema({
+          mastery:Field.Boolean(false),
+          arts:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          dance:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          instruments:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          vocal:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          acting:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        }),
+        basics:Field.Schema({
+          mastery:Field.Boolean(false),
+          acrobatics:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          awareness:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          coocking:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          bargain:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        }),
+        crafts:Field.Schema({
+          mastery:Field.Boolean(false),
+          achemic:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          explosive:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          heal:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          tinkering:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          repair:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          system:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          vehicle:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        }),
+        social:Field.Schema({
+          mastery:Field.Boolean(false),
+          etiquette:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          intimation:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          leadership:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          deception:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          seduction:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+        }),
+        weapons:Field.Schema({
+          mastery:Field.Boolean(false),
+          ambimestry:Field.Boolean(false),
+          inaptitude:Field.Boolean(false),
+          axe:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          bow:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          fight:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          staff:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          whip:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          fire_weapon:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          knife:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          haste:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          sword:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          throw:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          two_weapon:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          fixed_weapon:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        }),
+        wilds:Field.Schema({
+          mastery:Field.Boolean(false),
+          animal_training:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          climbing:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          navigation:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          loot:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          ride:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          survival:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          swimming:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          tracker:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+        }),
+        underworld:Field.Schema({
+          mastery:Field.Boolean(false),
+          disguise:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          escape:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          games:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          lockpick:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          pickpocket:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          stealth:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          streetwise:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          trap:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        }),
+        academics:Field.Schema({
+          mastery:Field.Boolean(false),
+          investigation:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          carpinter:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          jeweler:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          armorsmith:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          tailor:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          sculpor:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        })
+      }),
+
       expert_class: Field.Schema({
         expert_atributo: Field.String(""),
         expert_pericia: Field.String("")

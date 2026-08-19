@@ -12,7 +12,7 @@ import {
 
 import { DropDispatcher } from "../core/drop-handler.js";
 import { buildEffectContext } from "../core/context-builders.js";
-import { INVENTORY_SLOT_TAG_MAP, OPCOES_DEFESAS_HP, OPCOES_PERCENTUAIS_CURA, opcoesTaxasGil } from "../core/constants.js";
+import { INVENTORY_SLOT_TAG_MAP, OPCOES_DEFESAS_HP, OPCOES_PERCENTUAIS_CURA, opcoesTaxasGil, PROFICIENCY_BASIC_MAP } from "../core/constants.js";
 import { applyEquipmentEffect, removeEquipmentEffect } from "../core/equipment-service.js";
 import { MessageService } from "../core/message-service.js";
 
@@ -104,6 +104,8 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.passiveDebuffEffectList = effectCategories.passiveDebuffEffectList || [];
     context.debuffEffectList = effectCategories.debuffEffectList || [];
     context.listaNiveis = this._buildLevelProgressionContext();
+
+    context.proficiencyListData = PROFICIENCY_BASIC_MAP;
 
     const equipmentContext = this._buildEquipmentContext();
     Object.assign(context, equipmentContext);
@@ -877,6 +879,7 @@ Hooks.once("init", async function () {
   await foundry.applications.handlebars.loadTemplates([
     "systems/ffrpg3e/templates/actor/tabs/atributos-sheet.hbs",
     "systems/ffrpg3e/templates/actor/tabs/extrato-sheet.hbs",
+    "systems/ffrpg3e/templates/actor/tabs/proficiency.hbs",
     "systems/ffrpg3e/templates/actor/tabs/status-sheet.hbs",
     "systems/ffrpg3e/templates/actor/tabs/background-sheet.hbs",
     "systems/ffrpg3e/templates/generics/inventory-sheet.hbs",
