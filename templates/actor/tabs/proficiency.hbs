@@ -71,11 +71,14 @@
                             </td>
                             <!-- O atributo 'disabled' tranca o input de base se isBlocked for verdadeiro -->
                             <td>
-                                {{#unless this.isBlocked}}
+                                {{#if this.isBlocked}}
+                                <span class="val-display-pro">{{getProperty ../../../actor (concat this.key
+                                    '.base')}}</span>
+                                {{/else}}
                                 <input type="number" name="{{this.key}}.base"
                                     value="{{getProperty ../../../actor (concat this.key '.base')}}"
                                     class="input-base-pro input-pericia-pts"/>
-                                {{/unless}}
+                                {{/if}}
                             </td>
                             <td>
                                 <span class="val-display-pro">{{getProperty ../../../actor (concat this.key
@@ -161,12 +164,12 @@
             </div>
             <div class="sub-barra-controles-camada-2 flex-controles-array">
                 <div class="agrupamento-miniblocos-pontos">
-                    <span>P.Ger</span>
+                    <span>P.G</span>
                     <input type="number" name="system.proficiency.knowledge.general_points"
                         value="{{system.proficiency.knowledge.general_points}}"
                         class="input-base-pro input-array-ponto" />
 
-                    <span>P.Esp</span>
+                    <span>P.E</span>
                     <input type="number" name="system.proficiency.knowledge.especialized_points"
                         value="{{system.proficiency.knowledge.especialized_points}}"
                         class="input-base-pro input-array-ponto" />

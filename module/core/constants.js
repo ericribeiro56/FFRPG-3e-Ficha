@@ -178,7 +178,7 @@ export const PROFICIENCY_BASIC_MAP = [
     {
       groupkey: "system.proficiency.performances",
       groupLabel: "Perícias Artísticas",
-      groupMastery: "system.proficiency.basics.mastery",
+      groupMastery: "system.proficiency.performances.mastery",
       list: [
         { key: "system.proficiency.performances.arts", label: "Artes", isBlocked: false },
         { key: "system.proficiency.performances.dance", label: "Dança", isBlocked: false },
