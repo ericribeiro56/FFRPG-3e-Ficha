@@ -123,8 +123,6 @@ class GearDropHandler {
     const isShield = tags.some(t => t === "shield");
     const isAccessory = tags.some(t => t === "accessory");
 
-    console.log(`[FFRPG3E][DROP] item=${name}, type=${type}, tags=${JSON.stringify(tags)}, isAccessory=${isAccessory}, isArmor=${isArmor}`);
-
     if (isConsumable && sourceId) {
       const gearTypes = ["gear", "gear_weapon", "gear_armor", "gear_consumable"];
       const existente = actor.items.find(i => 

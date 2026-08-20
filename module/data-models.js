@@ -736,6 +736,10 @@ export class WeaponModel extends GearBasicModel {
   static defineSchema() {
     const gear = super.defineSchema();
 
+    if(gear.tags.initial || !gear.tags.initial.includes("weapon")){
+      gear.tags.initial.push("weapon")
+    }
+
     if (gear.slot) {
       gear.slot.initial = "weapon";
     }
@@ -786,6 +790,10 @@ export class ArmorModel extends GearBasicModel {
   static defineSchema() {
     const gear = super.defineSchema();
 
+    if(gear.tags.initial || !gear.tags.initial.includes("armor")){
+      gear.tags.initial.push("armor")
+    }
+
     if (gear.slot) {
       gear.slot.initial = "accessory";
     }
@@ -800,12 +808,6 @@ export class ArmorModel extends GearBasicModel {
 
   static async preCreate(data, options, userId) {
     super.preCreate?.(data, options, userId);
-
-    const tags = safeArray(data.system?.tags);
-    if (!tags.includes("armor")) {
-      tags.push("armor");
-    }
-    data.updateSource({ "system.tags": tags });
 
     if (!safeArray(data.system?.bonusList).length) {
       data.updateSource({ "system.bonusList": DEFAULT_BONUS_LIST });

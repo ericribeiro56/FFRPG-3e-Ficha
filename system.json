@@ -3,7 +3,7 @@
   "name": "ffrpg3e",
   "title": "ffrpg-3e",
   "description": "Sistema do ffrpg 3e para o foundry v14",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "compatibility": {
     "minimum": "14",
     "verified": "14"

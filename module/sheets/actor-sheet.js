@@ -15,6 +15,7 @@ import { buildEffectContext } from "../core/context-builders.js";
 import { INVENTORY_SLOT_TAG_MAP, OPCOES_DEFESAS_HP, OPCOES_PERCENTUAIS_CURA, opcoesTaxasGil, PROFICIENCY_BASIC_MAP } from "../core/constants.js";
 import { applyEquipmentEffect, removeEquipmentEffect } from "../core/equipment-service.js";
 import { MessageService } from "../core/message-service.js";
+import { ConsumableBasicModel, ItemModel } from "../data-models.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -505,6 +506,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (!itemOriginal) return super._onDropItem(event, data);
 
     await DropDispatcher.dispatch(this.document, itemOriginal, event, data);
+    return true;
   }
 
   _buildEffectContext() {
@@ -534,9 +536,9 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   //Aux para adiciona ao grupo corretamente
   addToGroup(item, itemGroups) {
-    const slot = item.system?.slot;
+    const slot = item.system.slot;
 
-    const grupoAlvo = INVENTORY_SLOT_TAG_MAP[slot] ?? "others";
+    const grupoAlvo = INVENTORY_SLOT_TAG_MAP[slot] || "others";
 
     itemGroups[grupoAlvo].push(item);
   }
@@ -564,11 +566,12 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const equippableItens = this.document.items.filter(item =>
       equippableTag.some(tag => safeArray(item.system?.tags).includes(tag))
     );
-
-    const consumabelItens = this.document.items.filter(item =>
-      !equippableTag.some(tag => safeArray(item.system?.tags).includes(tag))
+    
+    const consumabelItens = this.document.items.filter(
+      (item) => 
+        item.system instanceof ConsumableBasicModel &&
+        !equippableTag.some(tag => safeArray(item.system?.tags).includes(tag))
     );
-
 
     const equippedList = [];
 
