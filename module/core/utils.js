@@ -89,3 +89,13 @@ export function sortByLabel(options) {
 export function sortObjectByValue(obj) {
   return Object.fromEntries(Object.entries(obj).sort((a, b) => (a[1] || "").localeCompare(b[1] || "")));
 }
+
+export function getAttributeValue(dataModel, path) {
+  if (!path || typeof path !== "string") return undefined;
+  
+  // Remove "system." do início se existir
+  const cleanPath = path.replace(/^system\./, "");
+  
+  // Busca o valor de forma segura dentro do modelo de dados
+  return foundry.utils.getProperty(dataModel, cleanPath);
+}

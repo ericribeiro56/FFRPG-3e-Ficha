@@ -200,7 +200,7 @@ export const PROFICIENCY_BASIC_MAP = [
       groupLabel: "Perícias Técnicas",
       groupMastery: "system.proficiency.crafts.mastery",
       list: [
-        { key: "system.proficiency.crafts.achemic", label: "Alquimia", isBlocked: false },
+        { key: "system.proficiency.crafts.alchemic", label: "Alquimia", isBlocked: false },
         { key: "system.proficiency.crafts.explosive", label: "Explosivos", isBlocked: false },
         { key: "system.proficiency.crafts.heal", label: "Cura", isBlocked: false },
         { key: "system.proficiency.crafts.tinkering", label: "Inventar", isBlocked: false },
