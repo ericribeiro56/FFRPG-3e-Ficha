@@ -1,6 +1,6 @@
 {
   "TYPES.Item.effects": "Efeito",
-  "TYPES.Item.job": "Classe",
+  "TYPES.Item.job": "Job",
   "TYPES.Item.race": "Raça",
   "TYPES.Item.gear_weapon": "Arma",
   "TYPES.Item.gear_armor": "Equipamento",
