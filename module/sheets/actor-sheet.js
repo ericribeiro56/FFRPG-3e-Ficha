@@ -72,21 +72,21 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     context.opcoesAtributos = sortObjectByValue({
       "": "Nenhum Atributo",
-      "agilidade": "Agilidade",
-      "magia": "Magia",
-      "espirito": "Espírito"
+      "system.atributos.agilidade.total": "Agilidade",
+      "system.atributos.magia.total": "Magia",
+      "system.atributos.espirito.total": "Espírito"
     });
 
     context.opcoesPericias = sortObjectByValue({
       "": "Nenhuma Perícia",
-      "alquimia": "Alquimia",
-      "atuacao": "Atuação",
-      "canto": "Canto",
-      "danca": "Dança",
-      "etiqueta": "Etiqueta",
-      "invencao": "Invenção",
-      "jogos": "Jogos",
-      "labia": "Lábia"
+      "system.proficiency.crafts.alchemic.total": "Alquimia",
+      "system.proficiency.performances.acting.total": "Atuação",
+      "system.proficiency.performances.vocal.total": "Canto",
+      "system.proficiency.performances.dance.total": "Dança",
+      "system.proficiency.social.etiquette.total": "Etiqueta",
+      "system.proficiency.crafts.tinkering.total": "Invenção",
+      "system.proficiency.underworld.games.total": "Jogos",
+      "system.proficiency.social.deception.total": "Lábia"
     });
 
     context.enrichBackground = await foundry.applications.ux.TextEditor.implementation.enrichHTML(

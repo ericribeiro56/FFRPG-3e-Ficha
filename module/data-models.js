@@ -1,4 +1,4 @@
-import { safeInt, obterModificadorArmadura, getSafeValue, safeArray } from "./core/utils.js";
+import { safeInt, obterModificadorArmadura, getSafeValue, safeArray, getAttributeValue } from "./core/utils.js";
 import { ATTRIBUTES_KEYS, COMBAT_KEYS, ITEM_TYPE_CATEGORY_MAP, MODIFICADORES_STATUS, DEFAULT_BONUS_LIST, EQUIPPABLE_BONUS_TARGETS, PROFICIENCY_BASIC_MAP } from "./core/constants.js";
 import { Field } from "./core/fields-utils.js";
 
@@ -199,7 +199,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         }),
         crafts:Field.Schema({
           mastery:Field.Boolean(false),
-          achemic:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+          alchemic:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
           explosive:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
           heal:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
           tinkering:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
@@ -327,6 +327,9 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
     // 11. Calcula totais de proficiência (base + bonus + mastery)
     this._calculateProficiency();
+
+    // 12. Calcula o base e total do expert conforme regra de job (no final, depois de todos os outros cálculos)
+    this._calculateExpertBase();
   }
 
   _applyAttributePercentBonuses() {
@@ -386,7 +389,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       const masteryPath = group.groupMastery;
       const relativeMasteryPath = masteryPath.replace(/^system\./, "");
       const masteryValue = getSafeValue(foundry.utils.getProperty(this, relativeMasteryPath), 0);
-      const masteryBonus = masteryValue ? 20 : 0;
+      const hasMastery = !!masteryValue;
 
       for (const skill of group.list) {
         const relativeSkillPath = skill.key.replace(/^system\./, "");
@@ -395,12 +398,52 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
         const base = getSafeValue(skillData.base);
         const bonus = getSafeValue(skillData.bonus);
-        skillData.total = base + bonus + masteryBonus;
+        skillData.total = hasMastery ? (2 * base) + bonus : base + bonus;
       }
     }
 
     // TODO: Quando jobs aplicarem bônus de perícia como ActiveEffect,
     // integrar aqui somando os efeitos ativos antes de calcular o total.
+  }
+
+  _calculateExpertBase() {
+
+    const jobItem = this.parent?.items?.find(i => i.type === "job");
+
+    if (!jobItem) {
+      this.combate.expert.base = 0;
+      this.combate.expert.total = 0;
+      return;
+    }
+
+    const jobClasse = jobItem.system?.classe;
+
+    const level = parseInt(this.level || 1, 10);
+    const jobName = jobItem.name || "";
+
+    let valorBase = 0;
+
+    if (jobClasse === "expert" && jobName === "Inventor") {
+
+      const tinkeringTotal = getAttributeValue(this,"system.proficiency.crafts.tinkering.total")
+      const agilidadeTotal = getSafeValue(this.atributos.agilidade.total,0);
+
+      valorBase = tinkeringTotal + level + (agilidadeTotal * 2);
+    } 
+    
+    if (jobClasse === "expert" && jobName !== "Inventor") {
+
+      const expertPericia = getSafeValue(getAttributeValue(this,this.expert_class.expert_pericia),0);
+      const expertAtributo = getSafeValue(getAttributeValue(this,this.expert_class.expert_atributo),0);
+      
+      valorBase = safeInt((expertPericia / 2) + level + (expertAtributo * 2));
+    }
+
+    this.combate.expert.base = valorBase;
+
+    const bonus = getSafeValue(this.combate.expert.bonus);
+
+    this.combate.expert.total = valorBase + bonus;
   }
 
   _recalculateMaxHpMpByTable() {
