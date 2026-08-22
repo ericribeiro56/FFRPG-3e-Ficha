@@ -50,7 +50,9 @@
     },
     "Item": {
       "effects": {},
-      "job": {},
+      "job": {
+        "dataModel": "JobModel"
+      },
       "race": {},
       "gear_weapon": {},
       "gear_armor": {},

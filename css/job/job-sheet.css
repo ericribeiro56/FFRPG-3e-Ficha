@@ -136,10 +136,10 @@ form.custom-job-sheet-wrapper .sheet-body .tab.active,
 .custom-job-sheet-wrapper .compact-row-height-block { height: 145px !important; }
 .custom-job-sheet-wrapper .compact-height-scroll { height: 64px !important; min-height: 64px !important; max-height: 64px !important; background: rgba(0,0,0,0.15); border-radius: 4px; overflow-y: auto !important; }
 /* ==========================================================================
-   PARTE 3 DE 3: css/job-sheet.css (Forçamento Vertical Total da Aba de Skills)
+   PARTE 3 DE 3 REVISADA: css/job-sheet.css (Correções Finais de Altura e Grid)
    ========================================================================== */
 
-/* Adicionadores locais e botões */
+/* Botões com altura automática controlada */
 .custom-job-sheet-wrapper button { height: auto !important; }
 .custom-job-sheet-wrapper .vertical-scroll-list { display: flex !important; flex-direction: column !important; padding: 4px !important; gap: 4px !important; overflow-y: auto !important; }
 .custom-job-sheet-wrapper .list-item-row { display: flex !important; justify-content: space-between !important; align-items: center !important; background: rgba(255, 255, 255, 0.04) !important; padding: 4px 8px !important; border-radius: 4px !important; border-left: 2px solid #8a2be2 !important; font-size: 11px; }
@@ -151,34 +151,40 @@ form.custom-job-sheet-wrapper .sheet-body .tab.active,
 
 /* Contornos sólidos roxos nos blocos narrativos da direita */
 .custom-job-sheet-wrapper .editor-content-wrapper-box {
-    background: rgba(18, 18, 22, 0.6) !important; border: 1px solid rgba(138, 43, 226, 0.35) !important; border-radius: 6px !important; padding: 8px !important; flex: 1 !important; display: flex !important; flex-direction: column !important; min-height: 0 !important;
+    background: rgba(18, 18, 22, 0.6) !important; 
+    border: 1px solid rgba(138, 43, 226, 0.35) !important; 
+    border-radius: 6px !important; 
+    padding: 8px !important; 
+    flex: 1 !important; 
+    display: flex !important; 
+    flex-direction: column !important; 
+    min-height: 0 !important;
 }
 .custom-job-sheet-wrapper .column-lore-right { display: flex !important; flex-direction: column !important; gap: 15px !important; height: 100% !important; overflow: hidden !important; }
 .custom-job-sheet-wrapper .job-narrative-box { flex: 1 !important; display: flex !important; flex-direction: column !important; min-height: 0 !important; }
 .custom-job-sheet-wrapper .job-narrative-box label { font-size: 11px !important; font-weight: bold !important; text-transform: uppercase !important; color: #9d4edd !important; margin-bottom: 4px !important; }
 .custom-job-sheet-wrapper .job-narrative-box prose-mirror { flex: 1 !important; height: 100% !important; display: flex !important; flex-direction: column !important; }
 
-/* CORREGIDO O ERRO DO BALÃO: O grid de skills agora se expande de ponta a ponta verticalmente */
+/* ABA DE SKILLS (SISTEMA MASTER-DETAIL EM PROPORÇÃO DE 180PX COM ALTURA TOTAL ATÉ O CHÃO) */
 .custom-job-sheet-wrapper .skills-tab-layout { 
     display: grid !important; 
     grid-template-columns: 180px 1fr !important; 
     gap: 15px !important; 
-    flex: 1 !important;                     /* FORÇA A MUDANÇA DO GRID DE SKILLS PARA OCUPAR TODO O ESPAÇO VERTICAL */
+    flex: 1 !important;                     /* Força todo o frame a esticar verticalmente até o fim */
     height: 100% !important; 
-    min-height: 100% !important;
     width: 100% !important; 
     box-sizing: border-box !important;
 }
 
-/* O ALVO PRINCIPAL: Força a sidebar escura a ganhar fundo destacado e esticar até o chão */
+/* Força a sidebar de habilidades a ter preenchimento vertical total acompanhando a janela */
 .custom-job-sheet-wrapper .skills-sidebar { 
-    background: rgba(35, 35, 42, 0.8) !important; /* Mesma cor de destaque cinza dos blocos da Aba 1 */
+    background: rgba(35, 35, 42, 0.8) !important; 
     border: 1px solid rgba(255, 255, 255, 0.06) !important;
     border-radius: 8px !important; 
     display: flex !important; 
     flex-direction: column !important; 
     overflow: hidden !important; 
-    height: 100% !important;                /* OBRIGA A SIDEBAR A IR ATÉ O FINAL DO RODAPÉ DA FOLHA */
+    height: 100% !important;                /* Sidebar esticada até o chão */
     padding: 10px !important;
     box-sizing: border-box !important;
 }
@@ -187,25 +193,46 @@ form.custom-job-sheet-wrapper .sheet-body .tab.active,
 .custom-job-sheet-wrapper .sidebar-skill-item { padding: 8px; margin-bottom: 4px; background: rgba(255,255,255,0.03); border-radius: 4px; cursor: pointer; font-size: 12px; }
 .custom-job-sheet-wrapper .sidebar-skill-item.selected { border-left: 3px solid #8a2be2; background: rgba(138, 43, 226, 0.1); }
 
-/* Subgrid Interno do Detalhar da Skill */
-.custom-job-sheet-wrapper .container-detalhe { display: grid !important; grid-template-columns: 1.2fr 1fr !important; gap: 15px !important; height: 100% !important; width: 100% !important; }
-.custom-job-sheet-wrapper .col-detalhe-esq { display: flex !important; flex-direction: column !important; gap: 10px; overflow-y: auto; height: 100%; }
-.custom-job-sheet-wrapper .col-detalhe-dir { display: flex !important; flex-direction: column !important; gap: 10px; height: 100%; }
-.custom-job-sheet-wrapper .skill-details-row-inputs { display: flex; gap: 10px; align-items: flex-end; }
-.custom-job-sheet-wrapper .inner-section-sub-panel { background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px; }
-.custom-job-sheet-wrapper .layout-checks-row { background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.custom-job-sheet-wrapper .row-inline-check { display: flex !important; align-items: center !important; gap: 5px; font-size: 12px; }
-.custom-job-sheet-wrapper .input-and-button-row { display: flex; gap: 5px; }
-.custom-job-sheet-wrapper .validated-formula-box { background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; margin-top: 5px; font-size: 12px; color: #a3be8c; }
-
-/* O aviso central de prompt acompanha a expansão total */
-.custom-job-sheet-wrapper .select-skill-prompt-notice { 
-    display: flex !important; 
+/* CONTÊINER DE DETALHE CORREGIDO: Estica verticalmente 100% forçando o preenchimento total inferior */
+.custom-job-sheet-wrapper .skill-detail-panel {
     flex: 1 !important;
-    height: 100% !important; 
-    align-items: center !important; 
-    justify-content: center !important; 
-    color: rgba(255, 255, 255, 0.3) !important; 
-    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 100% !important;
 }
-.custom-job-sheet-wrapper .select-skill-prompt-notice p { font-size: 14px !important; font-weight: bold !important; color: #9d4edd !important; margin-bottom: 4px !important; }
+
+/* Subgrid Interno do Detalhar da Skill */
+.custom-job-sheet-wrapper .container-detalhe { 
+    display: grid !important; 
+    grid-template-columns: 1.25fr 1fr !important; 
+    gap: 15px !important; 
+    flex: 1 !important;                     /* Força o painel dividido a ir até o rodapé mestre */
+    height: 100% !important; 
+    width: 100% !important; 
+    box-sizing: border-box !important;
+}
+
+/* Garante o crescimento e scroll interno nas subcolunas de dados técnicos e editores */
+.custom-job-sheet-wrapper .col-detalhe-esq { display: flex !important; flex-direction: column !important; gap: 10px; overflow-y: auto; height: 100%; padding-right: 4px; box-sizing: border-box; }
+.custom-job-sheet-wrapper .col-detalhe-dir { display: flex !important; flex-direction: column !important; gap: 15px; height: 100%; }
+
+.custom-job-sheet-wrapper .skill-details-row-inputs { display: flex; gap: 10px; align-items: flex-end; width: 100%; }
+.custom-job-sheet-wrapper .inner-section-sub-panel { background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.04); }
+.custom-job-sheet-wrapper .layout-checks-row { background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; border: 1px solid rgba(255,255,255,0.04); }
+.custom-job-sheet-wrapper .row-inline-check { display: flex !important; align-items: center !important; gap: 5px; font-size: 12px; }
+.custom-job-sheet-wrapper .input-and-button-row { display: flex; gap: 5px; width: 100%; }
+.custom-job-sheet-wrapper .input-and-button-row input { flex: 1 !important; }
+.custom-job-sheet-wrapper .validated-formula-box { background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; margin-top: 5px; font-size: 12px; color: #a3be8c; border: 1px solid rgba(255,255,255,0.02); }
+
+/* REQUISITO OBRIGATÓRIO: Força a Mecânica de Combate e as Tags a ficarem RIGOROSAMENTE lado a lado */
+.custom-job-sheet-wrapper .properties-section-grid.asymmetric-grid-skills,
+.custom-job-sheet-wrapper .col-detalhe-esq .properties-section-grid { 
+    display: grid !important; 
+    grid-template-columns: 1fr 1fr !important; /* COMPROVADO LADO A LADO */
+    gap: 12px !important; 
+    width: 100% !important;
+    margin-top: 4px !important;
+}
+
+.custom-job-sheet-wrapper .select-skill-prompt-notice { display: flex; height: 100%; align-items: center; justify-content: center; color: rgba(255,255,255,0.3); }

@@ -684,67 +684,6 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
   }
 }
 
-export class JobDataModel extends foundry.abstract.TypeDataModel {
-  static defineSchema() {
-    return {
-      descricao: Field.Rich(),
-      strength_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      vitality_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      agility_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      speed_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      magic_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      spirit_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      hp_die: Field.String("d6"),
-      possui_mp: Field.Boolean(false),
-      mp_die: Field.String("N/A"),
-      skill_points: Field.Number(0, true, false, { min: 0 }),
-      skill_aptitude: Field.Number(0, true, false, { min: 0 }),
-      skillsVinculadas: Field.Array(),
-      classe: Field.String("")
-    };
-  }
-
-  _migrateLegacyFields() {
-    if (!this.parent) return;
-
-    const system = this.parent.system;
-    if (!system) return;
-
-    const updates = {};
-    const maxMap = {
-      forca_max: "strength_max",
-      vitalidade_max: "vitality_max",
-      agilidade_max: "agility_max",
-      velocidade_max: "speed_max",
-      magia_max: "magic_max",
-      espirito_max: "spirit_max"
-    };
-
-    for (const [oldKey, newKey] of Object.entries(maxMap)) {
-      if (system[oldKey] !== undefined && system[newKey] === undefined) {
-        updates[`system.${newKey}`] = system[oldKey];
-      }
-    }
-
-    if (system.classe && !system.class) {
-      updates["system.class"] = system.classe;
-    }
-
-    if (system.descricao && !system.description) {
-      updates["system.description"] = system.descricao;
-    }
-
-    if (Object.keys(updates).length > 0) {
-      this.parent.update(updates);
-    }
-  }
-
-  prepareDerivedData() {
-    this._migrateLegacyFields();
-    super.prepareDerivedData?.();
-  }
-}
-
 export class RaceDataModel extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
@@ -756,7 +695,7 @@ export class RaceDataModel extends foundry.abstract.TypeDataModel {
       speed_max: Field.Number(10, true, false, { min: 0, max: 30 }),
       magic_max: Field.Number(10, true, false, { min: 0, max: 30 }),
       spirit_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      skillsVinculadas: Field.Array()
+      skillsVinculadas: Field.Array(Field.String())
     };
   }
 
@@ -810,7 +749,7 @@ export class ItemModel extends foundry.abstract.TypeDataModel {
       probability: Field.Number(),
       description: Field.Rich(),
       displayName: Field.String(),
-      tags: Field.Array(),
+      tags: Field.Array(Field.String()),
       gil: Field.Number()
     };
 
@@ -837,7 +776,7 @@ export class GearBasicModel extends ItemModel {
       ...item,
       combatDisplay: Field.String(),
       abilityDisplay: Field.String(),
-      materials: Field.Array(),
+      materials: Field.Array(Field.String()),
       slot: Field.String("", false),
       equipped: Field.Boolean(),
       abilities: Field.Array(ItemAbilityBase),
@@ -871,7 +810,7 @@ export class ItemAbilityBase extends foundry.abstract.DataModel {
     return {
       name: Field.String(),
       description: Field.Rich(),
-      tags: Field.Array(),
+      tags: Field.Array(Field.String()),
       bonusList: Field.Array(StatusBonusBase)
     };
   }
@@ -1020,7 +959,7 @@ export class EffectModel extends foundry.abstract.TypeDataModel {
       area: Field.Boolean(false),
       range: Field.Number(0),
       safeAllies: Field.Boolean(false),
-      tags: Field.Array(),
+      tags: Field.Array(Field.String()),
       effect: Field.Array(StatusBonusBase)
     };
 
@@ -1058,7 +997,7 @@ export class JobSkillModel extends foundry.abstract.TypeDataModel {
         range: Field.Number(0),
         ally: false
       },
-      tags: Field.Array(),
+      tags: Field.Array(Field.String()),
       notes: Field.Rich()
     }
   }
@@ -1084,16 +1023,72 @@ export class JobModel extends foundry.abstract.TypeDataModel {
       }),
       proficiency: Field.Schema({
         limit: Field.Number(0),
-        bonus: Field.Array({
+        bonus: Field.Array(Field.Object({
           key: Field.String(""),
           value: Field.Number(0)
-        })
+        }))
       }),
-      skills: Field.Array(JobSkillModel),
-      mainWeapons: Field.Array(),
+      skills: Field.Array(Field.Object({
+        description: Field.Rich(),
+        type: Field.String("active"),
+        minLevel: Field.Number(0),
+        support: Field.Boolean(false),
+        cost: {
+          type: Field.String("nothing"),
+          material: Field.String(),
+          value: Field.Number(0)
+        },
+        combat: {
+          type: Field.String("physical"),
+          formula: "",
+          area: false,
+          range: Field.Number(0),
+          ally: false
+        },
+        tags: Field.Array(Field.String()),
+        notes: Field.Rich()
+      })),
+      mainWeapons: Field.Array(Field.String()),
       accuracyBonus: Field.Number(0),
-      allowedArmors: Field.Array(),
-      tags: Field.Array()
+      allowedArmors: Field.Array(Field.String()),
+      tags: Field.Array(Field.String())
     };
+  }
+
+  static async preCreate(data, options, userId) {
+    super.preCreate?.(data, options, userId);
+
+    if (!data.system) {
+      data.system = {};
+    }
+
+    if (!Array.isArray(data.system.skills)) {
+      data.system.skills = [];
+    }
+    if (!Array.isArray(data.system.mainWeapons)) {
+      data.system.mainWeapons = [];
+    }
+    if (!Array.isArray(data.system.allowedArmors)) {
+      data.system.allowedArmors = [];
+    }
+    if (!Array.isArray(data.system.tags)) {
+      data.system.tags = [];
+    }
+    if (!data.system.proficiency) {
+      data.system.proficiency = { limit: 0, bonus: [] };
+    }
+    if (!Array.isArray(data.system.proficiency.bonus)) {
+      data.system.proficiency.bonus = [];
+    }
+    if (!data.system.attribute) {
+      data.system.attribute = {
+        strength: 0,
+        vitality: 0,
+        agility: 0,
+        speed: 0,
+        magic: 0,
+        spirit: 0
+      };
+    }
   }
 }

@@ -245,6 +245,7 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
     // Salva no banco e força o foco visual a pular imediatamente para a skill recém-criada
     this.activeSkillIndex = currentSkills.length - 1;
     await this.item.update({ "system.skills": currentSkills });
+    this.render();
   }
 
   static _onSelectJobSkill(event, target) {

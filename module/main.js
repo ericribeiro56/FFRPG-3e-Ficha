@@ -1,6 +1,6 @@
 import { RACAS_INICIAIS } from "../resources/defaults-data.js";
 import { PlayerSheet } from "./sheets/actor-sheet.js";
-import { CharacterData, JobDataModel, RaceDataModel, EffectModel, WeaponModel, ArmorModel, ConsumableBasicModel, StatusBonusBase, ItemAbilityBase } from "./data-models.js";
+import { CharacterData, JobModel, RaceDataModel, EffectModel, WeaponModel, ArmorModel, ConsumableBasicModel, StatusBonusBase, ItemAbilityBase } from "./data-models.js";
 import { EffectsSheet } from "./sheets/items/effect-sheet.js";
 import { JobSheet } from "./sheets/job-sheet.js";
 import { RaceSheet } from "./sheets/race-sheet.js";
@@ -162,7 +162,7 @@ Hooks.once("init", async function() {
 
   CONFIG.Item.dataModels = {
     effects: EffectModel,
-    job: JobDataModel,
+    job: JobModel,
     race: RaceDataModel,
     gear_weapon: WeaponModel,
     gear_armor: ArmorModel,
