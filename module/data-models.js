@@ -9,7 +9,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     return {
       level: Field.Number(1, true, false, { min: 1 }),
       hp: Field.Schema({
-        base: Field.Number(10),
+        base: Field.Number(30),
         bonus: Field.Number(0),
         atual: Field.Number(10),
         total: Field.Number(10)
@@ -30,20 +30,20 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       accessory: Field.Array(Field.String(), []),
 
       percent_bonus: Field.Schema({
-        forca: Field.Number(0),
-        vitalidade: Field.Number(0),
-        agilidade: Field.Number(0),
-        velocidade: Field.Number(0),
-        magia: Field.Number(0),
-        espirito: Field.Number(0),
-        armadura: Field.Number(0),
-        armadura_magica: Field.Number(0),
-        evasao: Field.Number(0),
-        evasao_magica: Field.Number(0),
-        precisao: Field.Number(0),
-        precisao_magica: Field.Number(0),
-        destreza: Field.Number(0),
-        mente: Field.Number(0),
+        strength: Field.Number(0),
+        vitality: Field.Number(0),
+        agility: Field.Number(0),
+        speed: Field.Number(0),
+        magic: Field.Number(0),
+        spirit: Field.Number(0),
+        armor: Field.Number(0),
+        magicArmor: Field.Number(0),
+        evasion: Field.Number(0),
+        magicEvasion: Field.Number(0),
+        precision: Field.Number(0),
+        magicAccuracy: Field.Number(0),
+        dexterity: Field.Number(0),
+        mind: Field.Number(0),
         expert: Field.Number(0),
         hp: Field.Number(0),
         mp: Field.Number(0),
@@ -51,104 +51,104 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         damage: Field.Number(1)
       }),
 
-      information: Field.Schema({
-        genero: Field.String(""),
-        signo: Field.String(""),
-        sangue: Field.String(""),
-        idade: Field.Number(0),
-        altura: Field.Number(0),
-        peso: Field.Number(0),
-        bgHistory: Field.Rich("", false)
+      info: Field.Schema({
+        gender: Field.String(""),
+        sign: Field.String(""),
+        bloodType: Field.String(""),
+        age: Field.Number(0),
+        height: Field.Number(0),
+        weight: Field.Number(0),
+        background: Field.Rich("", false)
       }),
 
-      atributos: Field.Schema({
-        forca: Field.Schema({
+      attributes: Field.Schema({
+        strength: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0),
-          max: Field.Number(0),
-          teste: Field.Number(0),
-          padrao: Field.Number(0)
+          limit: Field.Number(0),
+          test: Field.Number(0),
+          default: Field.Number(0)
         }),
-        vitalidade: Field.Schema({
+        vitality: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0),
-          max: Field.Number(0),
-          teste: Field.Number(0),
-          padrao: Field.Number(0)
+          limit: Field.Number(0),
+          test: Field.Number(0),
+          default: Field.Number(0)
         }),
-        agilidade: Field.Schema({
+        agility: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0),
-          max: Field.Number(0),
-          teste: Field.Number(0),
-          padrao: Field.Number(0)
+          limit: Field.Number(0),
+          test: Field.Number(0),
+          default: Field.Number(0)
         }),
-        velocidade: Field.Schema({
+        speed: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0),
-          max: Field.Number(0),
-          teste: Field.Number(0),
-          padrao: Field.Number(0)
+          limit: Field.Number(0),
+          test: Field.Number(0),
+          default: Field.Number(0)
         }),
-        magia: Field.Schema({
+        magic: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0),
-          max: Field.Number(0),
-          teste: Field.Number(0),
-          padrao: Field.Number(0)
+          limit: Field.Number(0),
+          test: Field.Number(0),
+          default: Field.Number(0)
         }),
-        espirito: Field.Schema({
+        spirit: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0),
-          max: Field.Number(0),
-          teste: Field.Number(0),
-          padrao: Field.Number(0)
+          limit: Field.Number(0),
+          test: Field.Number(0),
+          default: Field.Number(0)
         })
       }),
 
-      combate: Field.Schema({
-        evasao: Field.Schema({
+      combat: Field.Schema({
+        evasion: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0)
         }),
-        evasao_magica: Field.Schema({
+        magicEvasion: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0)
         }),
-        armadura: Field.Schema({
+        armor: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0)
         }),
-        armadura_magica: Field.Schema({
+        magicArmor: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0)
         }),
-        precisao: Field.Schema({
+        precision: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0)
         }),
-        precisao_magica: Field.Schema({
+        magicAccuracy: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0)
         }),
-        destreza: Field.Schema({
+        dexterity: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0)
         }),
-        mente: Field.Schema({
+        mind: Field.Schema({
           base: Field.Number(0),
           bonus: Field.Number(0),
           total: Field.Number(0)
@@ -162,106 +162,98 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         damage_bonus: Field.Number(1)
       }),
 
-      proficiency:Field.Schema({
-        max_points:Field.Number(0),
-        language:Field.Schema({
-          general_points:Field.Number(0),
-          especialized_points:Field.Number(0),
-          list:Field.Array(Field.Schema({
-            name:Field.String(""),
-            invisted:Field.Number(0),
-            total:Field.Number(0)
-          })),
+      proficiency: Field.Schema({
+        max_points: Field.Number(0),
+        languages: Field.Array(Field.Schema({
+          name: Field.String(""),
+          base: Field.Number(0),
+          total: Field.Number(0)
+        })),
+        knowledge: Field.Array(Field.Schema({
+          name: Field.String(""),
+          base: Field.Number(0),
+          total: Field.Number(0)
+        })),
+        performances: Field.Schema({
+          mastery: Field.Boolean(false),
+          arts: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          dance: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          instruments: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          vocal: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          acting: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) })
         }),
-        knowledge:Field.Schema({
-          general_points:Field.Number(0),
-          especialized_points:Field.Number(0),
-          list:Field.Array(Field.Schema({
-            name:Field.String(""),
-            invisted:Field.Number(0),
-            total:Field.Number(0)
-          })),
+        basics: Field.Schema({
+          mastery: Field.Boolean(false),
+          acrobatics: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          awareness: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          coocking: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          bargain: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) })
         }),
-        performances:Field.Schema({
-          mastery:Field.Boolean(false),
-          arts:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          dance:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          instruments:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          vocal:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          acting:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        crafts: Field.Schema({
+          mastery: Field.Boolean(false),
+          alchemic: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          explosive: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          heal: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          tinkering: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          repair: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          system: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          vehicle: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) })
         }),
-        basics:Field.Schema({
-          mastery:Field.Boolean(false),
-          acrobatics:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          awareness:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          coocking:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          bargain:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        social: Field.Schema({
+          mastery: Field.Boolean(false),
+          etiquette: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          intimation: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          leadership: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          deception: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          seduction: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
         }),
-        crafts:Field.Schema({
-          mastery:Field.Boolean(false),
-          alchemic:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          explosive:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          heal:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          tinkering:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          repair:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          system:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          vehicle:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        weapons: Field.Schema({
+          mastery: Field.Boolean(false),
+          ambimestry: Field.Boolean(false),
+          inaptitude: Field.Boolean(false),
+          axe: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          bow: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          fight: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          staff: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          whip: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          fire_weapon: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          knife: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          haste: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          sword: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          throw: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          two_weapon: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          fixed_weapon: Field.Schema({ active: Field.Boolean(false), base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) })
         }),
-        social:Field.Schema({
-          mastery:Field.Boolean(false),
-          etiquette:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          intimation:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          leadership:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          deception:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          seduction:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
+        wilds: Field.Schema({
+          mastery: Field.Boolean(false),
+          animal_training: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          climbing: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          navigation: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          loot: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          ride: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          survival: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          swimming: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          tracker: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
         }),
-        weapons:Field.Schema({
-          mastery:Field.Boolean(false),
-          ambimestry:Field.Boolean(false),
-          inaptitude:Field.Boolean(false),
-          axe:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          bow:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          fight:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          staff:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          whip:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          fire_weapon:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          knife:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          haste:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          sword:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          throw:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          two_weapon:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          fixed_weapon:Field.Schema({active:Field.Boolean(false),base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        underworld: Field.Schema({
+          mastery: Field.Boolean(false),
+          disguise: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          escape: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          games: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          lockpick: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          pickpocket: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          stealth: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          streetwise: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          trap: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) })
         }),
-        wilds:Field.Schema({
-          mastery:Field.Boolean(false),
-          animal_training:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          climbing:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          navigation:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          loot:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          ride:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          survival:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          swimming:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          tracker:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-        }),
-        underworld:Field.Schema({
-          mastery:Field.Boolean(false),
-          disguise:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          escape:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          games:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          lockpick:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          pickpocket:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          stealth:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          streetwise:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          trap:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
-        }),
-        academics:Field.Schema({
-          mastery:Field.Boolean(false),
-          investigation:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          carpinter:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          jeweler:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          armorsmith:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          tailor:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)}),
-          sculpor:Field.Schema({base: Field.Number(0),bonus: Field.Number(0),total: Field.Number(0)})
+        academics: Field.Schema({
+          mastery: Field.Boolean(false),
+          investigation: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          carpinter: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          jeweler: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          armorsmith: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          tailor: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) }),
+          sculpor: Field.Schema({ base: Field.Number(0), bonus: Field.Number(0), total: Field.Number(0) })
         })
       }),
 
@@ -285,13 +277,72 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     };
   }
 
+  _migrateLegacyFields() {
+    const system = this.parent?.system;
+    if (!system) return;
+
+    const updates = {};
+
+    if (system.combate && !system.combat) {
+      updates["system.combate"] = undefined;
+      updates["system.combat"] = system.combate;
+    }
+
+    if (system.atributos && !system.attributes) {
+      updates["system.atributos"] = undefined;
+      updates["system.attributes"] = system.atributos;
+    }
+
+    if (system.information && !system.info) {
+      updates["system.information"] = undefined;
+      updates["system.info"] = system.information;
+    }
+
+    if (system.proficiency?.language && !system.proficiency?.languages) {
+      updates["system.proficiency.language"] = undefined;
+      updates["system.proficiency.languages"] = system.proficiency.language;
+    }
+
+    if (system.proficiency?.knowledge?.list && !system.proficiency?.knowledge) {
+      updates["system.proficiency.knowledge.list"] = undefined;
+      updates["system.proficiency.knowledge"] = system.proficiency.knowledge.list;
+    }
+
+    const attrMap = {
+      forca: "strength",
+      vitalidade: "vitality",
+      agilidade: "agility",
+      velocidade: "speed",
+      magia: "magic",
+      espirito: "spirit"
+    };
+
+    const attrSource = system.atributos || system.attributes;
+    if (attrSource) {
+      for (const [oldKey, newKey] of Object.entries(attrMap)) {
+        const source = system.atributos ? system.atributos[oldKey] : system.attributes[newKey];
+        const target = system.attributes[newKey];
+
+        if (source && target && source.max !== undefined && target.limit === undefined) {
+          updates[`system.attributes.${newKey}.limit`] = source.max;
+        }
+      }
+    }
+
+    if (Object.keys(updates).length > 0) {
+      this.parent.update(updates);
+    }
+  }
+
   prepareDerivedData() {
     super.prepareDerivedData();
 
     if (!this.parent) return;
 
-    const attr = this.atributos;
-    const comb = this.combate;
+    this._migrateLegacyFields();
+
+    const attr = this.attributes;
+    const comb = this.combat;
 
     if (!attr || !comb) return;
 
@@ -322,7 +373,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // 9. Aplica percent_bonus no HP/MP
     this._applyHpMpPercentBonuses();
 
-    // 10. Aplica modificador de armadura por atributo (só armadura e armadura_magica)
+    // 10. Aplica modificador de armadura por atributo (só armor e magicArmor)
     this._applyArmorModifiers();
 
     // 11. Calcula totais de proficiência (base + bonus + mastery)
@@ -333,21 +384,21 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
   }
 
   _applyAttributePercentBonuses() {
-    const atributos = ["forca", "vitalidade", "agilidade", "velocidade", "magia", "espirito"];
+    const attributes = ["strength", "vitality", "agility", "speed", "magic", "spirit"];
 
-    for (const key of atributos) {
-      if (this.atributos[key]) {
-        this.atributos[key].total = this._applyPercentBonus(this.atributos[key], key);
+    for (const key of attributes) {
+      if (this.attributes[key]) {
+        this.attributes[key].total = this._applyPercentBonus(this.attributes[key], key);
       }
     }
   }
 
   _applyCombatPercentBonuses() {
-    const combate = ["armadura", "armadura_magica", "evasao", "evasao_magica", "precisao", "precisao_magica", "destreza", "mente", "expert"];
+    const combate = ["armor", "magicArmor", "evasion", "magicEvasion", "precision", "magicAccuracy", "dexterity", "mind", "expert"];
 
     for (const key of combate) {
-      if (this.combate[key]) {
-        this.combate[key].total = this._applyPercentBonus(this.combate[key], key);
+      if (this.combat[key]) {
+        this.combat[key].total = this._applyPercentBonus(this.combat[key], key);
       }
     }
   }
@@ -355,29 +406,31 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
   _applyHpMpPercentBonuses() {
 
     if (this.hp) {
-      this.hp.total = this._applyPercentBonus(this.hp, "hp");
+      const subtotal = getSafeValue(this.hp.base) + getSafeValue(this.hp.bonus);
+      this.hp.total = subtotal + (subtotal * (safeInt(this.percent_bonus?.hp, 0) / 100));
     }
 
     if (this.mp) {
-      this.mp.total = this._applyPercentBonus(this.mp, "mp");
+      const subtotal = getSafeValue(this.mp.base) + getSafeValue(this.mp.bonus);
+      this.mp.total = subtotal + (subtotal * (safeInt(this.percent_bonus?.mp, 0) / 100));
     }
   }
 
   _applyArmorModifiers() {
-    const attr = this.atributos;
+    const attr = this.attributes;
     if (!attr) return;
 
-    const vitalidade = getSafeValue(attr.vitalidade?.total);
-    const espirito = getSafeValue(attr.espirito?.total);
+    const vitality = getSafeValue(attr.vitality?.total);
+    const spirit = getSafeValue(attr.spirit?.total);
 
-    if (this.combate.armadura) {
-      const mod = obterModificadorArmadura(vitalidade);
-      this.combate.armadura.total = Math.round(getSafeValue(this.combate.armadura.total) * mod);
+    if (this.combat.armor) {
+      const mod = obterModificadorArmadura(vitality);
+      this.combat.armor.total = Math.round(getSafeValue(this.combat.armor.total) * mod);
     }
 
-    if (this.combate.armadura_magica) {
-      const mod = obterModificadorArmadura(espirito);
-      this.combate.armadura_magica.total = Math.round(getSafeValue(this.combate.armadura_magica.total) * mod);
+    if (this.combat.magicArmor) {
+      const mod = obterModificadorArmadura(spirit);
+      this.combat.magicArmor.total = Math.round(getSafeValue(this.combat.magicArmor.total) * mod);
     }
   }
 
@@ -411,8 +464,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const jobItem = this.parent?.items?.find(i => i.type === "job");
 
     if (!jobItem) {
-      this.combate.expert.base = 0;
-      this.combate.expert.total = 0;
+      this.combat.expert.base = 0;
+      this.combat.expert.total = 0;
       return;
     }
 
@@ -425,25 +478,25 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
     if (jobClasse === "expert" && jobName === "Inventor") {
 
-      const tinkeringTotal = getAttributeValue(this,"system.proficiency.crafts.tinkering.total")
-      const agilidadeTotal = getSafeValue(this.atributos.agilidade.total,0);
+      const tinkeringTotal = getAttributeValue(this, "system.proficiency.crafts.tinkering.total")
+      const agilityTotal = getSafeValue(this.attributes.agility.total, 0);
 
-      valorBase = tinkeringTotal + level + (agilidadeTotal * 2);
-    } 
-    
+      valorBase = tinkeringTotal + level + (agilityTotal * 2);
+    }
+
     if (jobClasse === "expert" && jobName !== "Inventor") {
 
-      const expertPericia = getSafeValue(getAttributeValue(this,this.expert_class.expert_pericia),0);
-      const expertAtributo = getSafeValue(getAttributeValue(this,this.expert_class.expert_atributo),0);
-      
+      const expertPericia = getSafeValue(getAttributeValue(this, this.expert_class.expert_pericia), 0);
+      const expertAtributo = getSafeValue(getAttributeValue(this, this.expert_class.expert_atributo), 0);
+
       valorBase = safeInt((expertPericia / 2) + level + (expertAtributo * 2));
     }
 
-    this.combate.expert.base = valorBase;
+    this.combat.expert.base = valorBase;
 
-    const bonus = getSafeValue(this.combate.expert.bonus);
+    const bonus = getSafeValue(this.combat.expert.bonus);
 
-    this.combate.expert.total = valorBase + bonus;
+    this.combat.expert.total = valorBase + bonus;
   }
 
   _recalculateMaxHpMpByTable() {
@@ -454,6 +507,17 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const somas = { dhp: 0, vit: 0, dmp: 0, esp: 0 };
     let somaHpPersonagem = 0;
     let somaMpPersonagem = 0;
+
+    const items = this.parent.items || [];
+    let itemJob = null;
+    for (const item of items) {
+      if (item.type === "job") {
+        itemJob = item;
+        break;
+      }
+    }
+
+    const hasMp = itemJob?.system?.possui_mp === true;
 
     for (let i = 1; i <= 99; i++) {
       const dados = progressao[`nv${i}`] || {};
@@ -469,12 +533,14 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
       if (i <= nivelSeguro) {
         somaHpPersonagem += dhp + vit;
-        somaMpPersonagem += dmp + esp;
+        if (hasMp) {
+          somaMpPersonagem += dmp + esp;
+        }
       }
     }
 
     this.hp.base = 30 + somaHpPersonagem;
-    this.mp.base = 10 + somaMpPersonagem;
+    this.mp.base = hasMp ? (10 + somaMpPersonagem) : 0;
     this.xp.required = 500 * nivelSeguro;
 
     this.progressao_somas_dhp = somas.dhp;
@@ -485,8 +551,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
   _calculateBaseStats() {
     for (const chave of ATTRIBUTES_KEYS) {
-      if (this.atributos[chave]) {
-        this.atributos[chave].total = getSafeValue(this.atributos[chave].base) + getSafeValue(this.atributos[chave].bonus);
+      if (this.attributes[chave]) {
+        this.attributes[chave].total = getSafeValue(this.attributes[chave].base) + getSafeValue(this.attributes[chave].bonus);
       }
     }
   }
@@ -495,18 +561,18 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const limites = this._getSoftCapLimits();
 
     for (const chave of ATTRIBUTES_KEYS) {
-      if (this.atributos[chave]) {
-        this.atributos[chave].max = Math.min(limites[chave], 30);
-        this.atributos[chave].total = getSafeValue(this.atributos[chave].base) + getSafeValue(this.atributos[chave].bonus);
-        this.atributos[chave].teste = (getSafeValue(this.atributos[chave].total) * 3) + 10;
-        this.atributos[chave].padrao = Math.trunc(getSafeValue(this.atributos[chave].teste) / 2);
+      if (this.attributes[chave]) {
+        this.attributes[chave].limit = Math.min(limites[chave], 30);
+        this.attributes[chave].total = getSafeValue(this.attributes[chave].base) + getSafeValue(this.attributes[chave].bonus);
+        this.attributes[chave].test = (getSafeValue(this.attributes[chave].total) * 3) + 10;
+        this.attributes[chave].default = Math.trunc(getSafeValue(this.attributes[chave].test) / 2);
       }
     }
   }
 
   _getSoftCapLimits() {
     const limites = {
-      forca: 0, vitalidade: 0, agilidade: 0, velocidade: 0, magia: 0, espirito: 0
+      strength: 0, vitality: 0, agility: 0, speed: 0, magic: 0, spirit: 0
     };
 
     const items = this.parent.items || [];
@@ -555,12 +621,12 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     }
 
     const mapeamento = {
-      agilidade: ["agility_up", "agility_down", "agility_break"],
-      espirito: ["spirit_up", "spirit_down", "spirit_break"]
+      agility: ["agility_up", "agility_down", "agility_break"],
+      spirit: ["spirit_up", "spirit_down", "spirit_break"]
     };
 
     for (const [atributo, statusRelevantes] of Object.entries(mapeamento)) {
-      const attr = this.atributos[atributo];
+      const attr = this.attributes[atributo];
       if (!attr) continue;
 
       for (const status of statusRelevantes) {
@@ -574,27 +640,27 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
   _applyHardCap() {
     for (const chave of ATTRIBUTES_KEYS) {
-      if (this.atributos[chave]) {
-        this.atributos[chave].total = Math.min(this.atributos[chave].total, 30);
+      if (this.attributes[chave]) {
+        this.attributes[chave].total = Math.min(this.attributes[chave].total, 30);
       }
     }
   }
 
   _recalculateCombat() {
 
-    const attr = this.atributos;
+    const attr = this.attributes;
     const level = parseInt(this.level || 1, 10);
 
-    this.combate.evasao.base = getSafeValue(attr.agilidade?.total) + getSafeValue(attr.velocidade?.total);
-    this.combate.evasao_magica.base = getSafeValue(attr.espirito?.total) + getSafeValue(attr.magia?.total);
-    this.combate.destreza.base = level + (getSafeValue(attr.agilidade?.total) * 2) + 50;
-    this.combate.mente.base = level + (getSafeValue(attr.magia?.total) * 2) + 50;
-    this.combate.precisao.base = level + (getSafeValue(attr.agilidade?.total) * 2);
-    this.combate.precisao_magica.base = level + (getSafeValue(attr.magia?.total) * 2) + 100;
+    this.combat.evasion.base = getSafeValue(attr.agility?.total) + getSafeValue(attr.speed?.total);
+    this.combat.magicEvasion.base = getSafeValue(attr.spirit?.total) + getSafeValue(attr.magic?.total);
+    this.combat.dexterity.base = level + (getSafeValue(attr.agility?.total) * 2) + 50;
+    this.combat.mind.base = level + (getSafeValue(attr.magic?.total) * 2) + 50;
+    this.combat.precision.base = level + (getSafeValue(attr.agility?.total) * 2);
+    this.combat.magicAccuracy.base = level + (getSafeValue(attr.magic?.total) * 2) + 100;
 
     for (const chave of COMBAT_KEYS) {
-      if (this.combate[chave]) {
-        this.combate[chave].total = getSafeValue(this.combate[chave].base) + getSafeValue(this.combate[chave].bonus);
+      if (this.combat[chave]) {
+        this.combat[chave].total = getSafeValue(this.combat[chave].base) + getSafeValue(this.combat[chave].bonus);
       }
     }
   }
@@ -606,7 +672,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
   }
 
   get totalBaseAttr() {
-    const attr = this.atributos;
+    const attr = this.attributes;
     if (!attr) return 0;
     return ATTRIBUTES_KEYS.reduce((total, chave) => total + getSafeValue(attr[chave]?.base), 0);
   }
@@ -622,12 +688,12 @@ export class JobDataModel extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       descricao: Field.Rich(),
-      forca_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      vitalidade_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      agilidade_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      velocidade_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      magia_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      espirito_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      strength_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      vitality_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      agility_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      speed_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      magic_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      spirit_max: Field.Number(10, true, false, { min: 0, max: 30 }),
       hp_die: Field.String("d6"),
       possui_mp: Field.Boolean(false),
       mp_die: Field.String("N/A"),
@@ -637,6 +703,46 @@ export class JobDataModel extends foundry.abstract.TypeDataModel {
       classe: Field.String("")
     };
   }
+
+  _migrateLegacyFields() {
+    if (!this.parent) return;
+
+    const system = this.parent.system;
+    if (!system) return;
+
+    const updates = {};
+    const maxMap = {
+      forca_max: "strength_max",
+      vitalidade_max: "vitality_max",
+      agilidade_max: "agility_max",
+      velocidade_max: "speed_max",
+      magia_max: "magic_max",
+      espirito_max: "spirit_max"
+    };
+
+    for (const [oldKey, newKey] of Object.entries(maxMap)) {
+      if (system[oldKey] !== undefined && system[newKey] === undefined) {
+        updates[`system.${newKey}`] = system[oldKey];
+      }
+    }
+
+    if (system.classe && !system.class) {
+      updates["system.class"] = system.classe;
+    }
+
+    if (system.descricao && !system.description) {
+      updates["system.description"] = system.descricao;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      this.parent.update(updates);
+    }
+  }
+
+  prepareDerivedData() {
+    this._migrateLegacyFields();
+    super.prepareDerivedData?.();
+  }
 }
 
 export class RaceDataModel extends foundry.abstract.TypeDataModel {
@@ -644,14 +750,54 @@ export class RaceDataModel extends foundry.abstract.TypeDataModel {
     return {
       descricao: Field.Rich(),
       classe: Field.String(""),
-      forca_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      vitalidade_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      agilidade_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      velocidade_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      magia_max: Field.Number(10, true, false, { min: 0, max: 30 }),
-      espirito_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      strength_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      vitality_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      agility_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      speed_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      magic_max: Field.Number(10, true, false, { min: 0, max: 30 }),
+      spirit_max: Field.Number(10, true, false, { min: 0, max: 30 }),
       skillsVinculadas: Field.Array()
     };
+  }
+
+  _migrateLegacyFields() {
+    if (!this.parent) return;
+
+    const system = this.parent.system;
+    if (!system) return;
+
+    const updates = {};
+    const maxMap = {
+      forca_max: "strength_max",
+      vitalidade_max: "vitality_max",
+      agilidade_max: "agility_max",
+      velocidade_max: "speed_max",
+      magia_max: "magic_max",
+      espirito_max: "spirit_max"
+    };
+
+    for (const [oldKey, newKey] of Object.entries(maxMap)) {
+      if (system[oldKey] !== undefined && system[newKey] === undefined) {
+        updates[`system.${newKey}`] = system[oldKey];
+      }
+    }
+
+    if (system.classe && !system.class) {
+      updates["system.class"] = system.classe;
+    }
+
+    if (system.descricao && !system.description) {
+      updates["system.description"] = system.descricao;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      this.parent.update(updates);
+    }
+  }
+
+  prepareDerivedData() {
+    this._migrateLegacyFields();
+    super.prepareDerivedData?.();
   }
 }
 
@@ -736,7 +882,7 @@ export class WeaponModel extends GearBasicModel {
   static defineSchema() {
     const gear = super.defineSchema();
 
-    if(gear.tags.initial || !gear.tags.initial.includes("weapon")){
+    if (gear.tags.initial || !gear.tags.initial.includes("weapon")) {
       gear.tags.initial.push("weapon")
     }
 
@@ -790,7 +936,7 @@ export class ArmorModel extends GearBasicModel {
   static defineSchema() {
     const gear = super.defineSchema();
 
-    if(gear.tags.initial || !gear.tags.initial.includes("armor")){
+    if (gear.tags.initial || !gear.tags.initial.includes("armor")) {
       gear.tags.initial.push("armor")
     }
 
@@ -816,10 +962,10 @@ export class ArmorModel extends GearBasicModel {
 
   get computeInfoDisplay() {
     const labelMap = {
-      armadura: "ARM",
-      armadura_magica: "ARMM",
-      evasao: "EVA",
-      evasao_magica: "EVAM"
+      armor: "ARM",
+      magicArmor: "ARMM",
+      evasion: "EVA",
+      magicEvasion: "EVAM"
     };
 
     const totals = {};
@@ -871,7 +1017,7 @@ export class EffectModel extends foundry.abstract.TypeDataModel {
       effectType: Field.String("buff"),
       duration: Field.Number(0),
       permanent: Field.Boolean(false),
-      area:Field.Boolean(false),
+      area: Field.Boolean(false),
       range: Field.Number(0),
       safeAllies: Field.Boolean(false),
       tags: Field.Array(),
@@ -890,5 +1036,63 @@ export class EffectModel extends foundry.abstract.TypeDataModel {
     if (!data.system?.effect) {
       data.updateSource({ "system.effect": [] });
     }
+  }
+}
+
+export class JobSkillModel extends foundry.abstract.TypeDataModel {
+  static defineSchema() {
+    return {
+      description: Field.Rich(),
+      type: Field.String("active"),
+      minLevel: Field.Number(0),
+      support: Field.Boolean(false),
+      cost: {
+        type: Field.String("nothing"),
+        material: Field.String(),
+        value: Field.Number(0)
+      },
+      combat: {
+        type: Field.String("physical"),
+        formula: "",
+        area: false,
+        ally: false
+      },
+      tags: Field.Array(),
+      notes: Field.Rich()
+    }
+  }
+}
+
+export class JobModel extends foundry.abstract.TypeDataModel {
+  static defineSchema() {
+    return {
+      description: Field.Rich(),
+      notes: Field.Rich(),
+      class: Field.String("warrior"),
+      attribute: Field.Schema({
+        strength: Field.Number(0),
+        vitality: Field.Number(0),
+        agility: Field.Number(0),
+        speed: Field.Number(0),
+        magic: Field.Number(0),
+        spirit: Field.Number(0),
+      }),
+      dice: Field.Schema({
+        hp: Field.String(""),
+        mp: Field.String("")
+      }),
+      proficiency: Field.Schema({
+        limit: Field.Number(0),
+        bonus: Field.Array({
+          key: Field.String(""),
+          value: Field.Number(0)
+        })
+      }),
+      skills: Field.Array(JobSkillModel),
+      mainWeapons: Field.Array(),
+      accuracyBonus: Field.Number(0),
+      allowedArmors: Field.Array(),
+      tags: Field.Array()
+    };
   }
 }

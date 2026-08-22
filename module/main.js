@@ -6,7 +6,7 @@ import { JobSheet } from "./sheets/job-sheet.js";
 import { RaceSheet } from "./sheets/race-sheet.js";
 import { WeaponSheet as WeaponSheetCustom } from "./sheets/items/weapon-sheet.js";
 import { ArmorSheet as ArmorSheetCustom } from "./sheets/items/armor-sheet.js";
-import { ARMOR_SLOTS } from "./core/constants.js";
+import { ARMOR_SLOTS, PROFICIENCY_BASIC_MAP } from "./core/constants.js";
 
 Hooks.once("preInit", async function() {
   CONFIG.dataModels = CONFIG.dataModels || {};
@@ -35,10 +35,10 @@ Hooks.once("init", async function() {
   });
 
   const STATUS_DISPLAY_MAP = {
-    forca: "Força", vitalidade: "Vitalidade", agilidade: "Agilidade", velocidade: "Velocidade",
-    magia: "Magia", espirito: "Espírito", armadura: "Armadura", armadura_magica: "Armadura Mágica",
-    evasao: "Evasão", evasao_magica: "Evasão Mágica", precisao: "Precisão", precisao_magica: "Precisão Mágica",
-    destreza: "Destreza", mente: "Mente", expert: "Expert", crit: "Crítico", damage: "Dano",
+    strength: "Força", vitality: "Vitalidade", agility: "Agilidade", speed: "Velocidade",
+    magic: "Magia", spirit: "Espírito", armor: "Armadura", magicArmor: "Armadura Mágica",
+    evasion: "Evasão", magicEvasion: "Evasão Mágica", precision: "Precisão", magicAccuracy: "Precisão Mágica",
+    dexterity: "Destreza", mind: "Mente", expert: "Expert", crit: "Crítico", damage: "Dano",
     hp: "HP Máx", mp: "MP Máx"
   };
 
@@ -62,6 +62,68 @@ Hooks.once("init", async function() {
         const relativePath = key.replace(/^system\./, "");
         const fullPath = `system.${relativePath}.${field}`;
         return foundry.utils.getProperty(actor, fullPath) ?? "";
+    });
+
+  Handlebars.registerHelper("calculateProficiencySpent", (actor) => {
+        if (!actor || !actor.system?.proficiency) return 0;
+        
+        const prof = actor.system.proficiency;
+        let total = 0;
+        
+        if (prof.knowledge) {
+          total += prof.knowledge.reduce((sum, item) => sum + (item.base || 0), 0);
+        }
+        
+        if (prof.languages) {
+          total += prof.languages.reduce((sum, item) => sum + (item.base || 0), 0);
+        }
+        
+        for (const group of PROFICIENCY_BASIC_MAP) {
+          for (const skill of group.list) {
+            const relativePath = skill.key.replace(/^system\./, "");
+            const skillData = foundry.utils.getProperty(actor.system, relativePath);
+            if (skillData && typeof skillData === 'object' && 'base' in skillData) {
+              total += skillData.base || 0;
+            }
+          }
+        }
+        
+        return total;
+    });
+
+  Handlebars.registerHelper("proficiencySpentClass", (actor) => {
+        if (!actor || !actor.system?.proficiency) return "";
+        
+        const prof = actor.system.proficiency;
+        let spent = 0;
+        
+        if (prof.knowledge) {
+          spent += prof.knowledge.reduce((sum, item) => sum + (item.base || 0), 0);
+        }
+        
+        if (prof.languages) {
+          spent += prof.languages.reduce((sum, item) => sum + (item.base || 0), 0);
+        }
+        
+        for (const group of PROFICIENCY_BASIC_MAP) {
+          for (const skill of group.list) {
+            const relativePath = skill.key.replace(/^system\./, "");
+            const skillData = foundry.utils.getProperty(actor.system, relativePath);
+            if (skillData && typeof skillData === 'object' && 'base' in skillData) {
+              spent += skillData.base || 0;
+            }
+          }
+        }
+        
+        const max = actor.system.proficiency.max_points || 0;
+        
+        if (spent > max) {
+          return "font-titulo-secao-high-value";
+        }else{
+           return "font-titulo-secao";
+        }
+        
+        return "";
     });
 
   Handlebars.registerHelper("canActivateWeapon", (actor, weaponKey) => {

@@ -113,6 +113,14 @@
     letter-spacing: 0.5px !important;
 }
 
+.ffrpg3e.sheet.actor .pericias-layout-moderno .font-titulo-secao-high-value {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: red !important;
+}
+
 /* 🏛️ ARQUITETURA FIXED DE TABELAS (TRAVA FÍSICA SUPREMA CONTRA DESALINHAMENTOS) */
 .ffrpg3e.sheet.actor .pericias-layout-moderno .tabela-pericias-pro {
     width: 100% !important;
@@ -250,15 +258,12 @@
 /* 🎯 MODIFICADORES LADO A LADO (AMBIDESTRIA / INABILIDADE) */
 .ffrpg3e.sheet.actor .pericias-layout-moderno .sub-barra-controles-camada-2 {
     display: flex !important;
-    flex-direction: row !important; /* Garante que fiquem pareados na horizontal */
-    justify-content: space-between !important;
-    align-items: center !important;
+    justify-content: end !important;
     gap: 8px !important;
     padding: 4px 6px !important;
     background: rgba(138, 114, 87, 0.06) !important;
     border-radius: 4px !important;
     margin-bottom: 6px !important;
-    flex-shrink: 0 !important;
 }
 
 .ffrpg3e.sheet.actor .pericias-layout-moderno .lbl-mod-weapon-check {
@@ -303,7 +308,7 @@
 }
 
 /* CONTROLES DE ARRAYS DINÂMICOS (IDIOMAS & CONHECIMENTOS) */
-.ffrpg3e.sheet.actor .pericias-layout-moderno .flex-controles-array { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center; }
+
 .ffrpg3e.sheet.actor .pericias-layout-moderno .agrupamento-miniblocos-pontos { display: flex !important; gap: 6px !important; }
 .ffrpg3e.sheet.actor .pericias-layout-moderno .minibloco-ponto-vertical { display: flex !important; flex-direction: column !important; align-items: center !important; font-size: 9px !important; font-weight: 700 !important; color: #735e47 !important; text-transform: uppercase !important; }
 .ffrpg3e.sheet.actor .pericias-layout-moderno .input-array-ponto { width: 32px !important; height: 18px !important; font-size: 11px !important; text-align: center !important; padding: 0 !important; }
@@ -344,3 +349,8 @@
 /* ==========================================================================
    FIM DO ARQUIVO CSS COMPLETAMENTE CORRIGIDO, SIMÉTRICO E PROJETADO CONTRA QUEBRAS
    ========================================================================== */
+
+/* Regra forçada para garantir cor vermelha no span de pontos gastos quando acima do limite */
+.ffrpg3e.sheet.actor .pericias-layout-moderno .font-titulo-secao-high-value {
+    color: red !important;
+}

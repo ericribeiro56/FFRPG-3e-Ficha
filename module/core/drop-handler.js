@@ -73,7 +73,7 @@ class EffectDropHandler {
       if (!target) return null;
 
       let targetPath = bonus.mode === "percent" ? target.percentTarget : target.flatTarget;
-      if ((bonus.status === "armadura" || bonus.status === "armadura_magica") && bonus.mode !== "percent") {
+      if ((bonus.status === "armor" || bonus.status === "magicArmor") && bonus.mode !== "percent") {
         targetPath = targetPath.replace(".bonus", ".base");
       }
 

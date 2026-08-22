@@ -25,8 +25,8 @@ export const opcoesTaxasGil = [
   { value: "9", label: "-25%" }
 ];
 
-export const ATTRIBUTES_KEYS = ["forca", "vitalidade", "agilidade", "velocidade", "magia", "espirito"];
-export const COMBAT_KEYS = ["evasao", "evasao_magica", "armadura", "armadura_magica", "precisao", "precisao_magica", "destreza", "mente", "expert"];
+export const ATTRIBUTES_KEYS = ["strength", "vitality", "agility", "speed", "magic", "spirit"];
+export const COMBAT_KEYS = ["evasion", "magicEvasion", "armor", "magicArmor", "precision", "magicAccuracy", "dexterity", "mind", "expert"];
 export const MODIFICADORES_STATUS = {
   agility_up: 1.25,
   agility_down: 0.75,
@@ -103,41 +103,41 @@ export const TIERS = Object.freeze(
 );
 
 export const EQUIPPABLE_BONUS_TARGETS = [
-  { key: "forca", display: "Força", displayShort: "FOR", category: "attributes", flatTarget: "system.atributos.forca.bonus", percentTarget: "system.percent_bonus.forca" },
-  { key: "vitalidade", display: "Vitalidade", displayShort: "VIT", category: "attributes", flatTarget: "system.atributos.vitalidade.bonus", percentTarget: "system.percent_bonus.vitalidade" },
-  { key: "agilidade", display: "Agilidade", displayShort: "AGI", category: "attributes", flatTarget: "system.atributos.agilidade.bonus", percentTarget: "system.percent_bonus.agilidade" },
-  { key: "velocidade", display: "Velocidade", displayShort: "VEL", category: "attributes", flatTarget: "system.atributos.velocidade.bonus", percentTarget: "system.percent_bonus.velocidade" },
-  { key: "magia", display: "Magia", displayShort: "MAG", category: "attributes", flatTarget: "system.atributos.magia.bonus", percentTarget: "system.percent_bonus.magia" },
-  { key: "espirito", display: "Espírito", displayShort: "ESP", category: "attributes", flatTarget: "system.atributos.espirito.bonus", percentTarget: "system.percent_bonus.espirito" },
-  { key: "armadura", display: "Armadura", displayShort: "ARM", category: "combat", flatTarget: "system.combate.armadura.bonus", percentTarget: "system.percent_bonus.armadura" },
-  { key: "armadura_magica", display: "Armadura Mágica", displayShort: "ARMM", category: "combat", flatTarget: "system.combate.armadura_magica.bonus", percentTarget: "system.percent_bonus.armadura_magica" },
-  { key: "evasao", display: "Evasão", displayShort: "EVA", category: "combat", flatTarget: "system.combate.evasao.bonus", percentTarget: "system.percent_bonus.evasao" },
-  { key: "evasao_magica", display: "Evasão Mágica", displayShort: "EVAM", category: "combat", flatTarget: "system.combate.evasao_magica.bonus", percentTarget: "system.percent_bonus.evasao_magica" },
-  { key: "precisao", display: "Precisão", displayShort: "PRE", category: "combat", flatTarget: "system.combate.precisao.bonus", percentTarget: "system.percent_bonus.precisao" },
-  { key: "precisao_magica", display: "Precisão Mágica", displayShort: "PREM", category: "combat", flatTarget: "system.combate.precisao_magica.bonus", percentTarget: "system.percent_bonus.precisao_magica" },
-  { key: "destreza", display: "Destreza", displayShort: "DES", category: "combat", flatTarget: "system.combate.destreza.bonus", percentTarget: "system.percent_bonus.destreza" },
-  { key: "mente", display: "Mente", displayShort: "MEN", category: "combat", flatTarget: "system.combate.mente.bonus", percentTarget: "system.percent_bonus.mente" },
-  { key: "expert", display: "Expert", displayShort: "EXP", category: "combat", flatTarget: "system.combate.expert.bonus", percentTarget: "system.percent_bonus.expert" },
-  { key: "crit", display: "Crítico", displayShort: "CRIT", category: "combat", flatTarget: "system.combate.critical_chance", percentTarget: "system.percent_bonus.critical" },
-  { key: "damage", display: "Dano", displayShort: "DMG", category: "combat", flatTarget: "system.combate.damage_bonus", percentTarget: "system.percent_bonus.damage" },
+  { key: "strength", display: "Força", displayShort: "FOR", category: "attributes", flatTarget: "system.attributes.strength.bonus", percentTarget: "system.percent_bonus.strength" },
+  { key: "vitality", display: "Vitalidade", displayShort: "VIT", category: "attributes", flatTarget: "system.attributes.vitality.bonus", percentTarget: "system.percent_bonus.vitality" },
+  { key: "agility", display: "Agilidade", displayShort: "AGI", category: "attributes", flatTarget: "system.attributes.agility.bonus", percentTarget: "system.percent_bonus.agility" },
+  { key: "speed", display: "Velocidade", displayShort: "VEL", category: "attributes", flatTarget: "system.attributes.speed.bonus", percentTarget: "system.percent_bonus.speed" },
+  { key: "magic", display: "Magia", displayShort: "MAG", category: "attributes", flatTarget: "system.attributes.magic.bonus", percentTarget: "system.percent_bonus.magic" },
+  { key: "spirit", display: "Espírito", displayShort: "ESP", category: "attributes", flatTarget: "system.attributes.spirit.bonus", percentTarget: "system.percent_bonus.spirit" },
+  { key: "armor", display: "Armadura", displayShort: "ARM", category: "combat", flatTarget: "system.combat.armor.bonus", percentTarget: "system.percent_bonus.armor" },
+  { key: "magicArmor", display: "Armadura Mágica", displayShort: "ARMM", category: "combat", flatTarget: "system.combat.magicArmor.bonus", percentTarget: "system.percent_bonus.magicArmor" },
+  { key: "evasion", display: "Evasão", displayShort: "EVA", category: "combat", flatTarget: "system.combat.evasion.bonus", percentTarget: "system.percent_bonus.evasion" },
+  { key: "magicEvasion", display: "Evasão Mágica", displayShort: "EVAM", category: "combat", flatTarget: "system.combat.magicEvasion.bonus", percentTarget: "system.percent_bonus.magicEvasion" },
+  { key: "precision", display: "Precisão", displayShort: "PRE", category: "combat", flatTarget: "system.combat.precision.bonus", percentTarget: "system.percent_bonus.precision" },
+  { key: "magicAccuracy", display: "Precisão Mágica", displayShort: "PREM", category: "combat", flatTarget: "system.combat.magicAccuracy.bonus", percentTarget: "system.percent_bonus.magicAccuracy" },
+  { key: "dexterity", display: "Destreza", displayShort: "DES", category: "combat", flatTarget: "system.combat.dexterity.bonus", percentTarget: "system.percent_bonus.dexterity" },
+  { key: "mind", display: "Mente", displayShort: "MEN", category: "combat", flatTarget: "system.combat.mind.bonus", percentTarget: "system.percent_bonus.mind" },
+  { key: "expert", display: "Expert", displayShort: "EXP", category: "combat", flatTarget: "system.combat.expert.bonus", percentTarget: "system.percent_bonus.expert" },
+  { key: "crit", display: "Crítico", displayShort: "CRIT", category: "combat", flatTarget: "system.combat.critical_chance", percentTarget: "system.percent_bonus.critical" },
+  { key: "damage", display: "Dano", displayShort: "DMG", category: "combat", flatTarget: "system.combat.damage_bonus", percentTarget: "system.percent_bonus.damage" },
   { key: "hp", display: "HP Máx", displayShort: "HP", category: "basic", flatTarget: "system.hp.bonus", percentTarget: "system.percent_bonus.hp" },
   { key: "mp", display: "MP Máx", displayShort: "MP", category: "basic", flatTarget: "system.mp.bonus", percentTarget: "system.percent_bonus.mp" }
 ];
 
 export const DEFAULT_BONUS_LIST = [
-  { status: "armadura", value: 0, mode: "flat" },
-  { status: "armadura_magica", value: 0, mode: "flat" },
-  { status: "evasao", value: 0, mode: "flat" },
-  { status: "evasao_magica", value: 0, mode: "flat" }
+  { status: "armor", value: 0, mode: "flat" },
+  { status: "magicArmor", value: 0, mode: "flat" },
+  { status: "evasion", value: 0, mode: "flat" },
+  { status: "magicEvasion", value: 0, mode: "flat" }
 ];
 
 export const STATUS_LABELS = {
-  "system.atributos.forca.total": "FOR",
-  "system.atributos.vitalidade.total": "VIT",
-  "system.atributos.agilidade.total": "AGI",
-  "system.atributos.velocidade.total": "VEL",
-  "system.atributos.magia.total": "MAG",
-  "system.atributos.espirito.total": "ESP"
+  "system.attributes.strength.total": "FOR",
+  "system.attributes.vitality.total": "VIT",
+  "system.attributes.agility.total": "AGI",
+  "system.attributes.speed.total": "VEL",
+  "system.attributes.magic.total": "MAG",
+  "system.attributes.spirit.total": "ESP"
 };
 
 export const ITEM_TYPE_CATEGORY_MAP = {

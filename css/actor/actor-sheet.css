@@ -465,11 +465,11 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* ==========================================================================
-   PARTE 5: PAINEL DE ATRIBUTOS DA ESQUERDA [data-tab="atributos"]
+   PARTE 5: PAINEL DE ATRIBUTOS DA ESQUERDA [data-tab="attributes"]
    ========================================================================== */
 
 /* Layout Grid de Duas Colunas da Aba Ativa */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributos-layout-moderno {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .atributos-layout-moderno {
     display: grid !important;
     grid-template-columns: 1.10fr 0.90fr !important;
     /* Esquerda levemente maior pelas colunas */
@@ -480,7 +480,7 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* O CARD DE PAPIRO SÓLIDO: Bloqueia fundos e vazamentos indesejados */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .card-painel {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .card-painel {
     background: #faf6ec !important;
     /* Papiro Sólido Limpo */
     border: 1px solid #c7b9a8 !important;
@@ -495,7 +495,7 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* Placa Interna de Pontos Disponíveis */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .card-painel-header {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .card-painel-header {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
@@ -507,14 +507,14 @@ form.ffrpg3e.sheet.actor .tab {
     flex-shrink: 0 !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .panel-title-txt {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .panel-title-txt {
     font-size: 11px !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
     color: #4a3319 !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .panel-title-val {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .panel-title-val {
     font-size: 13px !important;
     font-weight: 800 !important;
     color: #2b1a08 !important;
@@ -523,8 +523,8 @@ form.ffrpg3e.sheet.actor .tab {
 
 /* --- GRID INTERNO DE ATRIBUTOS (ESQUERDA) --- */
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributos-grid-header,
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributo-row-item-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .atributos-grid-header,
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .atributo-row-item-pro {
     display: grid !important;
     grid-template-columns: 85px repeat(6, 1fr) !important;
     /* Nome largo, colunas idênticas */
@@ -533,14 +533,14 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* Linha de Títulos das Colunas */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributos-grid-header {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .atributos-grid-header {
     border-bottom: 2px solid #b3a28f !important;
     padding-bottom: 4px !important;
     text-align: center !important;
     flex-shrink: 0 !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .grid-lbl-txt {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .grid-lbl-txt {
     font-size: 11px !important;
     font-weight: 700 !important;
     color: #735e47 !important;
@@ -549,7 +549,7 @@ form.ffrpg3e.sheet.actor .tab {
     padding-left: 4px !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .grid-lbl-num {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .grid-lbl-num {
     font-size: 10px !important;
     font-weight: 700 !important;
     color: #735e47 !important;
@@ -557,17 +557,17 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* Linhas Individuais dos Atributos */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributo-row-item-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .atributo-row-item-pro {
     padding: 3px 0 !important;
     border-bottom: 1px dashed rgba(179, 162, 143, 0.4) !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .atributo-row-item-pro:last-child {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .atributo-row-item-pro:last-child {
     border-bottom: none !important;
 }
 
 /* Botões de Rolagem Modernos (Apenas Texto Reativo Elegante) */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .btn-roll-moderno {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .btn-roll-moderno {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
@@ -581,13 +581,13 @@ form.ffrpg3e.sheet.actor .tab {
     transition: color 0.15s ease !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .btn-roll-moderno:hover {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .btn-roll-moderno:hover {
     color: #b57a1d !important;
     text-decoration: underline !important;
 }
 
 /* Caixa Curta da Base (Encolhida para 3 Dígitos) */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .input-base-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .input-base-pro {
     width: 34px !important;
     height: 20px !important;
     margin: 0 auto !important;
@@ -595,7 +595,7 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* Centralização Absoluta das Exibições Fixas */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .val-display-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .val-display-pro {
     font-size: 12px !important;
     font-weight: 600 !important;
     color: #5c4e3c !important;
@@ -603,13 +603,13 @@ form.ffrpg3e.sheet.actor .tab {
     transition: color 0.12s ease-out !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-row-item-pro .val-display-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .combate-row-item-pro .val-display-pro {
     display: inline-block !important;
     width: auto !important;
 }
 
 /* Destaque para o valor TOTAL */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .val-display-pro.total-destaque-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .val-display-pro.total-destaque-pro {
     color: #2b1a08 !important;
     font-weight: 800 !important;
     font-size: 13px !important;
@@ -619,7 +619,7 @@ form.ffrpg3e.sheet.actor .tab {
    PARTE 6: CONTAINER DE SCROLL DOS NÍVEIS (INFERIOR ESQUERDA)
    ========================================================================== */
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-scroll-container-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .hpmp-scroll-container-pro {
     margin-top: auto !important;
     /* Cola a tabela na base do card esquerdo */
     overflow-y: auto !important;
@@ -630,22 +630,22 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* Customização fina da barra de rolagem interna */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-scroll-container-pro::-webkit-scrollbar {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .hpmp-scroll-container-pro::-webkit-scrollbar {
     width: 5px !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-scroll-container-pro::-webkit-scrollbar-track {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .hpmp-scroll-container-pro::-webkit-scrollbar-track {
     background: rgba(138, 114, 87, 0.05) !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-scroll-container-pro::-webkit-scrollbar-thumb {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .hpmp-scroll-container-pro::-webkit-scrollbar-thumb {
     background: rgba(138, 114, 87, 0.3) !important;
     border-radius: 4px !important;
 }
 
 /* Alinhamento por Grid das colunas de Nível */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-grid-header-pro,
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-row-item-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .hpmp-grid-header-pro,
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .hpmp-row-item-pro {
     display: grid !important;
     grid-template-columns: 50px repeat(4, 1fr) !important;
     align-items: center !important;
@@ -653,7 +653,7 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* Cabeçalho Sticky Legítimo da Rolagem */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-grid-header-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .hpmp-grid-header-pro {
     position: sticky !important;
     top: 0 !important;
     background: #faf6ec !important;
@@ -667,18 +667,18 @@ form.ffrpg3e.sheet.actor .tab {
     z-index: 5;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-row-item-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .hpmp-row-item-pro {
     padding: 2px 0 !important;
     border-bottom: 1px dashed rgba(179, 162, 143, 0.3) !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .lvl-label-txt {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .lvl-label-txt {
     font-size: 11px !important;
     font-weight: 700 !important;
     color: #4a3319 !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .hpmp-input-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .hpmp-input-pro {
     width: 34px !important;
     height: 18px !important;
     font-size: 11px !important;
@@ -687,12 +687,12 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* ==========================================================================
-   PARTE 7: PAINEL DE COMBATE E SEPARADOR EXPERTS (DIREITA) [data-tab="atributos"]
+   PARTE 7: PAINEL DE COMBATE E SEPARADOR EXPERTS (DIREITA) [data-tab="attributes"]
    ========================================================================== */
 
 /* Alinhamento por Grid Simétrico da Direita */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-grid-header,
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-row-item-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .combate-grid-header,
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .combate-row-item-pro {
     display: grid !important;
     grid-template-columns: 110px repeat(3, 1fr) !important;
     /* Rótulo mais largo, colunas simétricas */
@@ -701,14 +701,14 @@ form.ffrpg3e.sheet.actor .tab {
     gap: 4px !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-grid-header {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .combate-grid-header {
     border-bottom: 2px solid #b3a28f !important;
     padding-bottom: 4px !important;
     margin-bottom: 4px !important;
     flex-shrink: 0 !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-lbl-txt-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .combate-lbl-txt-pro {
     font-size: 13px !important;
     font-weight: 700 !important;
     color: #4a3319 !important;
@@ -717,13 +717,13 @@ form.ffrpg3e.sheet.actor .tab {
     transition: color 0.12s ease-out !important;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-row-item-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .combate-row-item-pro {
     padding: 3px 0 !important;
     border-bottom: 1px dashed rgba(179, 162, 143, 0.4) !important;
 }
 
 /* Inputs de Combate (Padronizados com 22px de altura e 3 dígitos de largura) */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .combate-row-item-pro input[type="number"] {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .combate-row-item-pro input[type="number"] {
     width: 35px !important;
     height: 22px !important;
     margin: 0 auto !important;
@@ -732,7 +732,7 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* SEPARADOR DESIGN DE EXPERTS (TEXTO SOBRE LINHA TRAÇADA) */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .experts-separador-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .experts-separador-pro {
     text-align: center !important;
     margin: 10px 0 6px 0 !important;
     position: relative !important;
@@ -740,7 +740,7 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* Linha horizontal fina de suporte que atravessa o fundo */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .experts-separador-pro::before {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .experts-separador-pro::before {
     content: "" !important;
     position: absolute !important;
     top: 50% !important;
@@ -751,7 +751,7 @@ form.ffrpg3e.sheet.actor .tab {
     z-index: 1;
 }
 
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .experts-title-txt {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .experts-title-txt {
     font-size: 11px !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
@@ -765,17 +765,17 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* Remove o tracejado inferior exclusivamente na linha de Expertise */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .row-expertise-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .row-expertise-pro {
     border-bottom: none !important;
     margin-bottom: 8px !important;
 }
 
 /* ==========================================================================
-   PARTE 8: DROPDOWNS CUSTOMIZADOS DO RODAPÉ DA DIREITA [data-tab="atributos"]
+   PARTE 8: DROPDOWNS CUSTOMIZADOS DO RODAPÉ DA DIREITA [data-tab="attributes"]
    ========================================================================== */
 
 /* Fixa a linha dos selects no rodapé inferior do painel */
-.ffrpg3e.sheet.actor .window-content .tab[data-tab="atributos"].active .experts-selects-row-pro {
+.ffrpg3e.sheet.actor .window-content .tab[data-tab="attributes"].active .experts-selects-row-pro {
     display: flex !important;
     gap: 8px !important;
     width: 100% !important;
@@ -1302,7 +1302,7 @@ form.ffrpg3e.sheet.actor .tab {
    ========================================================================== */
 
 /* 1. Força a aba de Atributos ativa a respeitar rigorosamente o frame da ficha */
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active {
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active {
     display: flex !important;
     flex-direction: column !important;
     height: 100% !important;
@@ -1312,7 +1312,7 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* 2. Corrige o container moderno para se comportar como linha (lado a lado) e travar na tela */
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .atributos-layout-moderno {
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active .atributos-layout-moderno {
     display: flex !important;
     flex-direction: row !important;
     /* Força card esquerdo e direito a ficarem lado a lado */
@@ -1326,7 +1326,7 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* 3. Força os dois painéis internos (esquerdo e direito) a dividirem o espaço e não vazarem */
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .card-painel {
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active .card-painel {
     display: flex !important;
     flex-direction: column !important;
     height: 100% !important;
@@ -1336,8 +1336,8 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* 4. Ativa o scroll individual apenas nas listas internas (atributos e combate) se o conteúdo crescer */
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .atributos-lista-rows,
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .combate-lista-rows {
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active .atributos-lista-rows,
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active .combate-lista-rows {
     flex: 1 !important;
     overflow-y: auto !important;
     /* Rola lindamente só dentro da caixinha se precisar */
@@ -1345,7 +1345,7 @@ form.ffrpg3e.sheet.actor .tab {
 }
 
 /* 5. Trava o container de níveis para ele criar scroll interno e não esmagar os Experts */
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .hpmp-scroll-container-pro {
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active .hpmp-scroll-container-pro {
     max-height: 220px !important;
     /* Ajuste essa altura para o scroll dos níveis se adequar ao seu visual */
     overflow-y: auto !important;
@@ -1632,7 +1632,7 @@ form.ffrpg3e.sheet.actor .tab {
 /* ==========================================================================
    CORREÇÃO EXCLUSIVA: TRANCAR ALTURA DA ABA ATRIBUTOS (v14)
    ========================================================================== */
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active {
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active {
     display: flex !important;
     flex-direction: column !important;
     height: 100% !important;
@@ -1640,7 +1640,7 @@ form.ffrpg3e.sheet.actor .tab {
     overflow: hidden !important;
 }
 
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .atributos-layout-moderno {
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active .atributos-layout-moderno {
     display: flex !important;
     flex-direction: row !important;
     gap: 15px !important;
@@ -1651,7 +1651,7 @@ form.ffrpg3e.sheet.actor .tab {
     overflow: hidden !important;
 }
 
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .card-painel {
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active .card-painel {
     display: flex !important;
     flex-direction: column !important;
     height: 100% !important;
@@ -1660,14 +1660,14 @@ form.ffrpg3e.sheet.actor .tab {
     overflow: hidden !important;
 }
 
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .atributos-lista-rows,
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .combate-lista-rows {
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active .atributos-lista-rows,
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active .combate-lista-rows {
     flex: 1 !important;
     overflow-y: auto !important;
     min-height: 0 !important;
 }
 
-.ffrpg3e.sheet.actor .tab[data-tab="atributos"].active .hpmp-scroll-container-pro {
+.ffrpg3e.sheet.actor .tab[data-tab="attributes"].active .hpmp-scroll-container-pro {
     max-height: 220px !important;
     overflow-y: auto !important;
     flex-shrink: 0 !important;

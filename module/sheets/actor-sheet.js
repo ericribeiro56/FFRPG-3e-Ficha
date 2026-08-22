@@ -73,9 +73,9 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     context.opcoesAtributos = sortObjectByValue({
       "": "Nenhum Atributo",
-      "system.atributos.agilidade.total": "Agilidade",
-      "system.atributos.magia.total": "Magia",
-      "system.atributos.espirito.total": "Espírito"
+      "system.attributes.agility.total": "Agilidade",
+      "system.attributes.magic.total": "Magia",
+      "system.attributes.spirit.total": "Espírito"
     });
 
     context.opcoesPericias = sortObjectByValue({
@@ -91,7 +91,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     });
 
     context.enrichBackground = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-      this.document.system.information.bgHistory || "",
+      this.document.system.info.background || "",
       { secrets: this.document.isOwner, async: true }
     );
 
@@ -122,8 +122,8 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   _configureEditors(options) {
     super._configureEditors(options);
 
-    this.editors["bgHistory"] = {
-      target: "system.information.bgHistory",
+    this.editors["background"] = {
+      target: "system.info.background",
       button: false,
       engine: "prosemirror",
       collaborative: false
@@ -217,7 +217,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       this.controladorAbas = new foundry.applications.ux.Tabs({
         navSelector: '.sheet-tabs',
         contentSelector: '.sheet-body',
-        initial: 'atributos'
+        initial: 'attributes'
       });
     }
     this.controladorAbas.bind(this.element);
@@ -462,8 +462,8 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             const protectShell = form.querySelector("#dano-protect-shell").checked;
             const guard = form.querySelector("#dano-guard").checked;
 
-            const armaduraFisica = safeInt(actor.system.combate?.armadura?.total, 0);
-            const armaduraMagica = safeInt(actor.system.combate?.armadura_magica?.total, 0);
+            const armorPhysical = safeInt(actor.system.combat?.armor?.total, 0);
+            const armorMagica = safeInt(actor.system.combat?.magicArmor?.total, 0);
 
             let danoCalculado = quantidade;
 
@@ -474,16 +474,16 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
             switch (tipoDefesa) {
               case "arm":
-                danoCalculado = Math.max(0, danoCalculado - armaduraFisica);
+                danoCalculado = Math.max(0, danoCalculado - armorPhysical);
                 break;
               case "arm_metade":
-                danoCalculado = Math.max(0, danoCalculado - Math.floor(armaduraFisica / 2));
+                danoCalculado = Math.max(0, danoCalculado - Math.floor(armorPhysical / 2));
                 break;
               case "armm":
-                danoCalculado = Math.max(0, danoCalculado - armaduraMagica);
+                danoCalculado = Math.max(0, danoCalculado - armorMagica);
                 break;
               case "armm_metade":
-                danoCalculado = Math.max(0, danoCalculado - Math.floor(armaduraMagica / 2));
+                danoCalculado = Math.max(0, danoCalculado - Math.floor(armorMagica / 2));
                 break;
               default:
                 break;
@@ -904,7 +904,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   async rolarAtributo(event, target) {
     const nomeAtributo = target.dataset.atributo;
-    const valorTeste = target.dataset.teste;
+    const valorTeste = target.dataset.test;
     if (!nomeAtributo || !valorTeste) return;
 
     const rollFormula = `${valorTeste}-d100`;
@@ -947,7 +947,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   async rolarPericia(event, target) {
     const nomePericia = target.dataset.pericia;
-    const valorTeste = target.dataset.teste;
+    const valorTeste = target.dataset.test;
     if (!nomePericia || !valorTeste) return;
 
     const rollFormula = `${valorTeste}-d100`;
@@ -966,16 +966,15 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       return;
     }
 
-    const scrollContainer = this.element.querySelector(".pericias-layout-moderno");
-    const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+    const scrollTop = this._getProficiencyScrollTop();
 
-    const list = safeArrayCopy(this.document.system.proficiency.language.list || []);
-    list.push({ name: "", invisted: 0, total: 0 });
+    const list = safeArrayCopy(this.document.system.proficiency.languages || []);
+    list.push({ name: "", base: 0, total: 0 });
 
-    await this.document.update({ "system.proficiency.language.list": list });
+    await this.document.update({ "system.proficiency.languages": list });
     await this.render();
 
-    if (scrollContainer) scrollContainer.scrollTop = scrollTop;
+    this._restoreProficiencyScroll(scrollTop);
   }
 
   async removerIdioma(event, target) {
@@ -985,19 +984,18 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       return;
     }
 
-    const scrollContainer = this.element.querySelector(".pericias-layout-moderno");
-    const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+    const scrollTop = this._getProficiencyScrollTop();
 
     const index = safeInt(target.dataset.index, -1);
     if (index < 0) return;
 
-    const list = safeArrayCopy(this.document.system.proficiency.language.list || []);
+    const list = safeArrayCopy(this.document.system.proficiency.languages || []);
     list.splice(index, 1);
 
-    await this.document.update({ "system.proficiency.language.list": list });
+    await this.document.update({ "system.proficiency.languages": list });
     await this.render();
 
-    if (scrollContainer) scrollContainer.scrollTop = scrollTop;
+    this._restoreProficiencyScroll(scrollTop);
   }
 
   async adicionarConhecimento(event, target) {
@@ -1007,16 +1005,15 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       return;
     }
 
-    const scrollContainer = this.element.querySelector(".pericias-layout-moderno");
-    const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+    const scrollTop = this._getProficiencyScrollTop();
 
-    const list = safeArrayCopy(this.document.system.proficiency.knowledge.list || []);
-    list.push({ name: "", invisted: 0, total: 0 });
+    const list = safeArrayCopy(this.document.system.proficiency.knowledge || []);
+    list.push({ name: "", base: 0, total: 0 });
 
-    await this.document.update({ "system.proficiency.knowledge.list": list });
+    await this.document.update({ "system.proficiency.knowledge": list });
     await this.render();
 
-    if (scrollContainer) scrollContainer.scrollTop = scrollTop;
+    this._restoreProficiencyScroll(scrollTop);
   }
 
   async removerConhecimento(event, target) {
@@ -1026,26 +1023,37 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       return;
     }
 
-    const scrollContainer = this.element.querySelector(".pericias-layout-moderno");
-    const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+    const scrollTop = this._getProficiencyScrollTop();
 
     const index = safeInt(target.dataset.index, -1);
     if (index < 0) return;
 
-    const list = safeArrayCopy(this.document.system.proficiency.knowledge.list || []);
+    const list = safeArrayCopy(this.document.system.proficiency.knowledge || []);
     list.splice(index, 1);
 
-    await this.document.update({ "system.proficiency.knowledge.list": list });
+    await this.document.update({ "system.proficiency.knowledge": list });
     await this.render();
 
-    if (scrollContainer) scrollContainer.scrollTop = scrollTop;
+    this._restoreProficiencyScroll(scrollTop);
+  }
+
+  _getProficiencyScrollTop() {
+    const container = this.element.querySelector(".pericias-layout-moderno");
+    return container ? container.scrollTop : 0;
+  }
+
+  _restoreProficiencyScroll(scrollTop) {
+    const container = this.element.querySelector(".pericias-layout-moderno");
+    if (container && scrollTop > 0) {
+      container.scrollTop = scrollTop;
+    }
   }
 
 }
 
 Hooks.once("init", async function () {
   await foundry.applications.handlebars.loadTemplates([
-    "systems/ffrpg3e/templates/actor/tabs/atributos-sheet.hbs",
+    "systems/ffrpg3e/templates/actor/tabs/attributes-sheet.hbs",
     "systems/ffrpg3e/templates/actor/tabs/extrato-sheet.hbs",
     "systems/ffrpg3e/templates/actor/tabs/proficiency.hbs",
     "systems/ffrpg3e/templates/actor/tabs/status-sheet.hbs",

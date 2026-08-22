@@ -124,7 +124,7 @@ function collectFlatBonuses(item) {
     if (!value) continue;
 
     let targetPath = target.flatTarget;
-    if (bonus.status === "armadura" || bonus.status === "armadura_magica") {
+    if (bonus.status === "armor" || bonus.status === "magicArmor") {
       targetPath = targetPath.replace(".bonus", ".base");
     }
 

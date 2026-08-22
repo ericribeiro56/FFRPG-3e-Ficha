@@ -6,12 +6,12 @@ export const RACAS_INICIAIS = [
     system: {
       descricao: "<p>A raça mais comum, conhecida pela sua adaptabilidade.</p>",
       classe: "Guerreiro",
-      forca_max: 15,
-      vitalidade_max: 12,
-      agilidade_max: 10,
-      velocidade_max: 10,
-      magia_max: 10,
-      espirito_max: 10,
+      strength_max: 15,
+      vitality_max: 12,
+      agility_max: 10,
+      speed_max: 10,
+      magic_max: 10,
+      spirit_max: 10,
       skillsVinculadas: ["Adaptabilidade"]
     }
   },
@@ -22,12 +22,12 @@ export const RACAS_INICIAIS = [
     system: {
       descricao: "<p>Uma raça orgulhosa com grande força física.</p>",
       classe: "Monge",
-      forca_max: 18,
-      vitalidade_max: 14,
-      agilidade_max: 8,
-      velocidade_max: 9,
-      magia_max: 7,
-      espirito_max: 14,
+      strength_max: 18,
+      vitality_max: 14,
+      agility_max: 8,
+      speed_max: 9,
+      magic_max: 7,
+      spirit_max: 14,
       skillsVinculadas: ["Orgulho Elvaano"]
     }
   }
