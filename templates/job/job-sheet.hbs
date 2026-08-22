@@ -1,119 +1,314 @@
-<div class="job-sheet-wrapper">
-    
-    <!-- Cabeçalho Oficial do Item (Imagem à esquerda, campos Nome/Classe à direita) -->
-    <header class="sheet-header">
-        <div>
-            <!-- A classe profile-img responde ao FilePicker blindado do job-sheet.js -->
-            <img src="{{item.img}}" class="profile-img" data-edit="img" title="Clique para enviar a Arte do Job" />
+<!-- BLOCO 1 DE 4: templates/job-sheet.hbs -->
+<div class="sheet-container custom-job-sheet-wrapper">
+
+    <!-- HEADER: ÍCONE, NOME E CLASSE CORE -->
+    <div class="sheet-header-wrapper">
+        <div class="img-wrapper">
+            <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         </div>
+        
         <div class="header-fields">
-            <div class="form-group-custom">
-                <label>Nome do Job:</label>
-                <input type="text" name="name" value="{{item.name}}" placeholder="Ex: Archer, Black Mage..." />
+            <div class="field-group name-field">
+                <label>Nome do Job / Vocação</label>
+                <input name="name" type="text" value="{{item.name}}" placeholder="Ex: Cavaleiro Negro"/>
             </div>
-            <div class="form-group-custom">
-                <label>Classe:</label>
-                <select name="system.classe">
+            
+            <div class="field-group class-field">
+                <label>Arquétipo (Classe Core)</label>
+                <select name="system.class">
                     {{#each classList}}
-                    <option value="{{this.value}}" {{#if (eq ../system.classe this.value)}}selected{{/if}}>{{this.label}}</option>
+                    <option value="{{this.value}}" {{#if (eq ../system.class this.value)}}selected{{/if}}>{{this.label}}</option>
                     {{/each}}
                 </select>
             </div>
         </div>
-    </header>
+    </div>
 
-    <!-- Navegação de Abas do Item (Adicionado data-tab-group obrigatório da v14) -->
-    <nav class="sheet-tabs tabs" data-tab-group="primary">
-        <a class="item active" data-tab="general">Geral</a>
-        <a class="item" data-tab="skills">Habilidades (Skills)</a>
-    </nav>
+    <!-- SEÇÃO INFERIOR: SINCRO TOTAL COM O SEU MÉTODO _BINDTABS() JAVASCRIPT -->
+    <div class="bottom-section">
+        <nav class="sheet-tabs tabs" data-group="primary">
+            <a class="item" data-tab="principal">Informações</a>
+            <a class="item" data-tab="jobSkill">Habilidades</a>
+        </nav>
 
-    <!-- Corpo Centralizador das Abas -->
-    <section class="sheet-body">
-        
-        <!-- ABA GERAL -->
-        <div class="tab active" data-tab="general">
+        <section class="sheet-body">
             
-            <!-- Soft Caps -->
-            <div class="config-section">
-                <h3><i class="fas fa-chart-line"></i> Atributos Máximos (Teto de Nível)</h3>
-                <div class="attributes-grid">
-                    <div class="form-group-custom">
-                        <label>STR Max:</label>
-                        <input type="number" name="system.strength_max" value="{{system.strength_max}}" min="0" max="30" />
+            <!-- ==========================================================================
+                 ABA 1: INFORMAÇÕES (PRINCIPAL - GRID ASSEMITRICO 2fr 1fr COM 4 QUADRANTES)
+                 ========================================================================== -->
+            <div class="tab" data-group="primary" data-tab="principal">
+                <div class="main-tab-grid-layout">
+                    
+                    <!-- Coluna Esquerda: Dados Mecânicos e Numéricos -->
+                    <div class="column-mechanics-left">
+                        <div class="job-progression-rows-stack">
+                            
+                            <!-- Bloco Horizontal 1: Modificadores de Atributo -->
+                            <div class="property-block-vertical full-width-row">
+                                <span class="block-title-tag">Modificadores de Atributo</span>
+                                <div class="attributes-inputs-inner-grid">
+                                    <div class="mini-field-group"><label>FOR</label><input type="number" name="system.attribute.strength" value="{{system.attribute.strength}}"/></div>
+                                    <div class="mini-field-group"><label>VIT</label><input type="number" name="system.attribute.vitality" value="{{system.attribute.vitality}}"/></div>
+                                    <div class="mini-field-group"><label>AGI</label><input type="number" name="system.attribute.agility" value="{{system.attribute.agility}}"/></div>
+                                    <div class="mini-field-group"><label>VEL</label><input type="number" name="system.attribute.speed" value="{{system.attribute.speed}}"/></div>
+                                    <div class="mini-field-group"><label>MAG</label><input type="number" name="system.attribute.magic" value="{{system.attribute.magic}}"/></div>
+                                    <div class="mini-field-group"><label>ESP</label><input type="number" name="system.attribute.spirit" value="{{system.attribute.spirit}}"/></div>
+                                </div>
+                            </div>
+
+                            <!-- Bloco Horizontal 2: Dados de Crescimento -->
+                            <div class="property-block-vertical full-width-row">
+                                <span class="block-title-tag">Dados de Crescimento</span>
+                                <div class="growth-inputs-inner-grid">
+                                    <div class="field-group"><label>Dado HP</label><input type="text" name="system.dice.hp" value="{{system.dice.hp}}" placeholder="1d10"/></div>
+                                    <div class="field-group"><label>Dado MP</label><input type="text" name="system.dice.mp" value="{{system.dice.mp}}" placeholder="1d4"/></div>
+                                    <div class="field-group"><label>Lim. Proficiência</label><input type="number" name="system.proficiency.limit" value="{{system.proficiency.limit}}"/></div>
+                                </div>
+                            </div>
+                        </div>
+<!-- BLOCO 2 DE 4: templates/job-sheet.hbs -->
+                        <!-- GRADE DE PROPRIEDADES 2x2 DA ABA PRINCIPAL (COMPENSADA VISUALMENTE) -->
+                        <div class="properties-section-grid main-tab-equip-2x2-grid">
+                            
+                            <!-- Quadrante 1: Bônus de Proficiência (Altura estendida) -->
+                            <div class="property-block-vertical prof-compensated-height-block">
+                                <span class="block-title-tag">Bônus de Proficiência</span>
+                                <div class="block-adder-triple-row">
+                                    <select class="add-prof-key">
+                                        {{#each proficiencyOptions}}<option value="{{this.value}}">{{this.label}}</option>{{/each}}
+                                    </select>
+                                    <input type="number" class="add-prof-value" placeholder="0"/>
+                                    <button type="button" class="action-btn-add" data-action="addProficiencyBonus">+</button>
+                                </div>
+                                <div class="vertical-scroll-list prof-compensated-scroll">
+                                    {{#each system.proficiency.bonus as |bonus index|}}
+                                    <div class="list-item-row">
+                                        <span class="item-text-content"><strong>{{bonus.key}}</strong>: +{{bonus.value}}</span>
+                                        <button type="button" class="action-btn-remove" data-action="removeProficiencyBonus" data-index="{{index}}">×</button>
+                                    </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+
+                            <!-- Quadrante 2: Armas Permitidas (Com Precisão alinhada horizontalmente inline) -->
+                            <div class="property-block-vertical prof-compensated-height-block">
+                                <div class="precision-header-input">
+                                    <label>Precisão</label>
+                                    <input type="number" name="system.accuracyBonus" value="{{system.accuracyBonus}}"/>
+                                </div>
+                                <span class="block-title-tag">Armas Permitidas</span>
+                                <div class="block-adder-row">
+                                    <select class="add-weapon-select">
+                                        {{#each weaponOptions}}<option value="{{this.value}}">{{this.label}}</option>{{/each}}
+                                    </select>
+                                    <button type="button" class="action-btn-add" data-action="addAllowedWeapon">+</button>
+                                </div>
+                                <div class="vertical-scroll-list height-104-scroll">
+                                    {{#each system.mainWeapons as |weapon index|}}
+                                    <div class="list-item-row">
+                                        <span class="item-text-content">{{weapon}}</span>
+                                        <button type="button" class="action-btn-remove" data-action="removeAllowedWeapon" data-index="{{index}}">×</button>
+                                    </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+
+                            <!-- Quadrante 3: Tags do Job -->
+                            <div class="property-block-vertical compact-row-height-block">
+                                <span class="block-title-tag">Tags do Job</span>
+                                <div class="block-adder-row">
+                                    <input type="text" class="add-job-tag-input" placeholder="Nova tag..."/>
+                                    <button type="button" class="action-btn-add" data-action="addJobTag">+</button>
+                                </div>
+                                <div class="vertical-scroll-list compact-height-scroll">
+                                    {{#each system.tags as |tag index|}}
+                                    <div class="list-item-row">
+                                        <span class="item-text-content">{{tag}}</span>
+                                        <button type="button" class="action-btn-remove" data-action="removeJobTag" data-index="{{index}}">×</button>
+                                    </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+
+                            <!-- Quadrante 4: Armaduras Permitidas -->
+                            <div class="property-block-vertical compact-row-height-block">
+                                <span class="block-title-tag">Armaduras Permitidas</span>
+                                <div class="block-adder-row">
+                                    <select class="add-armor-select">
+                                        {{#each armorOptions}}<option value="{{this.value}}">{{this.label}}</option>{{/each}}
+                                    </select>
+                                    <button type="button" class="action-btn-add" data-action="addAllowedArmor">+</button>
+                                </div>
+                                <div class="vertical-scroll-list compact-height-scroll">
+                                    {{#each system.allowedArmors as |armor index|}}
+                                    <div class="list-item-row">
+                                        <span class="item-text-content">{{armor}}</span>
+                                        <button type="button" class="action-btn-remove" data-action="removeAllowedArmor" data-index="{{index}}">×</button>
+                                    </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Fim column-mechanics-left -->
+
+                    <!-- Coluna Direita: Lore e Narrativa Exclusiva do Job Geral -->
+                    <div class="column-lore-right">
+                        <div class="field-group job-narrative-box">
+                            <label>Descrição / Lore do Job</label>
+                            <div class="editor-content-wrapper-box">
+                                <prose-mirror name="system.description" value="{{system.description}}" class="prose-mirror-style">
+                                    {{{descricaoEnriquecida}}}
+                                </prose-mirror>
+                            </div>
+                        </div>
+                        <div class="field-group job-narrative-box">
+                            <label>Notas do Mestre</label>
+                            <div class="editor-content-wrapper-box">
+                                <prose-mirror name="system.notes" value="{{system.notes}}" class="prose-mirror-style">
+                                    {{{notasEnriquecidas}}}
+                                </prose-mirror>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group-custom">
-                        <label>VIT Max:</label>
-                        <input type="number" name="system.vitality_max" value="{{system.vitality_max}}" min="0" max="30" />
-                    </div>
-                    <div class="form-group-custom">
-                        <label>AGI Max:</label>
-                        <input type="number" name="system.agility_max" value="{{system.agility_max}}" min="0" max="30" />
-                    </div>
-                    <div class="form-group-custom">
-                        <label>SPD Max:</label>
-                        <input type="number" name="system.speed_max" value="{{system.speed_max}}" min="0" max="30" />
-                    </div>
-                    <div class="form-group-custom">
-                        <label>MAG Max:</label>
-                        <input type="number" name="system.magic_max" value="{{system.magic_max}}" min="0" max="30" />
-                    </div>
-                    <div class="form-group-custom">
-                        <label>SPR Max:</label>
-                        <input type="number" name="system.spirit_max" value="{{system.spirit_max}}" min="0" max="30" />
-                    </div>
+
                 </div>
-            </div>
-
-            <!-- HP/MP e Limitadores -->
-            <div class="flex-fields-row" style="margin-bottom: 12px;">
-                <div class="config-section" style="flex: 1; margin-bottom: 0;">
-                    <h3><i class="fas fa-dice"></i> Dados de Progressão</h3>
-                    <div class="flex-fields-row">
-                        <div class="form-group-custom">
-                            <label>HP Die:</label>
-                            <input type="text" name="system.hp_die" value="{{system.hp_die}}" placeholder="Ex: d10" />
-                        </div>
-                        <div class="form-group-custom">
-                            <label>MP Die:</label>
-                            <input type="text" name="system.mp_die" value="{{system.mp_die}}" placeholder="Ex: N/A, d4" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="config-section" style="flex: 1; margin-bottom: 0;">
-                    <h3><i class="fas fa-star"></i> Recursos da Classe</h3>
-                    <div class="flex-fields-row">
-                        <div class="form-group-custom">
-                            <label>Skill Points:</label>
-                            <input type="number" name="system.skill_points" value="{{system.skill_points}}" min="0" />
-                        </div>
-                        <div class="form-group-custom">
-                            <label>Precisão:</label>
-                            <input type="number" name="system.skill_aptitude" value="{{system.skill_aptitude}}" min="0" placeholder="0" />
+            </div> <!-- FIM DA ABA 1 -->
+<!-- BLOCO 3 DE 4: templates/job-sheet.hbs -->
+            <!-- ==========================================================================
+                 ABA 2: HABILIDADES (JOBSKILL - MENU DE NAVEGAÇÃO LATERAL + PAINEL DUPLO)
+                 ========================================================================== -->
+            <div class="tab" data-group="primary" data-tab="jobSkill">
+                <div class="skills-tab-layout">
+                    
+                    <!-- Coluna 1 da Aba: Lista Lateral de Habilidades Cadastradas -->
+                    <div class="skills-sidebar">
+                        <button type="button" class="add-new-skill-btn" data-action="addNewJobSkill">+ Add Skill</button>
+                        <div class="skills-scroll">
+                            {{#each system.skills as |skill index|}}
+                            <div class="sidebar-skill-item {{#if (eq ../activeSkillIndex index)}}selected{{/if}}" data-action="selectJobSkill" data-index="{{index}}">
+                                <span>{{#if skill.name}}{{skill.name}}{{else}}Nova Skill{{/if}}</span>
+                            </div>
+                            {{/each}}
                         </div>
                     </div>
+
+                    <!-- Coluna 2 e 3 da Aba: Painel de Detalhar Técnico + Editores de Texto da Skill -->
+                    <div class="skill-detail-panel">
+                        {{#if currentSkill}}
+                            <div class="container-detalhe">
+                                
+                                <!-- Subcoluna Esquerda do Detalhar: Inputs Técnicos e Combate -->
+                                <div class="col-detalhe-esq">
+                                    
+                                    <!-- Identificação: Nome, Nível Mínimo e Tipo na Mesma Linha -->
+                                    <div class="skill-details-row-inputs">
+                                        <div class="field-group" style="flex:3"><label>Nome</label><input type="text" name="system.skills.{{activeSkillIndex}}.name" value="{{currentSkill.name}}"/></div>
+                                        <div class="field-group" style="flex:1"><label>Nív</label><input type="number" name="system.skills.{{activeSkillIndex}}.minLevel" value="{{currentSkill.minLevel}}"/></div>
+                                        <div class="field-group" style="flex:1.5"><label>Tipo</label>
+                                            <select name="system.skills.{{activeSkillIndex}}.type">
+                                                <option value="active" {{#if (eq currentSkill.type "active")}}selected{{/if}}>Ativa</option>
+                                                <option value="support" {{#if (eq currentSkill.type "support")}}selected{{/if}}>Suporte</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Parâmetros de Custo Completos -->
+                                    <div class="inner-section-sub-panel margin-top-8">
+                                        <span class="panel-inside-title">Custo da Habilidade</span>
+                                        <div class="skill-details-row-inputs no-margin">
+                                            <div class="field-group">
+                                                <select name="system.skills.{{activeSkillIndex}}.cost.type">
+                                                    <option value="mp" {{#if (eq currentSkill.cost.type "mp")}}selected{{/if}}>Mana (MP)</option>
+                                                    <option value="hp" {{#if (eq currentSkill.cost.type "hp")}}selected{{/if}}>Vida (HP)</option>
+                                                    <option value="material" {{#if (eq currentSkill.cost.type "material")}}selected{{/if}}>Material</option>
+                                                    <option value="nothing" {{#if (eq currentSkill.cost.type "nothing")}}selected{{/if}}>Sem Custo</option>
+                                                </select>
+                                            </div>
+                                            <div class="field-group"><input type="text" name="system.skills.{{activeSkillIndex}}.cost.material" value="{{currentSkill.cost.material}}" placeholder="Objeto (Material)"/></div>
+                                            <div class="field-group" style="width:70px"><input type="number" name="system.skills.{{activeSkillIndex}}.cost.value" value="{{currentSkill.cost.value}}" placeholder="Valor"/></div>
+                                        </div>
+                                    </div>
+<!-- BLOCO 4 DE 4: templates/job-sheet.hbs -->
+                                    <!-- Aplicação: Checks Compactos de Suporte, Aliados, Área e Alcance -->
+                                    <div class="skill-details-row-inputs layout-checks-row margin-top-8">
+                                        <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.support" {{#if currentSkill.support}}checked{{/if}} id="skill-sup-{{activeSkillIndex}}"/> <label for="skill-sup-{{activeSkillIndex}}">Suporte</label></div>
+                                        <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.ally" {{#if currentSkill.combat.ally}}checked{{/if}} id="skill-ally-{{activeSkillIndex}}"/> <label for="skill-ally-{{activeSkillIndex}}">Aliados</label></div>
+                                        <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.area" {{#if currentSkill.combat.area}}checked{{/if}} id="skill-area-{{activeSkillIndex}}"/> <label for="skill-area-{{activeSkillIndex}}">Área</label></div>
+                                        <div class="field-group" style="flex:1"><input type="text" name="system.skills.{{activeSkillIndex}}.range" value="{{currentSkill.range}}" placeholder="Alcance (Ex: 10m)"/></div>
+                                    </div>
+
+                                    <!-- Rodapé Técnico: Combate vs Tags Lado a Lado -->
+                                    <div class="properties-section-grid margin-top-8">
+                                        <!-- Validador de Fórmula de Linha Única -->
+                                        <div class="property-block-vertical">
+                                            <span class="block-title-tag">Mecânica de Combate</span>
+                                            <div class="input-and-button-row">
+                                                <input type="text" class="temp-combat-formula" placeholder="Ex: 2d6 + FOR"/>
+                                                <button type="button" class="action-btn-add" data-action="addValidatedFormula" data-skill-index="{{activeSkillIndex}}">+</button>
+                                            </div>
+                                            <div class="validated-formula-box">
+                                                {{#if currentSkill.combat.formula}}
+                                                    <span class="formula-text">{{currentSkill.combat.formula}}</span>
+                                                    <button type="button" data-action="removeValidatedFormula" data-skill-index="{{activeSkillIndex}}">×</button>
+                                                {{else}}
+                                                    <span style="font-size:11px; opacity:0.4; font-style:italic">Nenhuma fórmula.</span>
+                                                {{/if}}
+                                            </div>
+                                        </div>
+
+                                        <!-- Adicionador de Chips de Tags da Skill -->
+                                        <div class="property-block-vertical">
+                                            <span class="block-title-tag">Tags da Skill</span>
+                                            <div class="input-and-button-row">
+                                                <input type="text" class="add-skill-tag-input" placeholder="Nova tag..."/>
+                                                <button type="button" class="action-btn-add" data-action="addSkillTag" data-skill-index="{{activeSkillIndex}}">+</button>
+                                            </div>
+                                            <div class="vertical-scroll-list" style="height:50px !important; flex-direction:row; flex-wrap:wrap; align-content:flex-start; background:transparent">
+                                                {{#each currentSkill.tags as |tag tIdx|}}
+                                                    <div class="list-item-row compact-badge skill-badge-color" style="margin-bottom:2px">
+                                                        <span class="item-text-content">{{tag}}</span>
+                                                        <button type="button" class="action-btn-remove" data-action="removeSkillTag" data-skill-index="{{../activeSkillIndex}}" data-tag-index="{{tIdx}}">×</button>
+                                                    </div>
+                                                {{/each}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- Fim col-detalhe-esq -->
+
+                                <!-- Subcoluna Direita do Detalhar: Editores ProseMirror de Texto da Habilidade -->
+                                <div class="col-detalhe-dir">
+                                    <div class="field-group job-narrative-box">
+                                        <label>Descrição Detalhada da Skill</label>
+                                        <div class="editor-content-wrapper-box">
+                                            <prose-mirror name="system.skills.{{activeSkillIndex}}.description" value="{{currentSkill.description}}" class="prose-mirror-style">
+                                                {{{currentSkillDescriptionEnriched}}}
+                                            </prose-mirror>
+                                        </div>
+                                    </div>
+                                    <div class="field-group job-narrative-box">
+                                        <label>Notas e Restrições Técnicas</label>
+                                        <div class="editor-content-wrapper-box">
+                                            <prose-mirror name="system.skills.{{activeSkillIndex}}.notes" value="{{currentSkill.notes}}" class="prose-mirror-style">
+                                                {{{currentSkillNotesEnriched}}}
+                                            </prose-mirror>
+                                        </div>
+                                    </div>
+                                </div> <!-- Fim col-detalhe-dir -->
+
+                            </div> <!-- Fim container-detalhe -->
+                        {{else}}
+                            <!-- Mensagem Padrão quando a lista estiver vazia -->
+                            <div class="select-skill-prompt-notice">
+                                <div>
+                                    <p>Nenhuma habilidade selecionada.</p>
+                                    <span style="font-size:12px; opacity:0.5">Clique em uma skill no menu lateral para abrir o painel de detalhes e descrições.</span>
+                                </div>
+                            </div>
+                        {{/if}}
+                    </div> <!-- Fim skill-detail-panel -->
                 </div>
-            </div>
+            </div> <!-- FIM DA ABA 2 -->
 
-            <!-- Seção 4: Bloco de Conteúdo Narrativo Otimizado v14 -->
-            <div class="config-section" style="margin-bottom: 6px;">
-                <h3><i class="fas fa-book-open"></i> Descrição / Regras da Classe</h3>
-                    <!-- CORREÇÃO: Sintaxe estrita v14 usando a variável do context com as 3 chaves -->
-                    <prose-mirror name="system.descricao" data-target="system.descricao" value="{{system.descricao}}">
-                        {{{descricaoEnriquecida}}}
-                    </prose-mirror>
-            </div>
-        </div>
-
-        <!-- ABA SKILLS -->
-        <div class="tab" data-tab="skills">
-            <div class="empty-placeholder">
-                <i class="fas fa-shield-alt"></i>
-                <p class="title">Lista de Habilidades Vinculadas</p>
-                <p class="subtitle">O gerenciamento de vinculação de itens de Skill será integrado nesta seção futuramente.</p>
-            </div>
-        </div>
-
-    </section>
-</div>
+        </section>
+    </div> <!-- Fim bottom-section -->
+</div> <!-- Fim custom-job-sheet-wrapper -->

@@ -1,39 +1,46 @@
 const { HandlebarsApplicationMixin } = foundry.applications.api;
-const { ItemSheetV2 } = foundry.applications.sheets;
 
-import { CLASS_LIST } from "../core/constants.js";
-import { sortByLabel } from "../core/utils.js";
+export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheetV2) {
 
-/**
- * Ficha de Controle e Configuração para os Itens do tipo "Job" (Classes) - v14 (Application V2)
- */
-export class JobSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
-
-  constructor(options={}) {
-    options.id = options.document ? `job-item-${options.document.id}` : options.id;
+  constructor(options = {}) {
     super(options);
+    
+    // Armazena em cache o índice da habilidade que está aberta no detalhar
+    this.activeSkillIndex = 0;
+    
+    // Instancia o controlador nativo de abas mapeado para a section .sheet-body
     this.controladorAbas = new foundry.applications.ux.Tabs({
-      navSelector: '.sheet-tabs',
+      navSelector: '.sheet-tabs[data-group="primary"]',
       contentSelector: '.sheet-body',
-      initial: 'general'
+      initial: 'principal'
     });
   }
 
   /** @override */
   static DEFAULT_OPTIONS = {
-    id: "ffrpg3e-job-sheet",
-    classes: ["ffrpg3e", "sheet", "job-window"],
-    tag: "form",
-    window: {
-      resizable: false,
-      minimizable: true,
-      width: 550,
-      height: 650,
-      title: "Configurador de Classe / Job"
+    classes: ["sheet", "item", "job-window"],
+    position: {
+      width: 940,
+      height: 820
     },
-    form: {
-      submitOnChange: true,
-      closeOnSubmit: false
+    actions: {
+      // Listeners macros do Job (Aba Principal)
+      addProficiencyBonus: JobSheet._onAddProficiencyBonus,
+      removeProficiencyBonus: JobSheet._onRemoveProficiencyBonus,
+      addAllowedWeapon: JobSheet._onAddAllowedWeapon,
+      removeAllowedWeapon: JobSheet._onRemoveAllowedWeapon,
+      addJobTag: JobSheet._onAddJobTag,
+      removeJobTag: JobSheet._onRemoveJobTag,
+      addAllowedArmor: JobSheet._onAddAllowedArmor,
+      removeAllowedArmor: JobSheet._onRemoveAllowedArmor,
+
+      // Listeners de navegação e edição da Aba de Skills
+      addNewJobSkill: JobSheet._onAddNewJobSkill,
+      selectJobSkill: JobSheet._onSelectJobSkill,
+      addValidatedFormula: JobSheet._onAddValidatedFormula,
+      removeValidatedFormula: JobSheet._onRemoveValidatedFormula,
+      addSkillTag: JobSheet._onAddSkillTag,
+      removeSkillTag: JobSheet._onRemoveSkillTag
     }
   };
 
@@ -43,69 +50,266 @@ export class JobSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       template: "systems/ffrpg3e/templates/job/job-sheet.hbs"
     }
   };
+  /* ==========================================================================
+   BLOCO 2 DE 4: js/job-sheet.js (Preparação do Contexto e Enriquecimento HTML)
+   ========================================================================== */
 
   /** @override */
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    
-    context.item = this.document;
-    context.system = this.document.system;
+    const itemData = this.item.toObject();
 
-    context.descricaoEnriquecida = await foundry.applications.ux.TextEditor.implementation.enrichHTML(this.document.system.descricao || "", {
-      secrets: this.document.isOwner,
-      rollData: this.document.getRollData(),
-      relativeTo: this.document
+    // Injeta os dados brutos e estruturados do system na raiz do context para o HBS ler
+    context.system = itemData.system || {};
+    context.item = itemData;
+
+    // Garante que os vetores essenciais existam no banco para evitar quebras do #each
+    if (!context.system.proficiency) context.system.proficiency = { bonus: [] };
+    if (!context.system.proficiency.bonus) context.system.proficiency.bonus = [];
+    if (!context.system.mainWeapons) context.system.mainWeapons = [];
+    if (!context.system.tags) context.system.tags = [];
+    if (!context.system.allowedArmors) context.system.allowedArmors = [];
+    if (!context.system.skills) context.system.skills = [];
+
+    // Passa o índice ativo para o template gerenciar a classe .selected na sidebar
+    context.activeSkillIndex = this.activeSkillIndex;
+
+    // Resgata e expõe a habilidade atualmente selecionada no detalhar central
+    context.currentSkill = context.system.skills[this.activeSkillIndex] || null;
+
+    // Enriquecimento HTML NARRATIVO 1: Descrição e Notas Gerais da Vocação/Job (Aba 1)
+    context.descricaoEnriquecida = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.description || "", {
+      secrets: this.item.isOwner, rollData: this.item.getRollData(), relativeTo: this.item
+    });
+    context.notasEnriquecidas = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.notes || "", {
+      secrets: this.item.isOwner, rollData: this.item.getRollData(), relativeTo: this.item
     });
 
-    context.classList = sortByLabel(Object.entries(CLASS_LIST).map(([value, label]) => ({ value, label })));
+    // Enriquecimento HTML NARRATIVO 2: Descrição e Notas OBRIGATÓRIAS da Skill Ativa (Aba 2)
+    if (context.currentSkill) {
+      context.currentSkillDescriptionEnriched = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.currentSkill.description || "", {
+        secrets: this.item.isOwner, rollData: this.item.getRollData(), relativeTo: this.item
+      });
+      context.currentSkillNotesEnriched = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.currentSkill.notes || "", {
+        secrets: this.item.isOwner, rollData: this.item.getRollData(), relativeTo: this.item
+      });
+    }
+
+    // LISTAS DE OPÇÕES: Popula os seletores drop-down (<select>) do cabeçalho e quadrantes
+    context.classList = [
+      { value: "warrior", label: "Guerreiro (Warrior)" },
+      { value: "mage", label: "Mago (Mage)" },
+      { value: "thief", label: "Ladino (Thief)" }
+    ];
+    context.proficiencyOptions = [
+      { value: "Atk_Fisico", label: "Ataque Físico" },
+      { value: "Atk_Magico", label: "Ataque Mágico" },
+      { value: "Def_Fisica", label: "Defesa Física" },
+      { value: "Def_Magica", label: "Defesa Mágica" }
+    ];
+    context.weaponOptions = [
+      { value: "Espada de 2 Mãos", label: "Espada de 2 Mãos" },
+      { value: "Adaga", label: "Adaga" },
+      { value: "Cajado", label: "Cajado" },
+      { value: "Arco Longo", label: "Arco Longo" }
+    ];
+    context.armorOptions = [
+      { value: "Armadura Pesada", label: "Armadura Pesada" },
+      { value: "Armadura Leve", label: "Armadura Leve" },
+      { value: "Manto", label: "Manto" }
+    ];
 
     return context;
   }
 
-  /**
-   * Intercepta e garante a estrutura correta do objeto de submissão
-   * @override
-   */
-  _prepareSubmitData(event, form, formData) {
-    const data = super._prepareSubmitData(event, form, formData);
-    
-    if (!data.system) data.system = {};
-    
-    const textoMpDie = data.system?.mp_die;
-    if ( typeof textoMpDie === "string" ) {
-      const trimmed = textoMpDie.trim().toLowerCase();
-      if (trimmed === "" || trimmed === "n/a" || trimmed === "0") {
-        data.system.possui_mp = false;
-      } else {
-        data.system.possui_mp = true;
-      }
-    }
-
-    return data;
-  }
-
-
   /** @override */
   _onRender(context, options) {
     super._onRender(context, options);
-    
+    // Vincula fisicamente a escuta de cliques das abas à janela renderizada
     this.controladorAbas.bind(this.element);
+  }
+/* ==========================================================================
+   BLOCO 3 DE 4: js/job-sheet.js (Rotinas de Banco dos Quadrantes da Aba 1)
+   ========================================================================== */
 
-    const imagemEditavel = this.element.querySelector('img[data-edit="img"]');
-    if (imagemEditavel && !imagemEditavel.dataset.hasListener) {
-      imagemEditavel.dataset.hasListener = "true";
-      imagemEditavel.addEventListener("click", (event) => {
-        event.preventDefault();
-        
-        const fp = new foundry.applications.apps.FilePicker.implementation({
-          type: "image",
-          current: this.document.img,
-          callback: async (path) => {
-            await this.document.update({ img: path });
-          }
-        });
-        fp.browse();
-      });
+  // --------------------------------------------------------------------------
+  // LÓGICA DO QUADRANTE 1: BÔNUS DE PROFICIÊNCIA
+  // --------------------------------------------------------------------------
+  static async _onAddProficiencyBonus(event, target) {
+    const key = this.form.querySelector(".add-prof-key").value;
+    const value = parseInt(this.form.querySelector(".add-prof-value").value) || 0;
+    const currentList = foundry.utils.deepClone(this.item.system.proficiency?.bonus || []);
+    
+    currentList.push({ key, value });
+    await this.item.update({ "system.proficiency.bonus": currentList });
+  }
+
+  static async _onRemoveProficiencyBonus(event, target) {
+    const index = parseInt(target.dataset.index);
+    const currentList = foundry.utils.deepClone(this.item.system.proficiency?.bonus || []);
+    
+    currentList.splice(index, 1);
+    await this.item.update({ "system.proficiency.bonus": currentList });
+  }
+
+  // --------------------------------------------------------------------------
+  // LÓGICA DO QUADRANTE 2: ARMAS PERMITIDAS
+  // --------------------------------------------------------------------------
+  static async _onAddAllowedWeapon(event, target) {
+    const weapon = this.form.querySelector(".add-weapon-select").value;
+    const currentList = foundry.utils.deepClone(this.item.system.mainWeapons || []);
+    
+    if (!currentList.includes(weapon)) {
+      currentList.push(weapon);
+      await this.item.update({ "system.mainWeapons": currentList });
+    }
+  }
+
+  static async _onRemoveAllowedWeapon(event, target) {
+    const index = parseInt(target.dataset.index);
+    const currentList = foundry.utils.deepClone(this.item.system.mainWeapons || []);
+    
+    currentList.splice(index, 1);
+    await this.item.update({ "system.mainWeapons": currentList });
+  }
+
+  // --------------------------------------------------------------------------
+  // LÓGICA DO QUADRANTE 3: TAGS DO JOB
+  // --------------------------------------------------------------------------
+  static async _onAddJobTag(event, target) {
+    const input = this.form.querySelector(".add-job-tag-input");
+    const tag = input.value.trim();
+    const currentList = foundry.utils.deepClone(this.item.system.tags || []);
+    
+    if (tag && !currentList.includes(tag)) {
+      currentList.push(tag);
+      await this.item.update({ "system.tags": currentList });
+      input.value = "";
+    }
+  }
+
+  static async _onRemoveJobTag(event, target) {
+    const index = parseInt(target.dataset.index);
+    const currentList = foundry.utils.deepClone(this.item.system.tags || []);
+    
+    currentList.splice(index, 1);
+    await this.item.update({ "system.tags": currentList });
+  }
+
+  // --------------------------------------------------------------------------
+  // LÓGICA DO QUADRANTE 4: ARMADURAS PERMITIDAS
+  // --------------------------------------------------------------------------
+  static async _onAddAllowedArmor(event, target) {
+    const armor = this.form.querySelector(".add-armor-select").value;
+    const currentList = foundry.utils.deepClone(this.item.system.allowedArmors || []);
+    
+    if (!currentList.includes(armor)) {
+      currentList.push(armor);
+      await this.item.update({ "system.allowedArmors": currentList });
+    }
+  }
+
+  static async _onRemoveAllowedArmor(event, target) {
+    const index = parseInt(target.dataset.index);
+    const currentList = foundry.utils.deepClone(this.item.system.allowedArmors || []);
+    
+    currentList.splice(index, 1);
+    await this.item.update({ "system.allowedArmors": currentList });
+  }
+/* ==========================================================================
+   BLOCO 4 DE 4: js/job-sheet.js (Rotinas Internas das Habilidades/Skills)
+   ========================================================================== */
+
+  // --------------------------------------------------------------------------
+  // SISTEMA NATIVO MASTER-DETAIL: SELEÇÃO E CRIAÇÃO DE NOVA HABILIDADE
+  // --------------------------------------------------------------------------
+  static async _onAddNewJobSkill(event, target) {
+    const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
+    
+    // Instancia uma estrutura padrão vazia e limpa para a nova Skill
+    const newSkill = {
+      name: "Nova Habilidade",
+      minLevel: 1,
+      type: "active",
+      cost: { type: "mp", material: "", value: 0 },
+      support: false,
+      range: "",
+      tags: [],
+      description: "",
+      notes: "",
+      combat: { ally: false, area: false, formula: "" }
+    };
+
+    currentSkills.push(newSkill);
+    
+    // Salva no banco e força o foco visual a pular imediatamente para a skill recém-criada
+    this.activeSkillIndex = currentSkills.length - 1;
+    await this.item.update({ "system.skills": currentSkills });
+  }
+
+  static _onSelectJobSkill(event, target) {
+    // Atualiza o cache de visualização baseado na linha clicada no menu lateral esquerdo
+    this.activeSkillIndex = parseInt(target.dataset.index);
+    this.render(); // Executa o re-render limpo da ficha atualizando os ProseMirrors
+  }
+
+  // --------------------------------------------------------------------------
+  // PARÂMETROS SUB-INTERNOS: VALIDADOR DE FÓRMULA DE COMBATE EM LINHA ÚNICA
+  // --------------------------------------------------------------------------
+  static async _onAddValidatedFormula(event, target) {
+    const input = this.form.querySelector(".temp-combat-formula");
+    const formula = input.value.trim();
+    if (!formula) return;
+
+    const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
+    const skillIndex = parseInt(target.dataset.skillIndex);
+
+    if (currentSkills[skillIndex]) {
+      currentSkills[skillIndex].combat.formula = formula;
+      await this.item.update({ "system.skills": currentSkills });
+      input.value = "";
+    }
+  }
+
+  static async _onRemoveValidatedFormula(event, target) {
+    const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
+    const skillIndex = parseInt(target.dataset.skillIndex);
+
+    if (currentSkills[skillIndex]) {
+      currentSkills[skillIndex].combat.formula = "";
+      await this.item.update({ "system.skills": currentSkills });
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // PARÂMETROS SUB-INTERNOS: ADICIONADOR DE CHIPS DE TAGS DA HABILIDADE
+  // --------------------------------------------------------------------------
+  static async _onAddSkillTag(event, target) {
+    const input = this.form.querySelector(".add-skill-tag-input");
+    const tag = input.value.trim();
+    if (!tag) return;
+
+    const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
+    const skillIndex = parseInt(target.dataset.skillIndex);
+
+    if (currentSkills[skillIndex]) {
+      if (!currentSkills[skillIndex].tags) currentSkills[skillIndex].tags = [];
+      if (!currentSkills[skillIndex].tags.includes(tag)) {
+        currentSkills[skillIndex].tags.push(tag);
+        await this.item.update({ "system.skills": currentSkills });
+        input.value = "";
+      }
+    }
+  }
+
+  static async _onRemoveSkillTag(event, target) {
+    const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
+    const skillIndex = parseInt(target.dataset.skillIndex);
+    const tagIndex = parseInt(target.dataset.tagIndex);
+
+    if (currentSkills[skillIndex] && currentSkills[skillIndex].tags) {
+      currentSkills[skillIndex].tags.splice(tagIndex, 1);
+      await this.item.update({ "system.skills": currentSkills });
     }
   }
 }

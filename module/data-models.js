@@ -1055,6 +1055,7 @@ export class JobSkillModel extends foundry.abstract.TypeDataModel {
         type: Field.String("physical"),
         formula: "",
         area: false,
+        range: Field.Number(0),
         ally: false
       },
       tags: Field.Array(),

@@ -29,6 +29,7 @@ Hooks.once("init", async function() {
   } catch (err) {
     console.error("[FFRPG3E]] | Erro ao forçar idioma em português:", err);
   }
+  
 
   Handlebars.registerHelper("traduzirSlot", function(slot) {
     return `[${ARMOR_SLOTS[slot] || slot}]`;
