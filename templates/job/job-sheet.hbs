@@ -32,18 +32,18 @@
         </nav>
 
         <section class="sheet-body">
-            
+<!-- BLOCO 2 DE 4: templates/job-sheet.hbs -->
             <!-- ==========================================================================
-                 ABA 1: INFORMAÇÕES (PRINCIPAL - GRID ASSEMITRICO 2fr 1fr COM 4 QUADRANTES)
+                 ABA 1: INFORMAÇÕES (PRINCIPAL - ALTA PERFORMANCE HORIZONTAL)
                  ========================================================================== -->
             <div class="tab" data-group="primary" data-tab="principal">
                 <div class="main-tab-grid-layout">
                     
-                    <!-- Coluna Esquerda: Dados Mecânicos e Numéricos -->
+                    <!-- Coluna Esquerda: Dados Mecânicos -->
                     <div class="column-mechanics-left">
                         <div class="job-progression-rows-stack">
                             
-                            <!-- Bloco Horizontal 1: Modificadores de Atributo -->
+                            <!-- Atributos -->
                             <div class="property-block-vertical full-width-row">
                                 <span class="block-title-tag">Modificadores de Atributo</span>
                                 <div class="attributes-inputs-inner-grid">
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
 
-                            <!-- Bloco Horizontal 2: Dados de Crescimento -->
+                            <!-- Crescimento -->
                             <div class="property-block-vertical full-width-row">
                                 <span class="block-title-tag">Dados de Crescimento</span>
                                 <div class="growth-inputs-inner-grid">
@@ -66,11 +66,11 @@
                                 </div>
                             </div>
                         </div>
-<!-- BLOCO 2 DE 4: templates/job-sheet.hbs -->
-                        <!-- GRADE DE PROPRIEDADES 2x2 DA ABA PRINCIPAL (COMPENSADA VISUALMENTE) -->
+
+                        <!-- Grade de Equipamentos 2x2 Expandida e Sem Overflow -->
                         <div class="properties-section-grid main-tab-equip-2x2-grid">
                             
-                            <!-- Quadrante 1: Bônus de Proficiência (Altura estendida) -->
+                            <!-- Quadrante 1 -->
                             <div class="property-block-vertical prof-compensated-height-block">
                                 <span class="block-title-tag">Bônus de Proficiência</span>
                                 <div class="block-adder-triple-row">
@@ -90,7 +90,7 @@
                                 </div>
                             </div>
 
-                            <!-- Quadrante 2: Armas Permitidas (Com Precisão alinhada horizontalmente inline) -->
+                            <!-- Quadrante 2 -->
                             <div class="property-block-vertical prof-compensated-height-block">
                                 <div class="precision-header-input">
                                     <label>Precisão</label>
@@ -105,15 +105,12 @@
                                 </div>
                                 <div class="vertical-scroll-list height-104-scroll">
                                     {{#each system.mainWeapons as |weapon index|}}
-                                    <div class="list-item-row">
-                                        <span class="item-text-content">{{weapon}}</span>
-                                        <button type="button" class="action-btn-remove" data-action="removeAllowedWeapon" data-index="{{index}}">×</button>
-                                    </div>
+                                    <div class="list-item-row"><span class="item-text-content">{{weapon}}</span><button type="button" class="action-btn-remove" data-action="removeAllowedWeapon" data-index="{{index}}">×</button></div>
                                     {{/each}}
                                 </div>
                             </div>
 
-                            <!-- Quadrante 3: Tags do Job -->
+                            <!-- Quadrante 3 -->
                             <div class="property-block-vertical compact-row-height-block">
                                 <span class="block-title-tag">Tags do Job</span>
                                 <div class="block-adder-row">
@@ -122,15 +119,12 @@
                                 </div>
                                 <div class="vertical-scroll-list compact-height-scroll">
                                     {{#each system.tags as |tag index|}}
-                                    <div class="list-item-row">
-                                        <span class="item-text-content">{{tag}}</span>
-                                        <button type="button" class="action-btn-remove" data-action="removeJobTag" data-index="{{index}}">×</button>
-                                    </div>
+                                    <div class="list-item-row"><span class="item-text-content">{{tag}}</span><button type="button" class="action-btn-remove" data-action="removeJobTag" data-index="{{index}}">×</button></div>
                                     {{/each}}
                                 </div>
                             </div>
 
-                            <!-- Quadrante 4: Armaduras Permitidas -->
+                            <!-- Quadrante 4 -->
                             <div class="property-block-vertical compact-row-height-block">
                                 <span class="block-title-tag">Armaduras Permitidas</span>
                                 <div class="block-adder-row">
@@ -141,33 +135,22 @@
                                 </div>
                                 <div class="vertical-scroll-list compact-height-scroll">
                                     {{#each system.allowedArmors as |armor index|}}
-                                    <div class="list-item-row">
-                                        <span class="item-text-content">{{armor}}</span>
-                                        <button type="button" class="action-btn-remove" data-action="removeAllowedArmor" data-index="{{index}}">×</button>
-                                    </div>
+                                    <div class="list-item-row"><span class="item-text-content">{{armor}}</span><button type="button" class="action-btn-remove" data-action="removeAllowedArmor" data-index="{{index}}">×</button></div>
                                     {{/each}}
                                 </div>
                             </div>
                         </div>
-                    </div> <!-- Fim column-mechanics-left -->
+                    </div>
 
-                    <!-- Coluna Direita: Lore e Narrativa Exclusiva do Job Geral -->
+                    <!-- Coluna Direita: Lore do Job Geral -->
                     <div class="column-lore-right">
                         <div class="field-group job-narrative-box">
                             <label>Descrição / Lore do Job</label>
-                            <div class="editor-content-wrapper-box">
-                                <prose-mirror name="system.description" value="{{system.description}}" class="prose-mirror-style">
-                                    {{{descricaoEnriquecida}}}
-                                </prose-mirror>
-                            </div>
+                            <div class="editor-content-wrapper-box"><prose-mirror name="system.description" value="{{system.description}}" class="prose-mirror-style">{{{descricaoEnriquecida}}}</prose-mirror></div>
                         </div>
                         <div class="field-group job-narrative-box">
                             <label>Notas do Mestre</label>
-                            <div class="editor-content-wrapper-box">
-                                <prose-mirror name="system.notes" value="{{system.notes}}" class="prose-mirror-style">
-                                    {{{notasEnriquecidas}}}
-                                </prose-mirror>
-                            </div>
+                            <div class="editor-content-wrapper-box"><prose-mirror name="system.notes" value="{{system.notes}}" class="prose-mirror-style">{{{notasEnriquecidas}}}</prose-mirror></div>
                         </div>
                     </div>
 
@@ -175,140 +158,143 @@
             </div> <!-- FIM DA ABA 1 -->
 <!-- BLOCO 3 DE 4: templates/job-sheet.hbs -->
             <!-- ==========================================================================
-                 ABA 2: HABILIDADES (JOBSKILL - MENU DE NAVEGAÇÃO LATERAL + PAINEL DUPLO)
+                 ABA 2: HABILIDADES (JOBSKILL - BANDEJA TOTALMENTE INTEGRADA)
                  ========================================================================== -->
             <div class="tab" data-group="primary" data-tab="jobSkill">
                 <div class="skills-tab-layout">
                     
-                    <!-- Coluna 1 da Aba: Lista Lateral de Habilidades Cadastradas -->
+                    <!-- Sidebar Esquerda: Navegação Completa até o Chão -->
                     <div class="skills-sidebar">
                         <button type="button" class="add-new-skill-btn" data-action="addNewJobSkill">+ Add Skill</button>
                         <div class="skills-scroll">
                             {{#each system.skills as |skill index|}}
                             <div class="sidebar-skill-item {{#if (eq ../activeSkillIndex index)}}selected{{/if}}" data-action="selectJobSkill" data-index="{{index}}">
-                                <span>{{#if skill.name}}{{skill.name}}{{else}}Nova Skill{{/if}}</span>
+                                <span class="nav-skill-name-text">{{#if skill.name}}{{skill.name}}{{else}}Nova Skill{{/if}}</span>
+                                <button type="button" class="delete-skill-icon-btn" data-action="deleteJobSkill" data-index="{{index}}" title="Excluir Habilidade">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                             {{/each}}
                         </div>
                     </div>
 
-                    <!-- Coluna 2 e 3 da Aba: Painel de Detalhar Técnico + Editores de Texto da Skill -->
+                    <!-- Detalhar Centrado e Envelopado em Bandeja Única Sólida -->
                     <div class="skill-detail-panel">
                         {{#if currentSkill}}
-                            <div class="container-detalhe">
+                            <div class="container-detalhe unique-tray-envelope">
                                 
-                                <!-- Subcoluna Esquerda do Detalhar: Inputs Técnicos e Combate -->
-                                <div class="col-detalhe-esq">
-                                    
-                                    <!-- Identificação: Nome, Nível Mínimo e Tipo na Mesma Linha -->
-                                    <div class="skill-details-row-inputs">
-                                        <div class="field-group" style="flex:3"><label>Nome</label><input type="text" name="system.skills.{{activeSkillIndex}}.name" value="{{currentSkill.name}}"/></div>
-                                        <div class="field-group" style="flex:1"><label>Nív</label><input type="number" name="system.skills.{{activeSkillIndex}}.minLevel" value="{{currentSkill.minLevel}}"/></div>
-                                        <div class="field-group" style="flex:1.5"><label>Tipo</label>
-                                            <select name="system.skills.{{activeSkillIndex}}.type">
-                                                <option value="active" {{#if (eq currentSkill.type "active")}}selected{{/if}}>Ativa</option>
-                                                <option value="support" {{#if (eq currentSkill.type "support")}}selected{{/if}}>Suporte</option>
-                                            </select>
+                                <div class="tray-columns-wrapper-horizontal">
+                                    <!-- Subcoluna Esquerda: Componentes Técnicos Lineares -->
+                                    <div class="col-detalhe-esq transparent-inner-blocks">
+                                        
+                                        <!-- Identificação Unificada -->
+                                        <div class="property-block-vertical-skill-tray">
+                                            <div class="skill-linear-identification-grid">
+                                                <div class="field-group inline-flex-item-grow"><label>Nome</label><input type="text" name="system.skills.{{activeSkillIndex}}.name" value="{{currentSkill.name}}"/></div>
+                                                <div class="field-group inline-flex-item-fixed-niv"><label>Nív</label><input type="number" name="system.skills.{{activeSkillIndex}}.minLevel" value="{{currentSkill.minLevel}}"/></div>
+                                                <div class="field-group inline-flex-item-fixed-tipo"><label>Tipo</label>
+                                                    <select name="system.skills.{{activeSkillIndex}}.type">
+                                                        <option value="active" {{#if (eq currentSkill.type "active")}}selected{{/if}}>Ativa</option>
+                                                        <option value="support" {{#if (eq currentSkill.type "support")}}selected{{/if}}>Suporte</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Parâmetros de Custo Completos -->
-                                    <div class="inner-section-sub-panel margin-top-8">
-                                        <span class="panel-inside-title">Custo da Habilidade</span>
-                                        <div class="skill-details-row-inputs no-margin">
-                                            <div class="field-group">
-                                                <select name="system.skills.{{activeSkillIndex}}.cost.type">
+                                        <!-- Custo Horizontal -->
+                                        <div class="skill-cost-container-row-block">
+                                            <span class="panel-inside-title">Custo da Habilidade</span>
+                                            <div class="skill-linear-cost-grid">
+                                                <div class="field-group" style="flex: 1.5;"><select name="system.skills.{{activeSkillIndex}}.cost.type">
                                                     <option value="mp" {{#if (eq currentSkill.cost.type "mp")}}selected{{/if}}>Mana (MP)</option>
                                                     <option value="hp" {{#if (eq currentSkill.cost.type "hp")}}selected{{/if}}>Vida (HP)</option>
                                                     <option value="material" {{#if (eq currentSkill.cost.type "material")}}selected{{/if}}>Material</option>
                                                     <option value="nothing" {{#if (eq currentSkill.cost.type "nothing")}}selected{{/if}}>Sem Custo</option>
-                                                </select>
+                                                </select></div>
+                                                <div class="field-group" style="flex: 3;"><input type="text" name="system.skills.{{activeSkillIndex}}.cost.material" value="{{currentSkill.cost.material}}" placeholder="Objeto (Material)"/></div>
+                                                <div class="field-group" style="flex: 1;"><input type="number" name="system.skills.{{activeSkillIndex}}.cost.value" value="{{currentSkill.cost.value}}" placeholder="Valor"/></div>
                                             </div>
-                                            <div class="field-group"><input type="text" name="system.skills.{{activeSkillIndex}}.cost.material" value="{{currentSkill.cost.material}}" placeholder="Objeto (Material)"/></div>
-                                            <div class="field-group" style="width:70px"><input type="number" name="system.skills.{{activeSkillIndex}}.cost.value" value="{{currentSkill.cost.value}}" placeholder="Valor"/></div>
                                         </div>
-                                    </div>
 <!-- BLOCO 4 DE 4: templates/job-sheet.hbs -->
-                                    <!-- Aplicação: Checks Compactos de Suporte, Aliados, Área e Alcance -->
-                                    <div class="skill-details-row-inputs layout-checks-row margin-top-8">
-                                        <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.support" {{#if currentSkill.support}}checked{{/if}} id="skill-sup-{{activeSkillIndex}}"/> <label for="skill-sup-{{activeSkillIndex}}">Suporte</label></div>
-                                        <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.ally" {{#if currentSkill.combat.ally}}checked{{/if}} id="skill-ally-{{activeSkillIndex}}"/> <label for="skill-ally-{{activeSkillIndex}}">Aliados</label></div>
-                                        <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.area" {{#if currentSkill.combat.area}}checked{{/if}} id="skill-area-{{activeSkillIndex}}"/> <label for="skill-area-{{activeSkillIndex}}">Área</label></div>
-                                        <div class="field-group" style="flex:1"><input type="text" name="system.skills.{{activeSkillIndex}}.range" value="{{currentSkill.range}}" placeholder="Alcance (Ex: 10m)"/></div>
-                                    </div>
-
-                                    <!-- Rodapé Técnico: Combate vs Tags Lado a Lado -->
-                                    <div class="properties-section-grid margin-top-8">
-                                        <!-- Validador de Fórmula de Linha Única -->
-                                        <div class="property-block-vertical">
-                                            <span class="block-title-tag">Mecânica de Combate</span>
-                                            <div class="input-and-button-row">
-                                                <input type="text" class="temp-combat-formula" placeholder="Ex: 2d6 + FOR"/>
-                                                <button type="button" class="action-btn-add" data-action="addValidatedFormula" data-skill-index="{{activeSkillIndex}}">+</button>
-                                            </div>
-                                            <div class="validated-formula-box">
-                                                {{#if currentSkill.combat.formula}}
-                                                    <span class="formula-text">{{currentSkill.combat.formula}}</span>
-                                                    <button type="button" data-action="removeValidatedFormula" data-skill-index="{{activeSkillIndex}}">×</button>
-                                                {{else}}
-                                                    <span style="font-size:11px; opacity:0.4; font-style:italic">Nenhuma fórmula.</span>
-                                                {{/if}}
+                                        <!-- Checks em Duas Linhas Perfeitas -->
+                                        <div class="skill-checks-container-row-block">
+                                            <span class="panel-inside-title">Regras Adicionais de Aplicação</span>
+                                            <div class="skill-double-line-checks-layout">
+                                                <div class="checks-row-line">
+                                                    <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.support" {{#if currentSkill.support}}checked{{/if}} id="skill-sup-{{activeSkillIndex}}"/> <label for="skill-sup-{{activeSkillIndex}}">Suporte</label></div>
+                                                    <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.ally" {{#if currentSkill.combat.ally}}checked{{/if}} id="skill-ally-{{activeSkillIndex}}"/> <label for="skill-ally-{{activeSkillIndex}}">Afeta Aliados</label></div>
+                                                </div>
+                                                <div class="checks-row-line margin-top-6">
+                                                    <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.area" {{#if currentSkill.combat.area}}checked{{/if}} id="skill-area-{{activeSkillIndex}}"/> <label for="skill-area-{{activeSkillIndex}}">Área</label></div>
+                                                    <div class="field-group inline-range-box-wrapper"><label>Alcance</label><input type="text" name="system.skills.{{activeSkillIndex}}.range" value="{{currentSkill.range}}" placeholder="Ex: 10m"/></div>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <!-- Adicionador de Chips de Tags da Skill -->
-                                        <div class="property-block-vertical">
-                                            <span class="block-title-tag">Tags da Skill</span>
-                                            <div class="input-and-button-row">
-                                                <input type="text" class="add-skill-tag-input" placeholder="Nova tag..."/>
-                                                <button type="button" class="action-btn-add" data-action="addSkillTag" data-skill-index="{{activeSkillIndex}}">+</button>
+                                        <!-- Rodapé: Combate e Tags RIGOROSAMENTE Lado a Lado -->
+                                        <div class="skill-footer-split-grid">
+                                            <div class="inner-tray-sub-dark-box">
+                                                <span class="block-title-tag">Mecânica de Combate</span>
+                                                <div class="input-and-button-row">
+                                                    <input type="text" class="temp-combat-formula" placeholder="Ex: 2d6 + FOR"/>
+                                                    <button type="button" class="action-btn-add inner-fixed-add" data-action="addValidatedFormula" data-skill-index="{{activeSkillIndex}}">+</button>
+                                                </div>
+                                                <div class="validated-formula-box">
+                                                    {{#if currentSkill.combat.formula}}
+                                                        <span class="formula-text">{{currentSkill.combat.formula}}</span>
+                                                        <button type="button" data-action="removeValidatedFormula" data-skill-index="{{activeSkillIndex}}">×</button>
+                                                    {{else}}
+                                                        <span style="font-size:11px; opacity:0.3; font-style:italic">Nenhuma fórmula.</span>
+                                                    {{/if}}
+                                                </div>
                                             </div>
-                                            <div class="vertical-scroll-list" style="height:50px !important; flex-direction:row; flex-wrap:wrap; align-content:flex-start; background:transparent">
-                                                {{#each currentSkill.tags as |tag tIdx|}}
-                                                    <div class="list-item-row compact-badge skill-badge-color" style="margin-bottom:2px">
-                                                        <span class="item-text-content">{{tag}}</span>
-                                                        <button type="button" class="action-btn-remove" data-action="removeSkillTag" data-skill-index="{{../activeSkillIndex}}" data-tag-index="{{tIdx}}">×</button>
-                                                    </div>
-                                                {{/each}}
+
+                                            <div class="inner-tray-sub-dark-box">
+                                                <span class="block-title-tag">Tags da Skill</span>
+                                                <div class="input-and-button-row">
+                                                    <input type="text" class="add-skill-tag-input" placeholder="Nova tag..."/>
+                                                    <button type="button" class="action-btn-add inner-fixed-add" data-action="addSkillTag" data-skill-index="{{activeSkillIndex}}">+</button>
+                                                </div>
+                                                <div class="vertical-scroll-list" style="height:46px !important; flex-direction:row; flex-wrap:wrap; align-content:flex-start;">
+                                                    {{#each currentSkill.tags as |tag tIdx|}}
+                                                        <div class="list-item-row compact-badge skill-badge-color" style="margin-bottom:2px">
+                                                            <span class="item-text-content">{{tag}}</span>
+                                                            <button type="button" class="action-btn-remove" data-action="removeSkillTag" data-skill-index="{{../activeSkillIndex}}" data-tag-index="{{tIdx}}">×</button>
+                                                        </div>
+                                                    {{/each}}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div> <!-- Fim col-detalhe-esq -->
 
-                                <!-- Subcoluna Direita do Detalhar: Editores ProseMirror de Texto da Habilidade -->
-                                <div class="col-detalhe-dir">
-                                    <div class="field-group job-narrative-box">
-                                        <label>Descrição Detalhada da Skill</label>
-                                        <div class="editor-content-wrapper-box">
-                                            <prose-mirror name="system.skills.{{activeSkillIndex}}.description" value="{{currentSkill.description}}" class="prose-mirror-style">
-                                                {{{currentSkillDescriptionEnriched}}}
-                                            </prose-mirror>
+                                    <!-- Subcoluna Direita: Narrativa de Prateleira -->
+                                    <div class="col-detalhe-dir transparent-inner-blocks">
+                                        <div class="field-group job-narrative-box">
+                                            <label>Descrição Detalhada da Skill</label>
+                                            <div class="editor-content-wrapper-box"><prose-mirror name="system.skills.{{activeSkillIndex}}.description" value="{{currentSkill.description}}" class="prose-mirror-style">{{{currentSkillDescriptionEnriched}}}</prose-mirror></div>
+                                        </div>
+                                        <div class="field-group job-narrative-box">
+                                            <label>Notas e Restrições Técnicas</label>
+                                            <div class="editor-content-wrapper-box"><prose-mirror name="system.skills.{{activeSkillIndex}}.notes" value="{{currentSkill.notes}}" class="prose-mirror-style">{{{currentSkillNotesEnriched}}}</prose-mirror></div>
                                         </div>
                                     </div>
-                                    <div class="field-group job-narrative-box">
-                                        <label>Notas e Restrições Técnicas</label>
-                                        <div class="editor-content-wrapper-box">
-                                            <prose-mirror name="system.skills.{{activeSkillIndex}}.notes" value="{{currentSkill.notes}}" class="prose-mirror-style">
-                                                {{{currentSkillNotesEnriched}}}
-                                            </prose-mirror>
-                                        </div>
-                                    </div>
-                                </div> <!-- Fim col-detalhe-dir -->
-
-                            </div> <!-- Fim container-detalhe -->
-                        {{else}}
-                            <!-- Mensagem Padrão quando a lista estiver vazia -->
-                            <div class="select-skill-prompt-notice">
-                                <div>
-                                    <p>Nenhuma habilidade selecionada.</p>
-                                    <span style="font-size:12px; opacity:0.5">Clique em uma skill no menu lateral para abrir o painel de detalhes e descrições.</span>
                                 </div>
+
+                                <!-- O NOVO BOTÃO SALVAR DA BANDEJA UNIFICADA -->
+                                <div class="tray-footer-save-button-row">
+                                    <button type="button" class="action-btn-save-skill-tray" data-action="saveSkillTrayChanges">
+                                        <i class="fas fa-save"></i> Salvar Alterações da Habilidade
+                                    </button>
+                                </div>
+
                             </div>
+                        {{else}}
+                            <div class="select-skill-prompt-notice"><div><p>Nenhuma habilidade selecionada.</p><span>Clique em uma skill no menu lateral para abrir o painel de detalhes.</span></div></div>
                         {{/if}}
-                    </div> <!-- Fim skill-detail-panel -->
+                    </div>
                 </div>
             </div> <!-- FIM DA ABA 2 -->
 
         </section>
-    </div> <!-- Fim bottom-section -->
-</div> <!-- Fim custom-job-sheet-wrapper -->
+    </div>
+</div>

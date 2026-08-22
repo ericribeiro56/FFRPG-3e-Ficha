@@ -1,125 +1,65 @@
 /* ==========================================================================
-   PARTE 1 DE 3: css/job-sheet.css (Frames, Headers e Reset Mestre de Janela)
+   BLOCO 1 DE 3: css/job-sheet.css (Bases, Janela 820px e Forçamento de Abas)
    ========================================================================== */
 
-/* Trava absoluta de resolução no monitor para evitar cortes ou quebras */
-div.window-app:has(.custom-job-sheet-wrapper), 
-.window-app.job-window,
-[id*="job-item-"] {
-    min-width: 940px !important; 
-    width: 940px !important;
-    max-width: 940px !important;
-    min-height: 820px !important; 
-    height: 820px !important;
-    max-height: 820px !important;
+div.window-app:has(.custom-job-sheet-wrapper), .window-app.job-window, [id*="job-item-"] {
+    min-width: 940px !important; width: 940px !important; max-width: 940px !important;
+    min-height: 820px !important; height: 820px !important; max-height: 820px !important;
 }
-
 div.window-app:has(.custom-job-sheet-wrapper) .window-content {
-    width: 100% !important; 
-    height: 100% !important; 
-    padding: 5px !important; 
-    overflow: hidden !important; 
-    display: flex !important; 
-    flex-direction: column !important;
-    box-sizing: border-box !important; 
-    border: none !important; 
-    box-shadow: none !important;
+    width: 100% !important; height: 100% !important; padding: 5px !important; overflow: hidden !important; display: flex !important; flex-direction: column !important; box-sizing: border-box !important; border: none !important; box-shadow: none !important;
+}
+form.custom-job-sheet-wrapper, .custom-job-sheet-wrapper {
+    background: rgba(26, 26, 30, 0.85) !important; backdrop-filter: blur(14px) !important; color: #e2e2e9 !important; font-family: "Inter", sans-serif !important;
+    display: flex !important; flex-direction: column !important; gap: 12px !important; padding: 0px !important; height: 100% !important; width: 100% !important; box-sizing: border-box !important; overflow: hidden !important;
 }
 
-form.custom-job-sheet-wrapper, 
-.custom-job-sheet-wrapper {
-    background: rgba(26, 26, 30, 0.85) !important; 
-    backdrop-filter: blur(14px) !important;
-    color: #e2e2e9 !important; 
-    font-family: "Inter", sans-serif !important;
-    display: flex !important; 
-    flex-direction: column !important; 
-    gap: 12px !important;
-    padding: 0px !important; /* Totalmente colado nas bordas da janela */
-    height: 100% !important; 
-    width: 100% !important; 
-    box-sizing: border-box !important; 
-    overflow: hidden !important;
-}
-
-/* Cabeçalho Macro da Ficha */
 .custom-job-sheet-wrapper .sheet-header-wrapper { display: flex !important; gap: 15px !important; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; width: 100%; }
 .custom-job-sheet-wrapper .img-wrapper { width: 64px; height: 64px; border-radius: 8px; border: 2px solid #8a2be2; overflow: hidden; }
 .custom-job-sheet-wrapper .profile-img { width: 100%; height: 100%; object-fit: cover; }
 .custom-job-sheet-wrapper .header-fields { display: grid; grid-template-columns: 3fr 1fr; gap: 15px; flex: 1; }
 
-/* Menu de Abas Compacto */
-.custom-job-sheet-wrapper .sheet-tabs { 
-    display: flex !important; justify-content: flex-start !important; align-items: flex-end !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); gap: 5px; margin: 10px 0; width: 100%;
-}
+.custom-job-sheet-wrapper .sheet-tabs { display: flex !important; justify-content: flex-start !important; align-items: flex-end !important; border-bottom: 1px solid rgba(255, 255, 255, 0.1); gap: 5px; margin: 10px 0; width: 100%; }
 .custom-job-sheet-wrapper .sheet-tabs .item { padding: 8px 20px; font-size: 12px; text-transform: uppercase; color: rgba(255, 255, 255, 0.4) !important; cursor: pointer; }
 .custom-job-sheet-wrapper .sheet-tabs .item.active { color: #9d4edd !important; font-weight: bold; border-bottom: 2px solid #8a2be2; }
+
+/* REVISÃO DE ALTURA DA JANELA: Libera a sheet-body e as abas para irem de ponta a ponta horizontal e verticalmente */
+.custom-job-sheet-wrapper .sheet-body { flex: 1 !important; display: flex !important; flex-direction: column !important; height: auto !important; min-height: 0 !important; overflow: hidden !important; position: relative !important; width: 100% !important; }
+
+form.custom-job-sheet-wrapper .sheet-body .tab, .custom-job-sheet-wrapper .sheet-body .tab { display: none !important; height: 100% !important; width: 100% !important; min-height: 100% !important; box-sizing: border-box !important; }
+
+/* FIX DO BALÃO: Sobrescreve em peso máximo o comportamento do Foundry v15 fazendo a aba ativa herdar 100% do tamanho */
+form.custom-job-sheet-wrapper .sheet-body .tab.active, .custom-job-sheet-wrapper .sheet-body .tab.active { 
+    display: flex !important; flex-direction: column !important; flex: 1 1 100% !important; height: 100% !important; min-height: 100% !important; 
+}
 /* ==========================================================================
-   PARTE 2 DE 3: css/job-sheet.css (Libertação da Altura Útil e Fix de Exibição)
+   BLOCO 2 DE 3: css/job-sheet.css (Grid Total Aba 1, Caixas com Destaque Cinza)
    ========================================================================== */
 
-/* FIX DE ALTURA: Força o corpo mestre do Foundry a crescer de forma flexível ate o rodapé mestre */
-.custom-job-sheet-wrapper .sheet-body { 
-    flex: 1 !important;                     
-    display: flex !important;
-    flex-direction: column !important;
-    height: auto !important;                
-    min-height: 0 !important;
-    overflow: hidden !important; 
-    position: relative !important; 
-    width: 100% !important;
-}
-
-/* BLINDAGEM DE ESPECIFICIDADE MESTRE: Sobrescreve as regras nativas de display do Foundry injetando flex vertical */
-form.custom-job-sheet-wrapper .sheet-body .tab,
-.custom-job-sheet-wrapper .sheet-body .tab {
-    display: none !important;
-    height: 100% !important;
-    width: 100% !important;
-    min-height: 100% !important;
-    box-sizing: border-box !important;
-}
-
-/* ATENÇÃO AQUI: Força de forma agressiva que qualquer aba ativa herde o esticamento vertical e funcione como flexbox */
-form.custom-job-sheet-wrapper .sheet-body .tab.active,
-.custom-job-sheet-wrapper .sheet-body .tab.active { 
-    display: flex !important; 
-    flex-direction: column !important; 
-    flex: 1 1 100% !important;          /* REQUISITO: Chupa 100% da altura util restante até o rodapé */
-    height: 100% !important;
-    min-height: 100% !important;
-}
-
-/* Layout de Duas Colunas da Aba 1 (Informações) */
+/* MODIFICADO: Força o grid da Aba 1 a esticar verticalmente cobrindo todo o espaço até o rodapé mestre */
 .custom-job-sheet-wrapper .main-tab-grid-layout { 
-    display: grid !important; 
-    grid-template-columns: 1.15fr 1fr !important; 
-    gap: 20px !important; 
-    flex: 1 !important;                     
-    height: 100% !important; 
-    width: 100% !important;
-    box-sizing: border-box !important;
+    display: grid !important; grid-template-columns: 1.15fr 1fr !important; gap: 20px !important; 
+    flex: 1 !important; height: 100% !important; width: 100% !important; box-sizing: border-box !important;
 }
 
 /* Subcoluna mecânica da esquerda (Aba 1) */
 .custom-job-sheet-wrapper .column-mechanics-left {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 15px !important;                   
-    flex: 1 !important;
-    height: 100% !important; 
-    overflow-y: auto !important; 
-    padding-right: 6px !important;
-    box-sizing: border-box !important;
+    display: flex !important; flex-direction: column !important; gap: 15px !important; 
+    flex: 1 !important; height: 100% !important; overflow-y: auto !important; padding-right: 6px !important; box-sizing: border-box !important;
 }
-
 .custom-job-sheet-wrapper .job-progression-rows-stack { display: flex !important; flex-direction: column !important; gap: 12px !important; width: 100% !important; }
-.custom-job-sheet-wrapper .property-block-vertical { background: rgba(35, 35, 42, 0.8) !important; border: 1px solid rgba(255, 255, 255, 0.06) !important; border-radius: 8px !important; padding: 12px !important; display: flex !important; flex-direction: column !important; gap: 8px !important; box-sizing: border-box !important; overflow: hidden !important; }
-.custom-job-sheet-wrapper .block-title-tag { font-size: 10px; color: #9d4edd; font-weight: bold; text-transform: uppercase; }
 
-/* Contornos nos inputs e selects */
-.custom-job-sheet-wrapper input[type="text"], .custom-job-sheet-wrapper input[type="number"], .custom-job-sheet-wrapper select { background: rgba(20, 20, 25, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; border-radius: 4px !important; color: #ffffff !important; padding: 4px 8px !important; }
+/* Caixas com Destaque Cinza e Proteção Total de Overflow */
+.custom-job-sheet-wrapper .property-block-vertical { 
+    background: rgba(35, 35, 42, 0.8) !important; border: 1px solid rgba(255, 255, 255, 0.06) !important; border-radius: 8px !important; padding: 12px !important; display: flex !important; flex-direction: column !important; gap: 8px !important; box-sizing: border-box !important; 
+    overflow: hidden !important; /* Antivazamento */
+}
+.custom-job-sheet-wrapper .block-title-tag { font-size: 10px; color: #9d4edd; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; }
+
+/* Contorno nítido nos inputs para distinção visual */
+.custom-job-sheet-wrapper input[type="text"], .custom-job-sheet-wrapper input[type="number"], .custom-job-sheet-wrapper select { background: rgba(20, 20, 25, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; border-radius: 4px !important; color: #ffffff !important; padding: 4px 8px !important; box-sizing: border-box !important; }
+.custom-job-sheet-wrapper input:focus, .custom-job-sheet-wrapper select:focus { border-color: #8a2be2 !important; outline: none !important; }
+
 .custom-job-sheet-wrapper .attributes-inputs-inner-grid { display: grid !important; grid-template-columns: repeat(6, 1fr) !important; gap: 6px !important; }
 .custom-job-sheet-wrapper .mini-field-group { display: flex; flex-direction: column; align-items: center; }
 .custom-job-sheet-wrapper .mini-field-group label { font-size: 10px; color: rgba(255,255,255,0.4); margin-bottom: 2px; }
@@ -129,27 +69,32 @@ form.custom-job-sheet-wrapper .sheet-body .tab.active,
 .custom-job-sheet-wrapper .growth-inputs-inner-grid .field-group { display: flex !important; flex-direction: column !important; }
 .custom-job-sheet-wrapper .growth-inputs-inner-grid input { height: 28px !important; width: 100% !important; }
 
+/* Lado a Lado Rígido da Grade 2x2 da Aba 1 */
 .custom-job-sheet-wrapper .main-tab-equip-2x2-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 12px !important; width: 100% !important; }
 .custom-job-sheet-wrapper .prof-compensated-height-block { height: 200px !important; }
 .custom-job-sheet-wrapper .prof-compensated-scroll { height: 122px !important; min-height: 122px !important; background: rgba(0,0,0,0.15); border-radius: 4px; }
 .custom-job-sheet-wrapper .height-104-scroll { height: 84px !important; min-height: 84px !important; background: rgba(0,0,0,0.15); border-radius: 4px; }
+
+/* Caixas de baixo ganham fôlego perfeito sem gerar o espaço preto vazio no rodapé */
 .custom-job-sheet-wrapper .compact-row-height-block { height: 145px !important; }
 .custom-job-sheet-wrapper .compact-height-scroll { height: 64px !important; min-height: 64px !important; max-height: 64px !important; background: rgba(0,0,0,0.15); border-radius: 4px; overflow-y: auto !important; }
 /* ==========================================================================
-   PARTE 3 DE 3 REVISADA: css/job-sheet.css (Correções Finais de Altura e Grid)
+   BLOCO 3 DE 5: css/job-sheet.css (Contorno dos Inputs e Área de Lore do Job)
    ========================================================================== */
 
-/* Botões com altura automática controlada */
-.custom-job-sheet-wrapper button { height: auto !important; }
-.custom-job-sheet-wrapper .vertical-scroll-list { display: flex !important; flex-direction: column !important; padding: 4px !important; gap: 4px !important; overflow-y: auto !important; }
-.custom-job-sheet-wrapper .list-item-row { display: flex !important; justify-content: space-between !important; align-items: center !important; background: rgba(255, 255, 255, 0.04) !important; padding: 4px 8px !important; border-radius: 4px !important; border-left: 2px solid #8a2be2 !important; font-size: 11px; }
-.custom-job-sheet-wrapper .block-adder-row { display: flex !important; gap: 6px !important; width: 100% !important; }
-.custom-job-sheet-wrapper .block-adder-triple-row { display: grid !important; grid-template-columns: 2fr 0.8fr auto !important; gap: 6px !important; width: 100% !important; }
-.custom-job-sheet-wrapper .precision-header-input { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; margin-bottom: 2px !important; }
-.custom-job-sheet-wrapper .precision-header-input label { font-size: 11px; text-transform: uppercase; color: rgba(255,255,255,0.4); font-weight: bold; }
-.custom-job-sheet-wrapper .precision-header-input input { width: 50px !important; height: 24px !important; text-align: center !important; }
+/* FIX DE DISTINÇÃO VISUAL: Borda firme em todos os inputs e selects contra o fundo cinza */
+.custom-job-sheet-wrapper input[type="text"],
+.custom-job-sheet-wrapper input[type="number"],
+.custom-job-sheet-wrapper select {
+    background: rgba(20, 20, 25, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+    border-radius: 4px !important;
+    color: #ffffff !important;
+    padding: 4px 8px !important;
+}
+.custom-job-sheet-wrapper input:focus, .custom-job-sheet-wrapper select:focus { border-color: #8a2be2 !important; outline: none !important; }
 
-/* Contornos sólidos roxos nos blocos narrativos da direita */
+/* Contornos sólidos roxos emoldurando os blocos narrativos (Lore e Notas do Job) */
 .custom-job-sheet-wrapper .editor-content-wrapper-box {
     background: rgba(18, 18, 22, 0.6) !important; 
     border: 1px solid rgba(138, 43, 226, 0.35) !important; 
@@ -164,19 +109,22 @@ form.custom-job-sheet-wrapper .sheet-body .tab.active,
 .custom-job-sheet-wrapper .job-narrative-box { flex: 1 !important; display: flex !important; flex-direction: column !important; min-height: 0 !important; }
 .custom-job-sheet-wrapper .job-narrative-box label { font-size: 11px !important; font-weight: bold !important; text-transform: uppercase !important; color: #9d4edd !important; margin-bottom: 4px !important; }
 .custom-job-sheet-wrapper .job-narrative-box prose-mirror { flex: 1 !important; height: 100% !important; display: flex !important; flex-direction: column !important; }
+/* ==========================================================================
+   BLOCO 4 DE 5: css/job-sheet.css (Sidebar Completa de Habilidades até o Chão)
+   ========================================================================== */
 
-/* ABA DE SKILLS (SISTEMA MASTER-DETAIL EM PROPORÇÃO DE 180PX COM ALTURA TOTAL ATÉ O CHÃO) */
+/* REQUISITO: Alarga a coluna da lista lateral de 180px para 220px de largura fixa */
 .custom-job-sheet-wrapper .skills-tab-layout { 
     display: grid !important; 
-    grid-template-columns: 180px 1fr !important; 
+    grid-template-columns: 220px 1fr !important; 
     gap: 15px !important; 
-    flex: 1 !important;                     /* Força todo o frame a esticar verticalmente até o fim */
+    flex: 1 !important;                     
     height: 100% !important; 
     width: 100% !important; 
     box-sizing: border-box !important;
 }
 
-/* Força a sidebar de habilidades a ter preenchimento vertical total acompanhando a janela */
+/* Força a sidebar cinza a travar e preencher 100% da altura útil colando no rodapé */
 .custom-job-sheet-wrapper .skills-sidebar { 
     background: rgba(35, 35, 42, 0.8) !important; 
     border: 1px solid rgba(255, 255, 255, 0.06) !important;
@@ -184,55 +132,82 @@ form.custom-job-sheet-wrapper .sheet-body .tab.active,
     display: flex !important; 
     flex-direction: column !important; 
     overflow: hidden !important; 
-    height: 100% !important;                /* Sidebar esticada até o chão */
+    height: 100% !important; 
+    min-height: 100% !important;
     padding: 10px !important;
     box-sizing: border-box !important;
 }
-.custom-job-sheet-wrapper .add-new-skill-btn { background: #8a2be2 !important; color: white !important; border: none !important; border-radius: 6px !important; padding: 8px !important; font-weight: bold !important; font-size: 11px !important; text-transform: uppercase !important; cursor: pointer !important; width: 100% !important; }
-.custom-job-sheet-wrapper .skills-scroll { flex: 1; overflow-y: auto; padding: 5px; }
-.custom-job-sheet-wrapper .sidebar-skill-item { padding: 8px; margin-bottom: 4px; background: rgba(255,255,255,0.03); border-radius: 4px; cursor: pointer; font-size: 12px; }
+.custom-job-sheet-wrapper .skills-scroll { flex: 1 !important; overflow-y: auto !important; padding-right: 2px !important; display: flex !important; flex-direction: column !important; gap: 5px !important; }
+.custom-job-sheet-wrapper .add-new-skill-btn { background: #8a2be2 !important; color: white !important; border: none !important; border-radius: 6px !important; padding: 8px !important; font-weight: bold !important; font-size: 11px !important; text-transform: uppercase !important; cursor: pointer !important; width: 100% !important; margin-bottom: 10px; }
+
+/* Item Lateral da Sidebar com suporte a Flex Horizontal e Lixeira Inline */
+.custom-job-sheet-wrapper .sidebar-skill-item { display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 8px 10px !important; background: rgba(255, 255, 255, 0.03) !important; border-radius: 6px !important; cursor: pointer !important; gap: 8px !important; min-height: 34px !important; box-sizing: border-box !important; }
 .custom-job-sheet-wrapper .sidebar-skill-item.selected { border-left: 3px solid #8a2be2; background: rgba(138, 43, 226, 0.1); }
 
-/* CONTÊINER DE DETALHE CORREGIDO: Estica verticalmente 100% forçando o preenchimento total inferior */
-.custom-job-sheet-wrapper .skill-detail-panel {
-    flex: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;
-    min-height: 100% !important;
+/* REQUISITO: Força a quebra de linha (linebreak) se o nome da habilidade for extenso */
+.custom-job-sheet-wrapper .nav-skill-name-text { 
+    font-size: 12px !important; font-weight: 600 !important; color: #ffffff !important; 
+    white-space: normal !important;     
+    word-break: break-word !important;   
+    flex: 1 !important; line-height: 1.3 !important;
 }
 
-/* Subgrid Interno do Detalhar da Skill */
-.custom-job-sheet-wrapper .container-detalhe { 
-    display: grid !important; 
-    grid-template-columns: 1.25fr 1fr !important; 
-    gap: 15px !important; 
-    flex: 1 !important;                     /* Força o painel dividido a ir até o rodapé mestre */
-    height: 100% !important; 
-    width: 100% !important; 
-    box-sizing: border-box !important;
+/* Ícone discreto de exclusão lateral */
+.custom-job-sheet-wrapper .delete-skill-icon-btn { background: transparent !important; border: none !important; color: rgba(255, 255, 255, 0.3) !important; cursor: pointer !important; padding: 4px !important; font-size: 11px !important; display: flex !important; align-items: center !important; justify-content: center !important; width: auto !important; height: auto !important; }
+.custom-job-sheet-wrapper .delete-skill-icon-btn:hover { color: #ff4d4d !important; }
+/* ==========================================================================
+   BLOCO 5 DE 5: css/job-sheet.css (A Grande Bandeja Unificada e Centralizada)
+   ========================================================================== */
+
+/* Transforma a área em um palco flexível de centralização absoluta (Vertical e Horizontal) */
+.custom-job-sheet-wrapper .skill-detail-panel { 
+    flex: 1 !important; display: flex !important; 
+    align-items: center !important;       
+    justify-content: center !important;    
+    height: 100% !important; min-height: 100% !important; box-sizing: border-box !important; overflow: hidden !important; 
 }
 
-/* Garante o crescimento e scroll interno nas subcolunas de dados técnicos e editores */
-.custom-job-sheet-wrapper .col-detalhe-esq { display: flex !important; flex-direction: column !important; gap: 10px; overflow-y: auto; height: 100%; padding-right: 4px; box-sizing: border-box; }
-.custom-job-sheet-wrapper .col-detalhe-dir { display: flex !important; flex-direction: column !important; gap: 15px; height: 100%; }
+/* REQUISITO: A grande bandeja unificada cinza com contorno roxo que envolve o conteúdo e o Salvar */
+.custom-job-sheet-wrapper .unique-tray-envelope {
+    background: rgba(35, 35, 42, 0.8) !important; border: 1px solid rgba(138, 43, 226, 0.35) !important; border-radius: 8px !important; padding: 15px !important;
+    display: flex !important; flex-direction: column !important; gap: 15px !important; width: 100% !important; max-height: 100% !important; box-sizing: border-box !important;
+}
+.custom-job-sheet-wrapper .tray-columns-wrapper-horizontal { display: grid !important; grid-template-columns: 1.25fr 1fr !important; gap: 15px !important; flex: 1 !important; min-height: 0 !important; }
+.custom-job-sheet-wrapper .transparent-inner-blocks { display: flex !important; flex-direction: column !important; gap: 15px !important; overflow-y: auto !important; }
 
-.custom-job-sheet-wrapper .skill-details-row-inputs { display: flex; gap: 10px; align-items: flex-end; width: 100%; }
-.custom-job-sheet-wrapper .inner-section-sub-panel { background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.04); }
-.custom-job-sheet-wrapper .layout-checks-row { background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; border: 1px solid rgba(255,255,255,0.04); }
-.custom-job-sheet-wrapper .row-inline-check { display: flex !important; align-items: center !important; gap: 5px; font-size: 12px; }
-.custom-job-sheet-wrapper .input-and-button-row { display: flex; gap: 5px; width: 100%; }
+/* Prateleira linear horizontal de identificação, custos e adicionadores presos */
+.custom-job-sheet-wrapper .skill-linear-identification-grid { display: flex !important; gap: 10px !important; width: 100% !important; align-items: flex-end !important; }
+.custom-job-sheet-wrapper .inline-flex-item-grow { flex: 1 !important; display: flex !important; flex-direction: column !important; }
+.custom-job-sheet-wrapper .inline-flex-item-fixed-niv { width: 60px !important; flex: none !important; display: flex !important; flex-direction: column !important; }
+.custom-job-sheet-wrapper .inline-flex-item-fixed-tipo { width: 110px !important; flex: none !important; display: flex !important; flex-direction: column !important; }
+
+.custom-job-sheet-wrapper .skill-cost-container-row-block, .custom-job-sheet-wrapper .skill-checks-container-row-block { display: flex !important; flex-direction: column !important; gap: 6px !important; width: 100% !important; }
+.custom-job-sheet-wrapper .skill-linear-cost-grid { display: flex !important; gap: 10px !important; width: 100% !important; align-items: flex-end !important; }
+
+/* Checks em duas linhas flex independentes */
+.custom-job-sheet-wrapper .skill-double-line-checks-layout { display: flex !important; flex-direction: column !important; gap: 6px !important; width: 100% !important; }
+.custom-job-sheet-wrapper .checks-row-line { display: flex !important; gap: 20px !important; align-items: center !important; width: 100% !important; }
+.custom-job-sheet-wrapper .inline-range-box-wrapper { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 10px !important; flex: 1 !important; }
+.custom-job-sheet-wrapper .inline-range-box-wrapper label { margin-bottom: 0 !important; font-size: 11px; font-weight: bold; color: rgba(255,255,255,0.4); text-transform: uppercase; white-space: nowrap; }
+.custom-job-sheet-wrapper .inline-range-box-wrapper input { flex: 1 !important; height: 26px !important; }
+.custom-job-sheet-wrapper .panel-inside-title { font-size: 10px; color: #9d4edd; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+/* REQUISITO: Botões de "+" rigidamente colados ao lado direito do input */
+.custom-job-sheet-wrapper .input-and-button-row { display: flex !important; gap: 6px !important; width: 100% !important; align-items: center !important; }
 .custom-job-sheet-wrapper .input-and-button-row input { flex: 1 !important; }
-.custom-job-sheet-wrapper .validated-formula-box { background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; margin-top: 5px; font-size: 12px; color: #a3be8c; border: 1px solid rgba(255,255,255,0.02); }
+.custom-job-sheet-wrapper .inner-fixed-add { width: 32px !important; height: 28px !important; padding: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; flex: none !important; }
+.custom-job-sheet-wrapper .validated-formula-box { background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; margin-top: 5px; font-size: 12px; color: #a3be8c; border: 1px solid rgba(255,255,255,0.02); min-height: 26px; box-sizing: border-box; }
 
-/* REQUISITO OBRIGATÓRIO: Força a Mecânica de Combate e as Tags a ficarem RIGOROSAMENTE lado a lado */
-.custom-job-sheet-wrapper .properties-section-grid.asymmetric-grid-skills,
-.custom-job-sheet-wrapper .col-detalhe-esq .properties-section-grid { 
-    display: grid !important; 
-    grid-template-columns: 1fr 1fr !important; /* COMPROVADO LADO A LADO */
-    gap: 12px !important; 
-    width: 100% !important;
-    margin-top: 4px !important;
+/* Rodapé de caixas de contraste lado a lado */
+.custom-job-sheet-wrapper .inner-tray-sub-dark-box { background: rgba(0, 0, 0, 0.15) !important; border: 1px solid rgba(255, 255, 255, 0.04) !important; border-radius: 6px !important; padding: 10px !important; display: flex !important; flex-direction: column !important; gap: 6px !important; box-sizing: border-box !important; }
+.custom-job-sheet-wrapper .col-detalhe-esq .skill-footer-split-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 12px !important; width: 100% !important; }
+
+/* REQUISITO: O Botão Salvar que sela a base da bandeja unificada ocupando 100% da largura horizontal */
+.custom-job-sheet-wrapper .tray-footer-save-button-row { width: 100% !important; display: flex !important; padding-top: 5px !important; }
+.custom-job-sheet-wrapper .action-btn-save-skill-tray {
+    width: 100% !important; background: #8a2be2 !important; color: #ffffff !important; border: 1px solid rgba(255,255,255,0.15) !important;
+    border-radius: 6px !important; padding: 10px !important; font-weight: bold !important; font-size: 12px !important; text-transform: uppercase !important; cursor: pointer !important; transition: background 0.2s ease !important;
 }
-
-.custom-job-sheet-wrapper .select-skill-prompt-notice { display: flex; height: 100%; align-items: center; justify-content: center; color: rgba(255,255,255,0.3); }
+.custom-job-sheet-wrapper .action-btn-save-skill-tray:hover { background: #9d4edd !important; box-shadow: 0 0 8px rgba(138,43,226,0.4) !important; }
+.custom-job-sheet-wrapper .select-skill-prompt-notice { display: flex !important; flex: 1 !important; height: 100% !important; align-items: center !important; justify-content: center !important; color: rgba(255,255,255,0.3) !important; text-align: center !important; }
+.custom-job-sheet-wrapper .select-skill-prompt-notice p { font-size: 14px !important; font-weight: bold !important; color: #9d4edd !important; margin-bottom: 4px !important; }
