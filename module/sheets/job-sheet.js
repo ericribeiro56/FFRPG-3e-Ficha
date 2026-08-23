@@ -40,7 +40,10 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
       addValidatedFormula: JobSheet._onAddValidatedFormula,
       removeValidatedFormula: JobSheet._onRemoveValidatedFormula,
       addSkillTag: JobSheet._onAddSkillTag,
-      removeSkillTag: JobSheet._onRemoveSkillTag
+      removeSkillTag: JobSheet._onRemoveSkillTag,
+      deleteJobSkill: JobSheet._onDeleteJobSkill,
+      saveSkillTrayChanges: JobSheet._onSaveSkillTrayChanges,
+      closeSkillTray: JobSheet._onCloseSkillTray
     }
   };
 
@@ -249,9 +252,10 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
   }
 
   static _onSelectJobSkill(event, target) {
-    // Atualiza o cache de visualização baseado na linha clicada no menu lateral esquerdo
-    this.activeSkillIndex = parseInt(target.dataset.index);
-    this.render(); // Executa o re-render limpo da ficha atualizando os ProseMirrors
+    const item = target.closest('.sidebar-skill-item');
+    if (!item) return;
+    this.activeSkillIndex = parseInt(item.dataset.index);
+    this.render();
   }
 
   // --------------------------------------------------------------------------
@@ -312,5 +316,31 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
       currentSkills[skillIndex].tags.splice(tagIndex, 1);
       await this.item.update({ "system.skills": currentSkills });
     }
+  }
+
+  static async _onDeleteJobSkill(event, target) {
+    event.stopPropagation();
+    const item = target.closest('.sidebar-skill-item');
+    if (!item) return;
+    const index = parseInt(item.dataset.index);
+    const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
+    if (index < 0 || index >= currentSkills.length) return;
+
+    currentSkills.splice(index, 1);
+    if (this.activeSkillIndex >= currentSkills.length) {
+      this.activeSkillIndex = Math.max(0, currentSkills.length - 1);
+    }
+    await this.item.update({ "system.skills": currentSkills });
+    this.render();
+  }
+
+  static async _onSaveSkillTrayChanges(event, target) {
+    await this.submit();
+    ui.notifications.info("Alterações da habilidade salvas.");
+  }
+
+  static _onCloseSkillTray(event, target) {
+    this.activeSkillIndex = -1;
+    this.render();
   }
 }

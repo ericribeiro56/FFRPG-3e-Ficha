@@ -143,7 +143,7 @@
                     </div>
 
                     <!-- Coluna Direita: Lore do Job Geral -->
-                    <div class="column-lore-right">
+                    <div class="column-lore-right" style="height: 585px !important;">
                         <div class="field-group job-narrative-box">
                             <label>Descrição / Lore do Job</label>
                             <div class="editor-content-wrapper-box"><prose-mirror name="system.description" value="{{system.description}}" class="prose-mirror-style">{{{descricaoEnriquecida}}}</prose-mirror></div>
@@ -226,7 +226,7 @@
                                                 </div>
                                                 <div class="checks-row-line margin-top-6">
                                                     <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.area" {{#if currentSkill.combat.area}}checked{{/if}} id="skill-area-{{activeSkillIndex}}"/> <label for="skill-area-{{activeSkillIndex}}">Área</label></div>
-                                                    <div class="field-group inline-range-box-wrapper"><label>Alcance</label><input type="text" name="system.skills.{{activeSkillIndex}}.range" value="{{currentSkill.range}}" placeholder="Ex: 10m"/></div>
+                                                    <div class="field-group inline-range-box-wrapper" style="display: contents;"><label>Alcance</label><input type="text" name="system.skills.{{activeSkillIndex}}.range" value="{{currentSkill.range}}" placeholder="Ex: 10m" style="width: 80px !important;"/></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -283,7 +283,10 @@
                                 <!-- O NOVO BOTÃO SALVAR DA BANDEJA UNIFICADA -->
                                 <div class="tray-footer-save-button-row">
                                     <button type="button" class="action-btn-save-skill-tray" data-action="saveSkillTrayChanges">
-                                        <i class="fas fa-save"></i> Salvar Alterações da Habilidade
+                                        <i class="fas fa-save"></i> Salvar
+                                    </button>
+                                    <button type="button" class="action-btn-close-skill-tray" data-action="closeSkillTray">
+                                        <i class="fas fa-times"></i> Fechar
                                     </button>
                                 </div>
 
