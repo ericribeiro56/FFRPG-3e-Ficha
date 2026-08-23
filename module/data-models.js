@@ -978,28 +978,29 @@ export class EffectModel extends foundry.abstract.TypeDataModel {
   }
 }
 
-export class JobSkillModel extends foundry.abstract.TypeDataModel {
+export class JobSkillModel extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
+      name: Field.String(),
       description: Field.Rich(),
-      type: Field.String("active"),
-      minLevel: Field.Number(0),
-      support: Field.Boolean(false),
-      cost: {
-        type: Field.String("nothing"),
+      type: Field.String(),
+      minLevel: Field.Number(),
+      support: Field.Boolean(),
+      cost: Field.Schema({
+        type: Field.String(),
         material: Field.String(),
-        value: Field.Number(0)
-      },
-      combat: {
-        type: Field.String("physical"),
-        formula: "",
-        area: false,
-        range: Field.Number(0),
-        ally: false
-      },
+        value: Field.Number()
+      }),
+      combat: Field.Schema({
+        type: Field.String(),
+        formula: Field.String(),
+        area: Field.Boolean(),
+        range: Field.Number(),
+        ally: Field.Boolean()
+      }),
       tags: Field.Array(Field.String()),
       notes: Field.Rich()
-    }
+    };
   }
 }
 
@@ -1008,48 +1009,29 @@ export class JobModel extends foundry.abstract.TypeDataModel {
     return {
       description: Field.Rich(),
       notes: Field.Rich(),
-      class: Field.String("warrior"),
+      class: Field.String(),
       attribute: Field.Schema({
-        strength: Field.Number(0),
-        vitality: Field.Number(0),
-        agility: Field.Number(0),
-        speed: Field.Number(0),
-        magic: Field.Number(0),
-        spirit: Field.Number(0),
+        strength: Field.Number(),
+        vitality: Field.Number(),
+        agility: Field.Number(),
+        speed: Field.Number(),
+        magic: Field.Number(),
+        spirit: Field.Number()
       }),
       dice: Field.Schema({
-        hp: Field.String(""),
-        mp: Field.String("")
+        hp: Field.String(),
+        mp: Field.String()
       }),
       proficiency: Field.Schema({
-        limit: Field.Number(0),
+        limit: Field.Number(),
         bonus: Field.Array(Field.Object({
-          key: Field.String(""),
-          value: Field.Number(0)
+          key: Field.String(),
+          value: Field.Number()
         }))
       }),
-      skills: Field.Array(Field.Object({
-        description: Field.Rich(),
-        type: Field.String("active"),
-        minLevel: Field.Number(0),
-        support: Field.Boolean(false),
-        cost: {
-          type: Field.String("nothing"),
-          material: Field.String(),
-          value: Field.Number(0)
-        },
-        combat: {
-          type: Field.String("physical"),
-          formula: "",
-          area: false,
-          range: Field.Number(0),
-          ally: false
-        },
-        tags: Field.Array(Field.String()),
-        notes: Field.Rich()
-      })),
+      skills: Field.Array(JobSkillModel),
       mainWeapons: Field.Array(Field.String()),
-      accuracyBonus: Field.Number(0),
+      accuracyBonus: Field.Number(),
       allowedArmors: Field.Array(Field.String()),
       tags: Field.Array(Field.String())
     };

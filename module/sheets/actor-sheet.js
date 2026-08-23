@@ -12,7 +12,7 @@ import {
 
 import { DropDispatcher } from "../core/drop-handler.js";
 import { buildEffectContext } from "../core/context-builders.js";
-import { INVENTORY_SLOT_TAG_MAP, OPCOES_DEFESAS_HP, OPCOES_PERCENTUAIS_CURA, opcoesTaxasGil, PROFICIENCY_BASIC_MAP } from "../core/constants.js";
+import { INVENTORY_SLOT_TAG_MAP, OPCOES_DEFESAS_HP, OPCOES_PERCENTUAIS_CURA, opcoesTaxasGil, PROFICIENCY_BASIC_MAP, SKILL_JOB_TYPES } from "../core/constants.js";
 import { applyEquipmentEffect, removeEquipmentEffect } from "../core/equipment-service.js";
 import { MessageService } from "../core/message-service.js";
 import { ConsumableBasicModel, ItemModel } from "../data-models.js";
@@ -25,6 +25,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   constructor(options = {}) {
     options.id = options.document ? `actor-sheet-${options.document.id}` : options.id;
     super(options);
+    this._selectedSkillIndex = -1;
   }
 
   static DEFAULT_OPTIONS = {
@@ -55,7 +56,8 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       adicionarIdioma: PlayerSheet.prototype.adicionarIdioma,
       removerIdioma: PlayerSheet.prototype.removerIdioma,
       adicionarConhecimento: PlayerSheet.prototype.adicionarConhecimento,
-      removerConhecimento: PlayerSheet.prototype.removerConhecimento
+      removerConhecimento: PlayerSheet.prototype.removerConhecimento,
+      openSkillDetail: PlayerSheet.prototype.openSkillDetail
     }
   };
 
@@ -102,6 +104,40 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.jobItem = jobItem;
     context.raceName = raceItem?.name || "";
     context.jobName = jobItem?.name || "";
+
+    const actorLevel = parseInt(this.document.system.level || 1, 10);
+    const jobSkills = jobItem?.system?.skills || [];
+    context.skillsFiltradas = jobSkills
+      .map((skill, index) => ({
+        ...skill,
+        index,
+        typeLabel: SKILL_JOB_TYPES[skill.type] || skill.type,
+        rawMinLevel: skill.minLevel,
+        safeMinLevel: safeInt(skill.minLevel, 0)
+      }))
+      .filter(skill => skill.safeMinLevel <= actorLevel);
+
+    console.log('[FFRPG3E][JOB_SKILL]', {
+      actorLevel,
+      totalSkills: jobSkills.length,
+      filteredSkills: context.skillsFiltradas.length,
+      skills: jobSkills.map(s => ({ name: s.name, minLevel: s.minLevel, raw: typeof s.minLevel }))
+    });
+
+    context.selectedSkill = null;
+
+    if (this._selectedSkillIndex >= 0 && this._selectedSkillIndex < context.skillsFiltradas.length) {
+      const skill = context.skillsFiltradas[this._selectedSkillIndex];
+      context.selectedSkill = {
+        ...skill,
+        descriptionEnriched: await foundry.applications.ux.TextEditor.implementation.enrichHTML(skill.description || "", {
+          secrets: this.document.isOwner, async: true
+        }),
+        notesEnriched: await foundry.applications.ux.TextEditor.implementation.enrichHTML(skill.notes || "", {
+          secrets: this.document.isOwner, async: true
+        })
+      };
+    }
 
     context.statusEfeitos = this._buildEffectContext();
     const effectCategories = context.statusEfeitos;
@@ -1049,6 +1085,19 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
   }
 
+  async openSkillDetail(event, target) {
+    event.preventDefault();
+    const index = safeInt(target.dataset.index, -1);
+    if (index < 0) return;
+
+    const jobItem = this.document.items.find(i => i.type === "job");
+    const skills = jobItem?.system?.skills || [];
+    if (index >= skills.length) return;
+
+    this._selectedSkillIndex = index;
+    await this.render();
+  }
+
 }
 
 Hooks.once("init", async function () {
@@ -1058,6 +1107,7 @@ Hooks.once("init", async function () {
     "systems/ffrpg3e/templates/actor/tabs/proficiency.hbs",
     "systems/ffrpg3e/templates/actor/tabs/status-sheet.hbs",
     "systems/ffrpg3e/templates/actor/tabs/background-sheet.hbs",
+    "systems/ffrpg3e/templates/actor/tabs/job-skill.hbs",
     "systems/ffrpg3e/templates/generics/inventory-sheet.hbs",
   ]);
 });

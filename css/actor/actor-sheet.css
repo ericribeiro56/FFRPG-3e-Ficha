@@ -1171,8 +1171,57 @@ form.ffrpg3e.sheet.actor .tab {
 .ffrpg3e.sheet.actor .atributos-layout-moderno,
 .ffrpg3e.sheet.actor .status-aba-wrapper,
 .ffrpg3e.sheet.actor .extrato-wrapper,
-.ffrpg3e.sheet.actor .background-style {
+.ffrpg3e.sheet.actor .background-style,
+.ffrpg3e.sheet.actor .job-skill-wrapper {
     height: 100% !important;
+}
+
+.ffrpg3e.sheet.actor .job-skill-wrapper {
+    display: flex !important;
+    gap: 15px !important;
+}
+
+.ffrpg3e.sheet.actor .job-skill-lista {
+    flex: 0 0 260px !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+
+.ffrpg3e.sheet.actor .job-skill-detalhe {
+    flex: 1 !important;
+    overflow-y: auto !important;
+}
+
+.ffrpg3e.sheet.actor .job-skill-detalhe-conteudo {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+}
+
+.ffrpg3e.sheet.actor .linha-info {
+    display: flex !important;
+    gap: 10px !important;
+    align-items: flex-start !important;
+}
+
+.ffrpg3e.sheet.actor .linha-info label {
+    flex: 0 0 120px !important;
+    font-weight: bold !important;
+    text-align: right !important;
+}
+
+.ffrpg3e.sheet.actor .linha-info span,
+.ffrpg3e.sheet.actor .linha-info .readonly-prose {
+    flex: 1 !important;
+}
+
+.ffrpg3e.sheet.actor .readonly-prose {
+    background: rgba(0,0,0,0.1) !important;
+    border-radius: 4px !important;
+    padding: 8px !important;
+    min-height: 40px !important;
 }
 
 .ffrpg3e.sheet.actor .tab[data-tab="background"].active {

@@ -174,6 +174,11 @@ export const CLASS_LIST = {
   adept: "Adepto"
 }
 
+export const SKILL_JOB_TYPES = {
+  active: "Ativa",
+  passive: "Passiva"
+}
+
 export const PROFICIENCY_BASIC_MAP = [
     {
       groupLabel: "Perícias Artísticas",

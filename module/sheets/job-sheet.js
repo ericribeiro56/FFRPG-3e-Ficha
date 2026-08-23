@@ -1,5 +1,7 @@
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 
+import { SKILL_JOB_TYPES } from "../core/constants.js";
+
 export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheetV2) {
 
   constructor(options = {}) {
@@ -104,6 +106,22 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
       { value: "mage", label: "Mago (Mage)" },
       { value: "thief", label: "Ladino (Thief)" }
     ];
+    context.skillJobTypes = SKILL_JOB_TYPES;
+
+    context.skillsFiltradas = (context.system.skills || [])
+      .map((skill, index) => ({
+        ...skill,
+        index,
+        typeLabel: SKILL_JOB_TYPES[skill.type] || skill.type
+      }));
+
+    context.selectedSkill = context.currentSkill ? {
+      ...context.currentSkill,
+      typeLabel: SKILL_JOB_TYPES[context.currentSkill.type] || context.currentSkill.type,
+      descriptionEnriched: context.currentSkillDescriptionEnriched || "",
+      notesEnriched: context.currentSkillNotesEnriched || ""
+    } : null;
+
     context.proficiencyOptions = [
       { value: "Atk_Fisico", label: "Ataque Físico" },
       { value: "Atk_Magico", label: "Ataque Mágico" },
@@ -234,13 +252,12 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
       name: "Nova Habilidade",
       minLevel: 1,
       type: "active",
-      cost: { type: "mp", material: "", value: 0 },
       support: false,
-      range: "",
+      cost: { type: "nothing", material: "", value: 0 },
+      combat: { type: "physical", formula: "", area: false, range: "", ally: false },
       tags: [],
       description: "",
-      notes: "",
-      combat: { ally: false, area: false, formula: "" }
+      notes: ""
     };
 
     currentSkills.push(newSkill);
@@ -266,24 +283,14 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
     const formula = input.value.trim();
     if (!formula) return;
 
-    const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
     const skillIndex = parseInt(target.dataset.skillIndex);
-
-    if (currentSkills[skillIndex]) {
-      currentSkills[skillIndex].combat.formula = formula;
-      await this.item.update({ "system.skills": currentSkills });
-      input.value = "";
-    }
+    await this.item.update({ [`system.skills.${skillIndex}.combat.formula`]: formula });
+    input.value = "";
   }
 
   static async _onRemoveValidatedFormula(event, target) {
-    const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
     const skillIndex = parseInt(target.dataset.skillIndex);
-
-    if (currentSkills[skillIndex]) {
-      currentSkills[skillIndex].combat.formula = "";
-      await this.item.update({ "system.skills": currentSkills });
-    }
+    await this.item.update({ [`system.skills.${skillIndex}.combat.formula`]: "" });
   }
 
   // --------------------------------------------------------------------------
@@ -294,27 +301,21 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
     const tag = input.value.trim();
     if (!tag) return;
 
-    const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
     const skillIndex = parseInt(target.dataset.skillIndex);
-
-    if (currentSkills[skillIndex]) {
-      if (!currentSkills[skillIndex].tags) currentSkills[skillIndex].tags = [];
-      if (!currentSkills[skillIndex].tags.includes(tag)) {
-        currentSkills[skillIndex].tags.push(tag);
-        await this.item.update({ "system.skills": currentSkills });
-        input.value = "";
-      }
+    const currentTags = this.item.system.skills[skillIndex]?.tags || [];
+    if (!currentTags.includes(tag)) {
+      await this.item.update({ [`system.skills.${skillIndex}.tags`]: [...currentTags, tag] });
+      input.value = "";
     }
   }
 
   static async _onRemoveSkillTag(event, target) {
-    const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
     const skillIndex = parseInt(target.dataset.skillIndex);
     const tagIndex = parseInt(target.dataset.tagIndex);
-
-    if (currentSkills[skillIndex] && currentSkills[skillIndex].tags) {
-      currentSkills[skillIndex].tags.splice(tagIndex, 1);
-      await this.item.update({ "system.skills": currentSkills });
+    const currentTags = this.item.system.skills[skillIndex]?.tags || [];
+    if (tagIndex >= 0 && tagIndex < currentTags.length) {
+      currentTags.splice(tagIndex, 1);
+      await this.item.update({ [`system.skills.${skillIndex}.tags`]: currentTags });
     }
   }
 
@@ -335,7 +336,70 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
   }
 
   static async _onSaveSkillTrayChanges(event, target) {
-    await this.submit();
+    const skillIndex = this.activeSkillIndex;
+    const skill = this.item.system.skills[skillIndex];
+    if (!skill) return;
+
+    const form = this.form;
+    const q = (sel) => form.querySelector(sel);
+
+    const support = !!q(`[name="system.skills.${skillIndex}.support"]`)?.checked;
+    const area = !!q(`[name="system.skills.${skillIndex}.combat.area"]`)?.checked;
+    const ally = !!q(`[name="system.skills.${skillIndex}.combat.ally"]`)?.checked;
+
+    const name = q(`[name="system.skills.${skillIndex}.name"]`)?.value?.trim() || skill.name;
+    const minLevel = parseInt(q(`[name="system.skills.${skillIndex}.minLevel"]`)?.value) || 0;
+    const type = q(`[name="system.skills.${skillIndex}.type"]`)?.value || skill.type;
+    const costType = q(`[name="system.skills.${skillIndex}.cost.type"]`)?.value || skill.cost.type;
+    const costMaterial = q(`[name="system.skills.${skillIndex}.cost.material"]`)?.value || "";
+    const costValue = parseInt(q(`[name="system.skills.${skillIndex}.cost.value"]`)?.value) || 0;
+    const combatType = q(`[name="system.skills.${skillIndex}.combat.type"]`)?.value || skill.combat.type;
+    const range = q(`[name="system.skills.${skillIndex}.combat.range"]`)?.value || "";
+
+    const descriptionEl = document.getElementById(`skill-description-${skillIndex}`);
+    const notesEl = document.getElementById(`skill-notes-${skillIndex}`);
+
+    const getProseContent = (el) => {
+      if (!el) return null;
+      if (typeof el.getHTML === "function") return el.getHTML();
+      const pm = el.querySelector?.(".ProseMirror");
+      if (pm) return pm.innerHTML;
+      return el.innerHTML || null;
+    };
+
+    const descHtml = getProseContent(descriptionEl);
+    const notesHtml = getProseContent(notesEl);
+
+    const hasRealText = (html) => {
+      if (!html) return false;
+      const text = html.replace(/<[^>]*>/g, '').trim();
+      return text.length > 0;
+    };
+
+    const updateData = {
+      [`system.skills.${skillIndex}.name`]: name,
+      [`system.skills.${skillIndex}.minLevel`]: minLevel,
+      [`system.skills.${skillIndex}.type`]: type,
+      [`system.skills.${skillIndex}.support`]: support,
+      [`system.skills.${skillIndex}.cost.type`]: costType,
+      [`system.skills.${skillIndex}.cost.material`]: costMaterial,
+      [`system.skills.${skillIndex}.cost.value`]: costValue,
+      [`system.skills.${skillIndex}.combat.type`]: combatType,
+      [`system.skills.${skillIndex}.combat.formula`]: skill.combat.formula || "",
+      [`system.skills.${skillIndex}.combat.area`]: area,
+      [`system.skills.${skillIndex}.combat.range`]: range,
+      [`system.skills.${skillIndex}.combat.ally`]: ally,
+      [`system.skills.${skillIndex}.tags`]: skill.tags || []
+    };
+
+    if (hasRealText(descHtml)) {
+      updateData[`system.skills.${skillIndex}.description`] = descHtml;
+    }
+    if (hasRealText(notesHtml)) {
+      updateData[`system.skills.${skillIndex}.notes`] = notesHtml;
+    }
+
+    await this.item.update(updateData);
     ui.notifications.info("Alterações da habilidade salvas.");
   }
 

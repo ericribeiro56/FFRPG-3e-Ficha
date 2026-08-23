@@ -226,7 +226,7 @@
                                                 </div>
                                                 <div class="checks-row-line margin-top-6">
                                                     <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.area" {{#if currentSkill.combat.area}}checked{{/if}} id="skill-area-{{activeSkillIndex}}"/> <label for="skill-area-{{activeSkillIndex}}">Área</label></div>
-                                                    <div class="field-group inline-range-box-wrapper" style="display: contents;"><label>Alcance</label><input type="text" name="system.skills.{{activeSkillIndex}}.range" value="{{currentSkill.range}}" placeholder="Ex: 10m" style="width: 80px !important;"/></div>
+                                                    <div class="field-group inline-range-box-wrapper" style="display: contents;"><label>Alcance</label><input type="text" name="system.skills.{{activeSkillIndex}}.combat.range" value="{{currentSkill.combat.range}}" placeholder="Ex: 10m" style="width: 80px !important;"/></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -271,11 +271,11 @@
                                     <div class="col-detalhe-dir transparent-inner-blocks">
                                         <div class="field-group job-narrative-box">
                                             <label>Descrição Detalhada da Skill</label>
-                                            <div class="editor-content-wrapper-box"><prose-mirror name="system.skills.{{activeSkillIndex}}.description" value="{{currentSkill.description}}" class="prose-mirror-style">{{{currentSkillDescriptionEnriched}}}</prose-mirror></div>
+                                            <div class="editor-content-wrapper-box"><prose-mirror id="skill-description-{{activeSkillIndex}}" value="{{currentSkill.description}}" class="prose-mirror-style">{{{currentSkillDescriptionEnriched}}}</prose-mirror></div>
                                         </div>
                                         <div class="field-group job-narrative-box">
                                             <label>Notas e Restrições Técnicas</label>
-                                            <div class="editor-content-wrapper-box"><prose-mirror name="system.skills.{{activeSkillIndex}}.notes" value="{{currentSkill.notes}}" class="prose-mirror-style">{{{currentSkillNotesEnriched}}}</prose-mirror></div>
+                                            <div class="editor-content-wrapper-box"><prose-mirror id="skill-notes-{{activeSkillIndex}}" value="{{currentSkill.notes}}" class="prose-mirror-style">{{{currentSkillNotesEnriched}}}</prose-mirror></div>
                                         </div>
                                     </div>
                                 </div>
