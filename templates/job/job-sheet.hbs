@@ -180,7 +180,7 @@
 
                     <!-- Detalhar Centrado e Envelopado em Bandeja Única Sólida -->
                     <div class="skill-detail-panel">
-                        {{#if currentSkill}}
+                        {{#if tempSkill}}
                             <div class="container-detalhe unique-tray-envelope">
                                 
                                 <div class="tray-columns-wrapper-horizontal">
@@ -190,12 +190,12 @@
                                         <!-- Identificação Unificada -->
                                         <div class="property-block-vertical-skill-tray">
                                             <div class="skill-linear-identification-grid">
-                                                <div class="field-group inline-flex-item-grow"><label>Nome</label><input type="text" name="system.skills.{{activeSkillIndex}}.name" value="{{currentSkill.name}}"/></div>
-                                                <div class="field-group inline-flex-item-fixed-niv"><label>Nív</label><input type="number" name="system.skills.{{activeSkillIndex}}.minLevel" value="{{currentSkill.minLevel}}"/></div>
+                                                <div class="field-group inline-flex-item-grow"><label>Nome</label><input type="text" name="system.skills.{{activeSkillIndex}}.name" value="{{tempSkill.name}}"/></div>
+                                                <div class="field-group inline-flex-item-fixed-niv"><label>Nív</label><input type="number" name="system.skills.{{activeSkillIndex}}.minLevel" value="{{tempSkill.minLevel}}"/></div>
                                                 <div class="field-group inline-flex-item-fixed-tipo"><label>Tipo</label>
                                                     <select name="system.skills.{{activeSkillIndex}}.type">
-                                                        <option value="active" {{#if (eq currentSkill.type "active")}}selected{{/if}}>Ativa</option>
-                                                        <option value="support" {{#if (eq currentSkill.type "support")}}selected{{/if}}>Suporte</option>
+                                                        <option value="active" {{#if (eq tempSkill.type "active")}}selected{{/if}}>Ativa</option>
+                                                        <option value="support" {{#if (eq tempSkill.type "support")}}selected{{/if}}>Suporte</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -206,13 +206,13 @@
                                             <span class="panel-inside-title">Custo da Habilidade</span>
                                             <div class="skill-linear-cost-grid">
                                                 <div class="field-group" style="flex: 1.5;"><select name="system.skills.{{activeSkillIndex}}.cost.type">
-                                                    <option value="mp" {{#if (eq currentSkill.cost.type "mp")}}selected{{/if}}>Mana (MP)</option>
-                                                    <option value="hp" {{#if (eq currentSkill.cost.type "hp")}}selected{{/if}}>Vida (HP)</option>
-                                                    <option value="material" {{#if (eq currentSkill.cost.type "material")}}selected{{/if}}>Material</option>
-                                                    <option value="nothing" {{#if (eq currentSkill.cost.type "nothing")}}selected{{/if}}>Sem Custo</option>
+                                                    <option value="mp" {{#if (eq tempSkill.cost.type "mp")}}selected{{/if}}>Mana (MP)</option>
+                                                    <option value="hp" {{#if (eq tempSkill.cost.type "hp")}}selected{{/if}}>Vida (HP)</option>
+                                                    <option value="material" {{#if (eq tempSkill.cost.type "material")}}selected{{/if}}>Material</option>
+                                                    <option value="nothing" {{#if (eq tempSkill.cost.type "nothing")}}selected{{/if}}>Sem Custo</option>
                                                 </select></div>
-                                                <div class="field-group" style="flex: 3;"><input type="text" name="system.skills.{{activeSkillIndex}}.cost.material" value="{{currentSkill.cost.material}}" placeholder="Objeto (Material)"/></div>
-                                                <div class="field-group" style="flex: 1;"><input type="number" name="system.skills.{{activeSkillIndex}}.cost.value" value="{{currentSkill.cost.value}}" placeholder="Valor"/></div>
+                                                <div class="field-group" style="flex: 3;"><input type="text" name="system.skills.{{activeSkillIndex}}.cost.material" value="{{tempSkill.cost.material}}" placeholder="Objeto (Material)"/></div>
+                                                <div class="field-group" style="flex: 1;"><input type="number" name="system.skills.{{activeSkillIndex}}.cost.value" value="{{tempSkill.cost.value}}" placeholder="Valor"/></div>
                                             </div>
                                         </div>
 <!-- BLOCO 4 DE 4: templates/job-sheet.hbs -->
@@ -221,12 +221,12 @@
                                             <span class="panel-inside-title">Regras Adicionais de Aplicação</span>
                                             <div class="skill-double-line-checks-layout">
                                                 <div class="checks-row-line">
-                                                    <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.support" {{#if currentSkill.support}}checked{{/if}} id="skill-sup-{{activeSkillIndex}}"/> <label for="skill-sup-{{activeSkillIndex}}">Suporte</label></div>
-                                                    <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.ally" {{#if currentSkill.combat.ally}}checked{{/if}} id="skill-ally-{{activeSkillIndex}}"/> <label for="skill-ally-{{activeSkillIndex}}">Afeta Aliados</label></div>
+                                                    <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.support" {{#if tempSkill.support}}checked{{/if}} id="skill-sup-{{activeSkillIndex}}"/> <label for="skill-sup-{{activeSkillIndex}}">Suporte</label></div>
+                                                    <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.ally" {{#if tempSkill.combat.ally}}checked{{/if}} id="skill-ally-{{activeSkillIndex}}"/> <label for="skill-ally-{{activeSkillIndex}}">Afeta Aliados</label></div>
                                                 </div>
                                                 <div class="checks-row-line margin-top-6">
-                                                    <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.area" {{#if currentSkill.combat.area}}checked{{/if}} id="skill-area-{{activeSkillIndex}}"/> <label for="skill-area-{{activeSkillIndex}}">Área</label></div>
-                                                    <div class="field-group inline-range-box-wrapper" style="display: contents;"><label>Alcance</label><input type="text" name="system.skills.{{activeSkillIndex}}.combat.range" value="{{currentSkill.combat.range}}" placeholder="Ex: 10m" style="width: 80px !important;"/></div>
+                                                    <div class="row-inline-check"><input type="checkbox" name="system.skills.{{activeSkillIndex}}.combat.area" {{#if tempSkill.combat.area}}checked{{/if}} id="skill-area-{{activeSkillIndex}}"/> <label for="skill-area-{{activeSkillIndex}}">Área</label></div>
+                                                    <div class="field-group inline-range-box-wrapper" style="display: contents;"><label>Alcance</label><input type="text" name="system.skills.{{activeSkillIndex}}.combat.range" value="{{tempSkill.combat.range}}" placeholder="Ex: 10m" style="width: 80px !important;"/></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -240,8 +240,8 @@
                                                     <button type="button" class="action-btn-add inner-fixed-add" data-action="addValidatedFormula" data-skill-index="{{activeSkillIndex}}">+</button>
                                                 </div>
                                                 <div class="validated-formula-box">
-                                                    {{#if currentSkill.combat.formula}}
-                                                        <span class="formula-text">{{currentSkill.combat.formula}}</span>
+                                                    {{#if tempSkill.combat.formula}}
+                                                        <span class="formula-text">{{tempSkill.combat.formula}}</span>
                                                         <button type="button" data-action="removeValidatedFormula" data-skill-index="{{activeSkillIndex}}">×</button>
                                                     {{else}}
                                                         <span style="font-size:11px; opacity:0.3; font-style:italic">Nenhuma fórmula.</span>
@@ -256,7 +256,7 @@
                                                     <button type="button" class="action-btn-add inner-fixed-add" data-action="addSkillTag" data-skill-index="{{activeSkillIndex}}">+</button>
                                                 </div>
                                                 <div class="vertical-scroll-list" style="height:46px !important; flex-direction:row; flex-wrap:wrap; align-content:flex-start;">
-                                                    {{#each currentSkill.tags as |tag tIdx|}}
+                                                    {{#each tempSkill.tags as |tag tIdx|}}
                                                         <div class="list-item-row compact-badge skill-badge-color" style="margin-bottom:2px">
                                                             <span class="item-text-content">{{tag}}</span>
                                                             <button type="button" class="action-btn-remove" data-action="removeSkillTag" data-skill-index="{{../activeSkillIndex}}" data-tag-index="{{tIdx}}">×</button>
@@ -271,11 +271,11 @@
                                     <div class="col-detalhe-dir transparent-inner-blocks">
                                         <div class="field-group job-narrative-box">
                                             <label>Descrição Detalhada da Skill</label>
-                                            <div class="editor-content-wrapper-box"><prose-mirror id="skill-description-{{activeSkillIndex}}" value="{{currentSkill.description}}" class="prose-mirror-style">{{{currentSkillDescriptionEnriched}}}</prose-mirror></div>
+                                            <div class="editor-content-wrapper-box"><prose-mirror name="system.skills.{{activeSkillIndex}}.description" data-target="system.skills.{{activeSkillIndex}}.description" value="{{tempSkill.description}}" class="prose-mirror-style">{{{tempSkillDescriptionEnriched}}}</prose-mirror></div>
                                         </div>
                                         <div class="field-group job-narrative-box">
                                             <label>Notas e Restrições Técnicas</label>
-                                            <div class="editor-content-wrapper-box"><prose-mirror id="skill-notes-{{activeSkillIndex}}" value="{{currentSkill.notes}}" class="prose-mirror-style">{{{currentSkillNotesEnriched}}}</prose-mirror></div>
+                                            <div class="editor-content-wrapper-box"><prose-mirror name="system.skills.{{activeSkillIndex}}.notes" data-target="system.skills.{{activeSkillIndex}}.notes" value="{{tempSkill.notes}}" class="prose-mirror-style">{{{tempSkillNotesEnriched}}}</prose-mirror></div>
                                         </div>
                                     </div>
                                 </div>

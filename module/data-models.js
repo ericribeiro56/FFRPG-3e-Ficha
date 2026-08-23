@@ -1030,6 +1030,20 @@ export class JobModel extends foundry.abstract.TypeDataModel {
         }))
       }),
       skills: Field.Array(JobSkillModel),
+      tempSkill: new foundry.data.fields.EmbeddedDataField(JobSkillModel, {
+        initial: {
+          name: "",
+          description: "",
+          type: "",
+          minLevel: 0,
+          support: false,
+          cost: { type: "", material: "", value: 0 },
+          combat: { type: "", formula: "", area: false, range: 0, ally: false },
+          tags: [],
+          notes: ""
+        },
+        persisted: false
+      }),
       mainWeapons: Field.Array(Field.String()),
       accuracyBonus: Field.Number(),
       allowedArmors: Field.Array(Field.String()),

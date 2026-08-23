@@ -7,14 +7,20 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
   constructor(options = {}) {
     super(options);
     
-    // Armazena em cache o índice da habilidade que está aberta no detalhar
-    this.activeSkillIndex = 0;
+    console.log("[JobSheet] constructor iniciado");
     
-    // Instancia o controlador nativo de abas mapeado para a section .sheet-body
+    this.activeSkillIndex = 0;
+    this.tempSkill = null;
+    
     this.controladorAbas = new foundry.applications.ux.Tabs({
       navSelector: '.sheet-tabs[data-group="primary"]',
       contentSelector: '.sheet-body',
       initial: 'principal'
+    });
+    
+    console.log("[JobSheet] constructor finalizado", {
+      activeSkillIndex: this.activeSkillIndex,
+      tempSkill: this.tempSkill
     });
   }
 
@@ -26,7 +32,6 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
       height: 820
     },
     actions: {
-      // Listeners macros do Job (Aba Principal)
       addProficiencyBonus: JobSheet._onAddProficiencyBonus,
       removeProficiencyBonus: JobSheet._onRemoveProficiencyBonus,
       addAllowedWeapon: JobSheet._onAddAllowedWeapon,
@@ -35,8 +40,6 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
       removeJobTag: JobSheet._onRemoveJobTag,
       addAllowedArmor: JobSheet._onAddAllowedArmor,
       removeAllowedArmor: JobSheet._onRemoveAllowedArmor,
-
-      // Listeners de navegação e edição da Aba de Skills
       addNewJobSkill: JobSheet._onAddNewJobSkill,
       selectJobSkill: JobSheet._onSelectJobSkill,
       addValidatedFormula: JobSheet._onAddValidatedFormula,
@@ -55,20 +58,17 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
       template: "systems/ffrpg3e/templates/job/job-sheet.hbs"
     }
   };
-  /* ==========================================================================
-   BLOCO 2 DE 4: js/job-sheet.js (Preparação do Contexto e Enriquecimento HTML)
-   ========================================================================== */
 
   /** @override */
   async _prepareContext(options) {
+    console.log("[JobSheet] _prepareContext iniciado", { activeSkillIndex: this.activeSkillIndex, tempSkill: this.tempSkill });
+    
     const context = await super._prepareContext(options);
     const itemData = this.item.toObject();
 
-    // Injeta os dados brutos e estruturados do system na raiz do context para o HBS ler
     context.system = itemData.system || {};
     context.item = itemData;
 
-    // Garante que os vetores essenciais existam no banco para evitar quebras do #each
     if (!context.system.proficiency) context.system.proficiency = { bonus: [] };
     if (!context.system.proficiency.bonus) context.system.proficiency.bonus = [];
     if (!context.system.mainWeapons) context.system.mainWeapons = [];
@@ -76,13 +76,12 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
     if (!context.system.allowedArmors) context.system.allowedArmors = [];
     if (!context.system.skills) context.system.skills = [];
 
-    // Passa o índice ativo para o template gerenciar a classe .selected na sidebar
     context.activeSkillIndex = this.activeSkillIndex;
 
-    // Resgata e expõe a habilidade atualmente selecionada no detalhar central
-    context.currentSkill = context.system.skills[this.activeSkillIndex] || null;
+    const safeIndex = Math.max(0, Math.min(this.activeSkillIndex, (context.system.skills || []).length - 1));
+    context.tempSkill = this.tempSkill !== null ? this.tempSkill : null;
+    console.log("[JobSheet] _prepareContext tempSkill definido", { safeIndex, tempSkill: context.tempSkill });
 
-    // Enriquecimento HTML NARRATIVO 1: Descrição e Notas Gerais da Vocação/Job (Aba 1)
     context.descricaoEnriquecida = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.description || "", {
       secrets: this.item.isOwner, rollData: this.item.getRollData(), relativeTo: this.item
     });
@@ -90,17 +89,16 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
       secrets: this.item.isOwner, rollData: this.item.getRollData(), relativeTo: this.item
     });
 
-    // Enriquecimento HTML NARRATIVO 2: Descrição e Notas OBRIGATÓRIAS da Skill Ativa (Aba 2)
-    if (context.currentSkill) {
-      context.currentSkillDescriptionEnriched = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.currentSkill.description || "", {
+    const skillSource = context.tempSkill;
+    if (skillSource) {
+      context.tempSkillDescriptionEnriched = await foundry.applications.ux.TextEditor.implementation.enrichHTML(skillSource.description || "", {
         secrets: this.item.isOwner, rollData: this.item.getRollData(), relativeTo: this.item
       });
-      context.currentSkillNotesEnriched = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.currentSkill.notes || "", {
+      context.tempSkillNotesEnriched = await foundry.applications.ux.TextEditor.implementation.enrichHTML(skillSource.notes || "", {
         secrets: this.item.isOwner, rollData: this.item.getRollData(), relativeTo: this.item
       });
     }
 
-    // LISTAS DE OPÇÕES: Popula os seletores drop-down (<select>) do cabeçalho e quadrantes
     context.classList = [
       { value: "warrior", label: "Guerreiro (Warrior)" },
       { value: "mage", label: "Mago (Mage)" },
@@ -115,11 +113,11 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
         typeLabel: SKILL_JOB_TYPES[skill.type] || skill.type
       }));
 
-    context.selectedSkill = context.currentSkill ? {
-      ...context.currentSkill,
-      typeLabel: SKILL_JOB_TYPES[context.currentSkill.type] || context.currentSkill.type,
-      descriptionEnriched: context.currentSkillDescriptionEnriched || "",
-      notesEnriched: context.currentSkillNotesEnriched || ""
+    context.selectedSkill = context.tempSkill ? {
+      ...context.tempSkill,
+      typeLabel: SKILL_JOB_TYPES[context.tempSkill.type] || context.tempSkill.type,
+      descriptionEnriched: context.tempSkillDescriptionEnriched || "",
+      notesEnriched: context.tempSkillNotesEnriched || ""
     } : null;
 
     context.proficiencyOptions = [
@@ -140,64 +138,71 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
       { value: "Manto", label: "Manto" }
     ];
 
+    console.log("[JobSheet] _prepareContext finalizado", {
+      skillsCount: context.system.skills?.length,
+      activeSkillIndex: context.activeSkillIndex,
+      hasTempSkill: !!context.tempSkill,
+      hasSelectedSkill: !!context.selectedSkill
+    });
+    
     return context;
   }
 
   /** @override */
   _onRender(context, options) {
+    console.log("[JobSheet] _onRender iniciado", { activeSkillIndex: this.activeSkillIndex, tempSkill: this.tempSkill });
     super._onRender(context, options);
-    // Vincula fisicamente a escuta de cliques das abas à janela renderizada
     this.controladorAbas.bind(this.element);
+    console.log("[JobSheet] _onRender finalizado");
   }
-/* ==========================================================================
-   BLOCO 3 DE 4: js/job-sheet.js (Rotinas de Banco dos Quadrantes da Aba 1)
-   ========================================================================== */
 
-  // --------------------------------------------------------------------------
-  // LÓGICA DO QUADRANTE 1: BÔNUS DE PROFICIÊNCIA
-  // --------------------------------------------------------------------------
   static async _onAddProficiencyBonus(event, target) {
+    console.log("[JobSheet] _onAddProficiencyBonus iniciado");
     const key = this.form.querySelector(".add-prof-key").value;
-    const value = parseInt(this.form.querySelector(".add-prof-value").value) || 0;
+    const value = parseInt(this.form.querySelector(".add-prof-value").value, 10) || 0;
     const currentList = foundry.utils.deepClone(this.item.system.proficiency?.bonus || []);
     
     currentList.push({ key, value });
     await this.item.update({ "system.proficiency.bonus": currentList });
+    console.log("[JobSheet] _onAddProficiencyBonus finalizado", { key, value, newLength: currentList.length });
   }
 
   static async _onRemoveProficiencyBonus(event, target) {
-    const index = parseInt(target.dataset.index);
+    console.log("[JobSheet] _onRemoveProficiencyBonus iniciado");
+    const index = parseInt(target.dataset.index, 10);
     const currentList = foundry.utils.deepClone(this.item.system.proficiency?.bonus || []);
     
     currentList.splice(index, 1);
     await this.item.update({ "system.proficiency.bonus": currentList });
+    console.log("[JobSheet] _onRemoveProficiencyBonus finalizado", { index, newLength: currentList.length });
   }
 
-  // --------------------------------------------------------------------------
-  // LÓGICA DO QUADRANTE 2: ARMAS PERMITIDAS
-  // --------------------------------------------------------------------------
   static async _onAddAllowedWeapon(event, target) {
+    console.log("[JobSheet] _onAddAllowedWeapon iniciado");
     const weapon = this.form.querySelector(".add-weapon-select").value;
     const currentList = foundry.utils.deepClone(this.item.system.mainWeapons || []);
     
     if (!currentList.includes(weapon)) {
       currentList.push(weapon);
       await this.item.update({ "system.mainWeapons": currentList });
+      console.log("[JobSheet] _onAddAllowedWeapon finalizado", { weapon, newLength: currentList.length });
+    } else {
+      console.log("[JobSheet] _onAddAllowedWeapon cancelado (já existe)", { weapon });
     }
   }
 
   static async _onRemoveAllowedWeapon(event, target) {
-    const index = parseInt(target.dataset.index);
+    console.log("[JobSheet] _onRemoveAllowedWeapon iniciado");
+    const index = parseInt(target.dataset.index, 10);
     const currentList = foundry.utils.deepClone(this.item.system.mainWeapons || []);
     
     currentList.splice(index, 1);
     await this.item.update({ "system.mainWeapons": currentList });
+    console.log("[JobSheet] _onRemoveAllowedWeapon finalizado", { index, newLength: currentList.length });
   }
 
-  // --------------------------------------------------------------------------
-  // LÓGICA DO QUADRANTE 3: TAGS DO JOB
-  // --------------------------------------------------------------------------
   static async _onAddJobTag(event, target) {
+    console.log("[JobSheet] _onAddJobTag iniciado");
     const input = this.form.querySelector(".add-job-tag-input");
     const tag = input.value.trim();
     const currentList = foundry.utils.deepClone(this.item.system.tags || []);
@@ -206,48 +211,50 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
       currentList.push(tag);
       await this.item.update({ "system.tags": currentList });
       input.value = "";
+      console.log("[JobSheet] _onAddJobTag finalizado", { tag, newLength: currentList.length });
+    } else {
+      console.log("[JobSheet] _onAddJobTag cancelado", { tag, exists: currentList.includes(tag) });
     }
   }
 
   static async _onRemoveJobTag(event, target) {
-    const index = parseInt(target.dataset.index);
+    console.log("[JobSheet] _onRemoveJobTag iniciado");
+    const index = parseInt(target.dataset.index, 10);
     const currentList = foundry.utils.deepClone(this.item.system.tags || []);
     
     currentList.splice(index, 1);
     await this.item.update({ "system.tags": currentList });
+    console.log("[JobSheet] _onRemoveJobTag finalizado", { index, newLength: currentList.length });
   }
 
-  // --------------------------------------------------------------------------
-  // LÓGICA DO QUADRANTE 4: ARMADURAS PERMITIDAS
-  // --------------------------------------------------------------------------
   static async _onAddAllowedArmor(event, target) {
+    console.log("[JobSheet] _onAddAllowedArmor iniciado");
     const armor = this.form.querySelector(".add-armor-select").value;
     const currentList = foundry.utils.deepClone(this.item.system.allowedArmors || []);
     
     if (!currentList.includes(armor)) {
       currentList.push(armor);
       await this.item.update({ "system.allowedArmors": currentList });
+      console.log("[JobSheet] _onAddAllowedArmor finalizado", { armor, newLength: currentList.length });
+    } else {
+      console.log("[JobSheet] _onAddAllowedArmor cancelado (já existe)", { armor });
     }
   }
 
   static async _onRemoveAllowedArmor(event, target) {
-    const index = parseInt(target.dataset.index);
+    console.log("[JobSheet] _onRemoveAllowedArmor iniciado");
+    const index = parseInt(target.dataset.index, 10);
     const currentList = foundry.utils.deepClone(this.item.system.allowedArmors || []);
     
     currentList.splice(index, 1);
     await this.item.update({ "system.allowedArmors": currentList });
+    console.log("[JobSheet] _onRemoveAllowedArmor finalizado", { index, newLength: currentList.length });
   }
-/* ==========================================================================
-   BLOCO 4 DE 4: js/job-sheet.js (Rotinas Internas das Habilidades/Skills)
-   ========================================================================== */
 
-  // --------------------------------------------------------------------------
-  // SISTEMA NATIVO MASTER-DETAIL: SELEÇÃO E CRIAÇÃO DE NOVA HABILIDADE
-  // --------------------------------------------------------------------------
   static async _onAddNewJobSkill(event, target) {
+    console.log("[JobSheet] _onAddNewJobSkill iniciado");
     const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
     
-    // Instancia uma estrutura padrão vazia e limpa para a nova Skill
     const newSkill = {
       name: "Nova Habilidade",
       minLevel: 1,
@@ -262,149 +269,236 @@ export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sh
 
     currentSkills.push(newSkill);
     
-    // Salva no banco e força o foco visual a pular imediatamente para a skill recém-criada
     this.activeSkillIndex = currentSkills.length - 1;
     await this.item.update({ "system.skills": currentSkills });
     this.render();
+    console.log("[JobSheet] _onAddNewJobSkill finalizado", { newIndex: this.activeSkillIndex, totalSkills: currentSkills.length });
   }
 
   static _onSelectJobSkill(event, target) {
+    console.log("[JobSheet] _onSelectJobSkill iniciado");
     const item = target.closest('.sidebar-skill-item');
-    if (!item) return;
-    this.activeSkillIndex = parseInt(item.dataset.index);
+    if (!item) {
+      console.log("[JobSheet] _onSelectJobSkill cancelado (item não encontrado)");
+      return;
+    }
+    const index = parseInt(item.dataset.index, 10);
+    this.activeSkillIndex = index;
+    const skill = this.item.system.skills[this.activeSkillIndex];
+    if (skill) {
+      this.tempSkill = foundry.utils.deepClone(skill.toObject ? skill.toObject() : skill);
+      console.log("[JobSheet] _onSelectJobSkill tempSkill clonado", { index, skillName: this.tempSkill.name });
+    } else {
+      console.log("[JobSheet] _onSelectJobSkill cancelado (skill não encontrada no índice)", { index });
+      this.tempSkill = null;
+    }
     this.render();
+    console.log("[JobSheet] _onSelectJobSkill finalizado", { index, hasTempSkill: !!this.tempSkill });
   }
 
-  // --------------------------------------------------------------------------
-  // PARÂMETROS SUB-INTERNOS: VALIDADOR DE FÓRMULA DE COMBATE EM LINHA ÚNICA
-  // --------------------------------------------------------------------------
   static async _onAddValidatedFormula(event, target) {
+    console.log("[JobSheet] _onAddValidatedFormula iniciado", { hasTempSkill: !!this.tempSkill });
     const input = this.form.querySelector(".temp-combat-formula");
     const formula = input.value.trim();
-    if (!formula) return;
+    if (!formula || !this.tempSkill) {
+      console.log("[JobSheet] _onAddValidatedFormula cancelado", { hasFormula: !!formula, hasTempSkill: !!this.tempSkill });
+      return;
+    }
 
-    const skillIndex = parseInt(target.dataset.skillIndex);
-    await this.item.update({ [`system.skills.${skillIndex}.combat.formula`]: formula });
+    this.tempSkill.combat = this.tempSkill.combat || {};
+    this.tempSkill.combat.formula = formula;
     input.value = "";
+    this.render();
+    console.log("[JobSheet] _onAddValidatedFormula finalizado", { formula });
   }
 
   static async _onRemoveValidatedFormula(event, target) {
-    const skillIndex = parseInt(target.dataset.skillIndex);
-    await this.item.update({ [`system.skills.${skillIndex}.combat.formula`]: "" });
+    console.log("[JobSheet] _onRemoveValidatedFormula iniciado", { hasTempSkill: !!this.tempSkill });
+    if (!this.tempSkill) {
+      console.log("[JobSheet] _onRemoveValidatedFormula cancelado (sem tempSkill)");
+      return;
+    }
+
+    this.tempSkill.combat = this.tempSkill.combat || {};
+    this.tempSkill.combat.formula = "";
+    this.render();
+    console.log("[JobSheet] _onRemoveValidatedFormula finalizado");
   }
 
-  // --------------------------------------------------------------------------
-  // PARÂMETROS SUB-INTERNOS: ADICIONADOR DE CHIPS DE TAGS DA HABILIDADE
-  // --------------------------------------------------------------------------
   static async _onAddSkillTag(event, target) {
+    console.log("[JobSheet] _onAddSkillTag iniciado", { hasTempSkill: !!this.tempSkill });
     const input = this.form.querySelector(".add-skill-tag-input");
     const tag = input.value.trim();
-    if (!tag) return;
+    if (!tag || !this.tempSkill) {
+      console.log("[JobSheet] _onAddSkillTag cancelado", { hasTag: !!tag, hasTempSkill: !!this.tempSkill });
+      return;
+    }
 
-    const skillIndex = parseInt(target.dataset.skillIndex);
-    const currentTags = this.item.system.skills[skillIndex]?.tags || [];
-    if (!currentTags.includes(tag)) {
-      await this.item.update({ [`system.skills.${skillIndex}.tags`]: [...currentTags, tag] });
+    this.tempSkill.tags = this.tempSkill.tags || [];
+    if (!this.tempSkill.tags.includes(tag)) {
+      this.tempSkill.tags.push(tag);
       input.value = "";
+      this.render();
+      console.log("[JobSheet] _onAddSkillTag finalizado", { tag, tagsLength: this.tempSkill.tags.length });
+    } else {
+      console.log("[JobSheet] _onAddSkillTag cancelado (tag já existe)", { tag });
     }
   }
 
   static async _onRemoveSkillTag(event, target) {
-    const skillIndex = parseInt(target.dataset.skillIndex);
-    const tagIndex = parseInt(target.dataset.tagIndex);
-    const currentTags = this.item.system.skills[skillIndex]?.tags || [];
-    if (tagIndex >= 0 && tagIndex < currentTags.length) {
-      currentTags.splice(tagIndex, 1);
-      await this.item.update({ [`system.skills.${skillIndex}.tags`]: currentTags });
+    console.log("[JobSheet] _onRemoveSkillTag iniciado", { hasTempSkill: !!this.tempSkill });
+    if (!this.tempSkill) {
+      console.log("[JobSheet] _onRemoveSkillTag cancelado (sem tempSkill)");
+      return;
+    }
+
+    const tagIndex = parseInt(target.dataset.tagIndex, 10);
+    this.tempSkill.tags = this.tempSkill.tags || [];
+    if (tagIndex >= 0 && tagIndex < this.tempSkill.tags.length) {
+      const removed = this.tempSkill.tags[tagIndex];
+      this.tempSkill.tags.splice(tagIndex, 1);
+      this.render();
+      console.log("[JobSheet] _onRemoveSkillTag finalizado", { tagIndex, removed, tagsLength: this.tempSkill.tags.length });
+    } else {
+      console.log("[JobSheet] _onRemoveSkillTag cancelado (índice inválido)", { tagIndex, tagsLength: this.tempSkill.tags.length });
     }
   }
 
   static async _onDeleteJobSkill(event, target) {
+    console.log("[JobSheet] _onDeleteJobSkill iniciado", { activeSkillIndex: this.activeSkillIndex, hasTempSkill: !!this.tempSkill });
     event.stopPropagation();
+    this._onCloseDetailsSkill();
+    
     const item = target.closest('.sidebar-skill-item');
-    if (!item) return;
-    const index = parseInt(item.dataset.index);
+    if (!item) {
+      console.log("[JobSheet] _onDeleteJobSkill cancelado (item não encontrado)");
+      return;
+    }
+    const index = parseInt(item.dataset.index, 10);
     const currentSkills = foundry.utils.deepClone(this.item.system.skills || []);
-    if (index < 0 || index >= currentSkills.length) return;
+    if (index < 0 || index >= currentSkills.length) {
+      console.log("[JobSheet] _onDeleteJobSkill cancelado (índice inválido)", { index, skillsLength: currentSkills.length });
+      return;
+    }
 
     currentSkills.splice(index, 1);
-    if (this.activeSkillIndex >= currentSkills.length) {
-      this.activeSkillIndex = Math.max(0, currentSkills.length - 1);
-    }
+    this.activeSkillIndex = currentSkills.length > 0
+      ? Math.min(this.activeSkillIndex, currentSkills.length - 1)
+      : -1;
     await this.item.update({ "system.skills": currentSkills });
     this.render();
+    console.log("[JobSheet] _onDeleteJobSkill finalizado", { deletedIndex: index, newActiveIndex: this.activeSkillIndex, totalSkills: currentSkills.length });
   }
 
   static async _onSaveSkillTrayChanges(event, target) {
-    const skillIndex = this.activeSkillIndex;
-    const skill = this.item.system.skills[skillIndex];
-    if (!skill) return;
+    console.log("[JobSheet] _onSaveSkillTrayChanges iniciado", { hasTempSkill: !!this.tempSkill, activeSkillIndex: this.activeSkillIndex });
+    
+    if (!this.tempSkill) {
+      console.log("[JobSheet] _onSaveSkillTrayChanges cancelado (sem tempSkill)");
+      return;
+    }
 
+    const skillIndex = this.activeSkillIndex;
     const form = this.form;
     const q = (sel) => form.querySelector(sel);
 
-    const support = !!q(`[name="system.skills.${skillIndex}.support"]`)?.checked;
-    const area = !!q(`[name="system.skills.${skillIndex}.combat.area"]`)?.checked;
-    const ally = !!q(`[name="system.skills.${skillIndex}.combat.ally"]`)?.checked;
+    try {
+      const skill = this.tempSkill;
+      const formData = new FormData(form);
+      
+      skill.name = formData.get(`system.skills.${skillIndex}.name`)?.toString().trim() || skill.name;
+      skill.minLevel = parseInt(formData.get(`system.skills.${skillIndex}.minLevel`)?.toString(), 10) || 0;
+      skill.type = formData.get(`system.skills.${skillIndex}.type`)?.toString() || skill.type;
+      skill.support = formData.has(`system.skills.${skillIndex}.support`);
+      skill.cost.type = formData.get(`system.skills.${skillIndex}.cost.type`)?.toString() || skill.cost.type;
+      skill.cost.material = formData.get(`system.skills.${skillIndex}.cost.material`)?.toString() || "";
+      skill.cost.value = parseInt(formData.get(`system.skills.${skillIndex}.cost.value`)?.toString(), 10) || 0;
+      skill.combat.type = formData.get(`system.skills.${skillIndex}.combat.type`)?.toString() || skill.combat.type;
+      skill.combat.area = formData.has(`system.skills.${skillIndex}.combat.area`);
+      skill.combat.range = formData.get(`system.skills.${skillIndex}.combat.range`)?.toString() || "";
+      skill.combat.ally = formData.has(`system.skills.${skillIndex}.combat.ally`);
+      skill.tags = skill.tags || [];
+      
+      const descEl = form.querySelector(`[name="system.skills.${skillIndex}.description"]`);
+      const notesEl = form.querySelector(`[name="system.skills.${skillIndex}.notes"]`);
+      
+      const getProseHtml = (el) => {
+        if (!el) return null;
+        if (typeof el.getHTML === "function") {
+          const html = el.getHTML();
+          if (html && html.includes('menu-container')) {
+            const pm = el.querySelector('.ProseMirror');
+            return pm ? pm.innerHTML : html;
+          }
+          return html;
+        }
+        const pm = el.querySelector?.('.ProseMirror');
+        return pm ? pm.innerHTML : el.innerHTML || null;
+      };
+      
+      const descHtml = getProseHtml(descEl);
+      const notesHtml = getProseHtml(notesEl);
+      
+      const hasRealText = (html) => {
+        if (!html) return false;
+        const text = html.replace(/<[^>]*>/g, '').trim();
+        return text.length > 0;
+      };
+      
+      console.log("[JobSheet] _onSaveSkillTrayChanges ProseMirror extraído", {
+        descHtml: descHtml?.substring(0, 200),
+        notesHtml: notesHtml?.substring(0, 200),
+        hasDesc: hasRealText(descHtml),
+        hasNotes: hasRealText(notesHtml)
+      });
 
-    const name = q(`[name="system.skills.${skillIndex}.name"]`)?.value?.trim() || skill.name;
-    const minLevel = parseInt(q(`[name="system.skills.${skillIndex}.minLevel"]`)?.value) || 0;
-    const type = q(`[name="system.skills.${skillIndex}.type"]`)?.value || skill.type;
-    const costType = q(`[name="system.skills.${skillIndex}.cost.type"]`)?.value || skill.cost.type;
-    const costMaterial = q(`[name="system.skills.${skillIndex}.cost.material"]`)?.value || "";
-    const costValue = parseInt(q(`[name="system.skills.${skillIndex}.cost.value"]`)?.value) || 0;
-    const combatType = q(`[name="system.skills.${skillIndex}.combat.type"]`)?.value || skill.combat.type;
-    const range = q(`[name="system.skills.${skillIndex}.combat.range"]`)?.value || "";
+      const updateData = {
+        [`system.skills.${skillIndex}.name`]: skill.name,
+        [`system.skills.${skillIndex}.minLevel`]: skill.minLevel,
+        [`system.skills.${skillIndex}.type`]: skill.type,
+        [`system.skills.${skillIndex}.support`]: skill.support,
+        [`system.skills.${skillIndex}.cost.type`]: skill.cost.type,
+        [`system.skills.${skillIndex}.cost.material`]: skill.cost.material,
+        [`system.skills.${skillIndex}.cost.value`]: skill.cost.value,
+        [`system.skills.${skillIndex}.combat.type`]: skill.combat.type,
+        [`system.skills.${skillIndex}.combat.formula`]: skill.combat.formula || "",
+        [`system.skills.${skillIndex}.combat.area`]: skill.combat.area,
+        [`system.skills.${skillIndex}.combat.range`]: skill.combat.range,
+        [`system.skills.${skillIndex}.combat.ally`]: skill.combat.ally,
+        [`system.skills.${skillIndex}.tags`]: skill.tags
+      };
 
-    const descriptionEl = document.getElementById(`skill-description-${skillIndex}`);
-    const notesEl = document.getElementById(`skill-notes-${skillIndex}`);
+      if (hasRealText(descHtml)) {
+        updateData[`system.skills.${skillIndex}.description`] = descHtml;
+      }
+      if (hasRealText(notesHtml)) {
+        updateData[`system.skills.${skillIndex}.notes`] = notesHtml;
+      }
 
-    const getProseContent = (el) => {
-      if (!el) return null;
-      if (typeof el.getHTML === "function") return el.getHTML();
-      const pm = el.querySelector?.(".ProseMirror");
-      if (pm) return pm.innerHTML;
-      return el.innerHTML || null;
-    };
-
-    const descHtml = getProseContent(descriptionEl);
-    const notesHtml = getProseContent(notesEl);
-
-    const hasRealText = (html) => {
-      if (!html) return false;
-      const text = html.replace(/<[^>]*>/g, '').trim();
-      return text.length > 0;
-    };
-
-    const updateData = {
-      [`system.skills.${skillIndex}.name`]: name,
-      [`system.skills.${skillIndex}.minLevel`]: minLevel,
-      [`system.skills.${skillIndex}.type`]: type,
-      [`system.skills.${skillIndex}.support`]: support,
-      [`system.skills.${skillIndex}.cost.type`]: costType,
-      [`system.skills.${skillIndex}.cost.material`]: costMaterial,
-      [`system.skills.${skillIndex}.cost.value`]: costValue,
-      [`system.skills.${skillIndex}.combat.type`]: combatType,
-      [`system.skills.${skillIndex}.combat.formula`]: skill.combat.formula || "",
-      [`system.skills.${skillIndex}.combat.area`]: area,
-      [`system.skills.${skillIndex}.combat.range`]: range,
-      [`system.skills.${skillIndex}.combat.ally`]: ally,
-      [`system.skills.${skillIndex}.tags`]: skill.tags || []
-    };
-
-    if (hasRealText(descHtml)) {
-      updateData[`system.skills.${skillIndex}.description`] = descHtml;
+      console.log("[JobSheet] _onSaveSkillTrayChanges enviando update", updateData);
+      await this.item.update(updateData);
+      console.log("[JobSheet] _onSaveSkillTrayChanges update concluído");
+      ui.notifications.info("Habilidade salva com sucesso.");
+    } catch (err) {
+      console.error("[JobSheet] _onSaveSkillTrayChanges erro", err);
+      ui.notifications.error("Erro ao salvar habilidade: " + err.message);
+      throw err;
+    } finally {
+      console.log("[JobSheet] _onSaveSkillTrayChanges finally, fechando detalhes");
+      JobSheet._onCloseDetailsSkill.call(this);
     }
-    if (hasRealText(notesHtml)) {
-      updateData[`system.skills.${skillIndex}.notes`] = notesHtml;
-    }
-
-    await this.item.update(updateData);
-    ui.notifications.info("Alterações da habilidade salvas.");
   }
 
   static _onCloseSkillTray(event, target) {
-    this.activeSkillIndex = -1;
+    console.log("[JobSheet] _onCloseSkillTray iniciado", { activeSkillIndex: this.activeSkillIndex, hasTempSkill: !!this.tempSkill });
+    JobSheet._onCloseDetailsSkill.call(this);
+    console.log("[JobSheet] _onCloseSkillTray finalizado");
+  }
+
+  static _onCloseDetailsSkill() {
+    console.log("[JobSheet] _onCloseDetailsSkill iniciado", { activeSkillIndex: this.activeSkillIndex, hasTempSkill: !!this.tempSkill });
+    this.tempSkill = null;
     this.render();
+    console.log("[JobSheet] _onCloseDetailsSkill finalizado", { activeSkillIndex: this.activeSkillIndex, hasTempSkill: !!this.tempSkill });
   }
 }
