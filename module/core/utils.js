@@ -1,4 +1,14 @@
-import { GIL_TAX_MULTIPLIERS } from "./constants.js";
+import { GIL_TAX_MULTIPLIERS, ROLL_FORMULA_TARGETS } from "./constants.js";
+
+export function replaceFormulaReferences(formula) {
+  return formula.replace(/[A-Z][A-Z0-9_]*/g, (match) => {
+    const target = ROLL_FORMULA_TARGETS.find(t => t.nameReff.includes(match));
+    if (target) {
+      return `@${target.key.replace(/^system\./, "")}`;
+    }
+    return match;
+  });
+}
 
 export function safeInt(value, fallback = 0) {
   const parsed = parseInt(value, 10);

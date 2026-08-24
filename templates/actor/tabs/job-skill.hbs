@@ -56,23 +56,23 @@
                 <div class="linha-info">
                     <label>Fórmula:</label>
                     <span>{{selectedSkill.combat.formula}}</span>
+                    <button type="button" class="action-btn-add inner-fixed-add" data-action="rollSkillFormula" data-skill-index="{{selectedSkill.index}}" style="margin-left: 8px;">Rolar</button>
                 </div>
                 {{/if}}
 
                 <div class="linha-info">
                     <label>Área:</label>
                     <span>{{#if selectedSkill.combat.area}}Sim{{else}}Não{{/if}}</span>
+                    {{#if selectedSkill.combat.area}}
+                    <label>Alcance:</label>
+                    <span>{{selectedSkill.combat.range}}</span>
+                    {{/if}}
                 </div>
+                
                 <div class="linha-info">
                     <label>Afeta Aliados:</label>
                     <span>{{#if selectedSkill.combat.ally}}Sim{{else}}Não{{/if}}</span>
                 </div>
-                {{#if selectedSkill.combat.range}}
-                <div class="linha-info">
-                    <label>Alcance:</label>
-                    <span>{{selectedSkill.combat.range}}</span>
-                </div>
-                {{/if}}
 
                 {{#if selectedSkill.tags.length}}
                 <div class="linha-info">

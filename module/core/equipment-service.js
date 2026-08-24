@@ -21,23 +21,16 @@ export function getSlotLabel(slot) {
 
 export function verificarRegrasWeapon(item, actor) {
   const slotItem = item.system?.slot;
-  console.log(`[FFRPG3E][WEAPON] Iniciando verificação para ${item.name}, slot=${slotItem}`);
 
   if (slotItem !== "weapon") {
-    console.log(`[FFRPG3E][WEAPON] Item não é weapon, retornando slot original: ${slotItem}`);
     return { ehWeapon: false, slotAlvo: slotItem, conflitos: [], mensagem: null };
   }
 
   const mainHand = actor.items.find(i => i.system?.equipped && i.system?.slot === "main_hand");
   const offhand = actor.items.find(i => i.system?.equipped && i.system?.slot === "offhand");
 
-  console.log(`[FFRPG3E][WEAPON] main_hand=${mainHand?.name || "vazio"}, offhand=${offhand?.name || "vazio"}`);
-
   if (mainHand?.system?.weapon?.twoHanded) {
-    console.log(`[FFRPG3E][WEAPON] main_hand tem arma de 2 mãos: ${mainHand.name}`);
-
     if (item.system?.weapon?.twoHanded) {
-      console.log(`[FFRPG3E][WEAPON] Tentando equipar arma de 2 mãos com main_hand ocupada por 2 mãos`);
       return {
         ehWeapon: true,
         slotAlvo: null,
@@ -46,7 +39,6 @@ export function verificarRegrasWeapon(item, actor) {
       };
     }
 
-    console.log(`[FFRPG3E][WEAPON] Não pode equipar na offhand porque main_hand é 2 mãos`);
     return {
       ehWeapon: true,
       slotAlvo: null,
@@ -56,15 +48,11 @@ export function verificarRegrasWeapon(item, actor) {
   }
 
   if (!mainHand) {
-    console.log(`[FFRPG3E][WEAPON] main_hand vazia, equipando em main_hand`);
     return { ehWeapon: true, slotAlvo: "main_hand", conflitos: [], mensagem: null };
   }
 
   if (!mainHand.system?.weapon?.twoHanded) {
-    console.log(`[FFRPG3E][WEAPON] main_hand ocupada por arma de 1 mão: ${mainHand.name}`);
-
     if (offhand) {
-      console.log(`[FFRPG3E][WEAPON] offhand ocupada: ${offhand.name}`);
       return {
         ehWeapon: true,
         slotAlvo: null,
@@ -73,7 +61,6 @@ export function verificarRegrasWeapon(item, actor) {
       };
     }
 
-    console.log(`[FFRPG3E][WEAPON] offhand vazia, equipando em offhand`);
     return { ehWeapon: true, slotAlvo: "offhand", conflitos: [mainHand], mensagem: null };
   }
 

@@ -47,6 +47,24 @@ Hooks.once("init", async function() {
     return STATUS_DISPLAY_MAP[statusKey] || statusKey || "";
   });
 
+  Handlebars.registerHelper("proficiencyDisplay", function(proficiencyKey) {
+
+    let label = "";
+
+    for(let x = 0; x < PROFICIENCY_BASIC_MAP.length;x++){
+
+      for(let y = 0;y<PROFICIENCY_BASIC_MAP[x].list.length;y++){
+        if(PROFICIENCY_BASIC_MAP[x].list[y].key === proficiencyKey){
+          label = PROFICIENCY_BASIC_MAP[x].list[y].label;
+        }
+      }
+      if(label.length>0){
+        break;
+      }
+    }
+    return label === "" ? "???" : label;
+  });
+
   Handlebars.registerHelper("modeDisplay", function(mode) {
     if (mode === "percent") return "%";
     if (mode === "flat") return "Direto";
@@ -273,8 +291,6 @@ async function criarPastaEInjetarItens(nomeDaPasta, listaDeDados, corHex = "#4a1
       
       const dadosProntos = listaDeDados.map(item => ({ ...item, folder: pasta.id }));
       await Item.createDocuments(dadosProntos);
-      
-      console.log(`FFRPG3E | ${nomeDaPasta} injetado com sucesso!`);
     }
   } catch (error) {
     console.error(`FFRPG3E | Erro crítico ao injetar o banco de dados de: "${nomeDaPasta}"`, error);

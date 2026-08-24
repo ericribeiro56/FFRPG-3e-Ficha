@@ -33,10 +33,52 @@ export class DropDispatcher {
 class JobDropHandler {
   static async handle(actor, item) {
     const existingJob = actor.items.find(i => i.type === ITEM_TYPES.JOB);
+    
     if (existingJob) {
+      const existingEffect = actor.appliedEffects.find(e => 
+        e.flags?.ffrpg3e?.sourceItemId === existingJob.id
+      );
+      if (existingEffect) {
+        await actor.deleteEmbeddedDocuments("ActiveEffect", [existingEffect.id], { render: false });
+      }
       await actor.deleteEmbeddedDocuments("Item", [existingJob.id], { render: false });
     }
+    
     await actor.createEmbeddedDocuments("Item", [item.toObject()]);
+    
+    const newJob = actor.items.find(i => i.type === ITEM_TYPES.JOB);
+    if (!newJob) return;
+    
+    const bonuses = item.system?.proficiency?.bonus || [];
+    const changes = bonuses.map(bonus => ({
+      key: bonus.key + ".bonus",
+      mode: "add",
+      value: bonus.value
+    }));
+    
+    if (changes.length === 0) return;
+    
+    const effectData = {
+      name: `[JOB] ${newJob.name}`,
+      img: newJob.img || "icons/svg/mystery-man.svg",
+      description: `Bônus de proficiência da classe ${newJob.name}`,
+      duration: null,
+      changes: changes,
+      flags: {
+        ffrpg3e: {
+          sourceType: "item",
+          sourceItemId: newJob.id,
+          jobBonus: true
+        }
+      }
+    };
+    
+    const effectCreated = await actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+    const effect = effectCreated[0];
+    if (effect && newJob.id) {
+      await effect.setFlag("ffrpg3e", "sourceItemId", newJob.id);
+      await effect.setFlag("ffrpg3e", "jobBonus", true);
+    }
   }
 }
 
@@ -61,7 +103,7 @@ class EffectDropHandler {
     const duration = effectData.system?.duration || 0;
     const effectBonuses = effectData.system?.effect || [];
 
-    const existingActive = actor.appliedEffects.find(e => 
+    const existingActive = actor.appliedEffects.find(e =>
       e.name === effectName && e.flags?.ffrpg3e?.sourceItemId === item.id
     );
     if (existingActive) {
@@ -79,7 +121,7 @@ class EffectDropHandler {
 
       return {
         key: targetPath,
-        mode: bonus.mode === "percent" ? 2 : 1,
+        mode: "add",
         value: bonus.value
       };
     }).filter(Boolean);

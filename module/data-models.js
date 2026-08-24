@@ -346,40 +346,40 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
 
     if (!attr || !comb) return;
 
-    // 1. Calcula o total inicial dos atributos (For, Vit, Agi...)
+    
     this._calculateBaseStats();
 
-    // 2. Define os limites máximos buscando Raça/Classe em um único loop leve
+    
     this._applySoftCap();
 
-    // 3. Aplica buffs/debuffs baseados nos efeitos ativos
+    
     this._applyStatusModifiers();
 
-    // 4. Aplica percent_bonus nos atributos
+    
     this._applyAttributePercentBonuses();
 
-    // 5. Garante que nenhum atributo passe do cap máximo (30)
+    
     this._applyHardCap();
 
-    // 6. Calcula os status de combate uma única vez com os atributos finais travados
+    
     this._recalculateCombat();
 
-    // 7. Roda o loop unificado de níveis (1 a 99) para HP, MP e Somas Globais
+    
     this._recalculateMaxHpMpByTable();
 
-    // 8. Aplica percent_bonus no combate
+    
     this._applyCombatPercentBonuses();
 
-    // 9. Aplica percent_bonus no HP/MP
+    
     this._applyHpMpPercentBonuses();
 
-    // 10. Aplica modificador de armadura por atributo (só armor e magicArmor)
+    
     this._applyArmorModifiers();
 
-    // 11. Calcula totais de proficiência (base + bonus + mastery)
+    
     this._calculateProficiency();
 
-    // 12. Calcula o base e total do expert conforme regra de job (no final, depois de todos os outros cálculos)
+    
     this._calculateExpertBase();
   }
 
@@ -455,8 +455,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       }
     }
 
-    // TODO: Quando jobs aplicarem bônus de perícia como ActiveEffect,
-    // integrar aqui somando os efeitos ativos antes de calcular o total.
+    
+    
   }
 
   _calculateExpertBase() {

@@ -1,7 +1,7 @@
-<!-- BLOCO 1 DE 4: templates/job-sheet.hbs -->
+
 <div class="sheet-container custom-job-sheet-wrapper">
 
-    <!-- HEADER: ÍCONE, NOME E CLASSE CORE -->
+    
     <div class="sheet-header-wrapper">
         <div class="img-wrapper">
             <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
@@ -14,17 +14,17 @@
             </div>
             
             <div class="field-group class-field">
-                <label>Arquétipo (Classe Core)</label>
+                <label>Classe</label>
                 <select name="system.class">
-                    {{#each classList}}
-                    <option value="{{this.value}}" {{#if (eq ../system.class this.value)}}selected{{/if}}>{{this.label}}</option>
-                    {{/each}}
+                  {{#each classList}}
+                  <option value="{{this.value}}">{{this.label}}</option>
+                  {{/each}}
                 </select>
             </div>
         </div>
     </div>
 
-    <!-- SEÇÃO INFERIOR: SINCRO TOTAL COM O SEU MÉTODO _BINDTABS() JAVASCRIPT -->
+    
     <div class="bottom-section">
         <nav class="sheet-tabs tabs" data-group="primary">
             <a class="item" data-tab="principal">Informações</a>
@@ -32,18 +32,18 @@
         </nav>
 
         <section class="sheet-body">
-<!-- BLOCO 2 DE 4: templates/job-sheet.hbs -->
+
             <!-- ==========================================================================
                  ABA 1: INFORMAÇÕES (PRINCIPAL - ALTA PERFORMANCE HORIZONTAL)
                  ========================================================================== -->
             <div class="tab" data-group="primary" data-tab="principal">
                 <div class="main-tab-grid-layout">
                     
-                    <!-- Coluna Esquerda: Dados Mecânicos -->
+                    
                     <div class="column-mechanics-left">
                         <div class="job-progression-rows-stack">
                             
-                            <!-- Atributos -->
+                            
                             <div class="property-block-vertical full-width-row">
                                 <span class="block-title-tag">Modificadores de Atributo</span>
                                 <div class="attributes-inputs-inner-grid">
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
 
-                            <!-- Crescimento -->
+                            
                             <div class="property-block-vertical full-width-row">
                                 <span class="block-title-tag">Dados de Crescimento</span>
                                 <div class="growth-inputs-inner-grid">
@@ -67,10 +67,10 @@
                             </div>
                         </div>
 
-                        <!-- Grade de Equipamentos 2x2 Expandida e Sem Overflow -->
+                        
                         <div class="properties-section-grid main-tab-equip-2x2-grid">
                             
-                            <!-- Quadrante 1 -->
+                            
                             <div class="property-block-vertical prof-compensated-height-block">
                                 <span class="block-title-tag">Bônus de Proficiência</span>
                                 <div class="block-adder-triple-row">
@@ -82,15 +82,15 @@
                                 </div>
                                 <div class="vertical-scroll-list prof-compensated-scroll">
                                     {{#each system.proficiency.bonus as |bonus index|}}
-                                    <div class="list-item-row">
-                                        <span class="item-text-content"><strong>{{bonus.key}}</strong>: +{{bonus.value}}</span>
+                                    <div class="list-item-row proficiency">
+                                        <span class="item-text-content"><strong>{{proficiencyDisplay bonus.key}}</strong>: +{{bonus.value}}</span>
                                         <button type="button" class="action-btn-remove" data-action="removeProficiencyBonus" data-index="{{index}}">×</button>
                                     </div>
                                     {{/each}}
                                 </div>
                             </div>
 
-                            <!-- Quadrante 2 -->
+                            
                             <div class="property-block-vertical prof-compensated-height-block">
                                 <div class="precision-header-input">
                                     <label>Precisão</label>
@@ -110,7 +110,7 @@
                                 </div>
                             </div>
 
-                            <!-- Quadrante 3 -->
+                            
                             <div class="property-block-vertical compact-row-height-block">
                                 <span class="block-title-tag">Tags do Job</span>
                                 <div class="block-adder-row">
@@ -124,7 +124,7 @@
                                 </div>
                             </div>
 
-                            <!-- Quadrante 4 -->
+                            
                             <div class="property-block-vertical compact-row-height-block">
                                 <span class="block-title-tag">Armaduras Permitidas</span>
                                 <div class="block-adder-row">
@@ -142,7 +142,7 @@
                         </div>
                     </div>
 
-                    <!-- Coluna Direita: Lore do Job Geral -->
+                    
                     <div class="column-lore-right" style="height: 585px !important;">
                         <div class="field-group job-narrative-box">
                             <label>Descrição / Lore do Job</label>
@@ -155,15 +155,15 @@
                     </div>
 
                 </div>
-            </div> <!-- FIM DA ABA 1 -->
-<!-- BLOCO 3 DE 4: templates/job-sheet.hbs -->
+            </div> 
+
             <!-- ==========================================================================
                  ABA 2: HABILIDADES (JOBSKILL - BANDEJA TOTALMENTE INTEGRADA)
                  ========================================================================== -->
             <div class="tab" data-group="primary" data-tab="jobSkill">
                 <div class="skills-tab-layout">
                     
-                    <!-- Sidebar Esquerda: Navegação Completa até o Chão -->
+                    
                     <div class="skills-sidebar">
                         <button type="button" class="add-new-skill-btn" data-action="addNewJobSkill">+ Add Skill</button>
                         <div class="skills-scroll">
@@ -178,16 +178,16 @@
                         </div>
                     </div>
 
-                    <!-- Detalhar Centrado e Envelopado em Bandeja Única Sólida -->
+                    
                     <div class="skill-detail-panel">
                         {{#if tempSkill}}
                             <div class="container-detalhe unique-tray-envelope">
                                 
                                 <div class="tray-columns-wrapper-horizontal">
-                                    <!-- Subcoluna Esquerda: Componentes Técnicos Lineares -->
+                                    
                                     <div class="col-detalhe-esq transparent-inner-blocks">
                                         
-                                        <!-- Identificação Unificada -->
+                                        
                                         <div class="property-block-vertical-skill-tray">
                                             <div class="skill-linear-identification-grid">
                                                 <div class="field-group inline-flex-item-grow"><label>Nome</label><input type="text" name="system.skills.{{activeSkillIndex}}.name" value="{{tempSkill.name}}"/></div>
@@ -201,7 +201,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Custo Horizontal -->
+                                        
                                         <div class="skill-cost-container-row-block">
                                             <span class="panel-inside-title">Custo da Habilidade</span>
                                             <div class="skill-linear-cost-grid">
@@ -215,8 +215,8 @@
                                                 <div class="field-group" style="flex: 1;"><input type="number" name="system.skills.{{activeSkillIndex}}.cost.value" value="{{tempSkill.cost.value}}" placeholder="Valor"/></div>
                                             </div>
                                         </div>
-<!-- BLOCO 4 DE 4: templates/job-sheet.hbs -->
-                                        <!-- Checks em Duas Linhas Perfeitas -->
+
+                                        
                                         <div class="skill-checks-container-row-block">
                                             <span class="panel-inside-title">Regras Adicionais de Aplicação</span>
                                             <div class="skill-double-line-checks-layout">
@@ -231,13 +231,13 @@
                                             </div>
                                         </div>
 
-                                        <!-- Rodapé: Combate e Tags RIGOROSAMENTE Lado a Lado -->
+                                        
                                         <div class="skill-footer-split-grid">
                                             <div class="inner-tray-sub-dark-box">
                                                 <span class="block-title-tag">Mecânica de Combate</span>
                                                 <div class="input-and-button-row">
                                                     <input type="text" class="temp-combat-formula" placeholder="Ex: 2d6 + FOR"/>
-                                                    <button type="button" class="action-btn-add inner-fixed-add" data-action="addValidatedFormula" data-skill-index="{{activeSkillIndex}}">+</button>
+                                                    <button type="button" class="action-btn-add inner-fixed-add" data-action="addValidatedFormula" data-skill-index="{{activeSkillIndex}}" {{#if tempSkill.combat.formula}}disabled{{/if}}>+</button>
                                                 </div>
                                                 <div class="validated-formula-box">
                                                     {{#if tempSkill.combat.formula}}
@@ -267,7 +267,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- Subcoluna Direita: Narrativa de Prateleira -->
+                                    
                                     <div class="col-detalhe-dir transparent-inner-blocks">
                                         <div class="field-group job-narrative-box">
                                             <label>Descrição Detalhada da Skill</label>
@@ -280,7 +280,7 @@
                                     </div>
                                 </div>
 
-                                <!-- O NOVO BOTÃO SALVAR DA BANDEJA UNIFICADA -->
+                                
                                 <div class="tray-footer-save-button-row">
                                     <button type="button" class="action-btn-save-skill-tray" data-action="saveSkillTrayChanges">
                                         <i class="fas fa-save"></i> Salvar
@@ -296,7 +296,7 @@
                         {{/if}}
                     </div>
                 </div>
-            </div> <!-- FIM DA ABA 2 -->
+            </div> 
 
         </section>
     </div>

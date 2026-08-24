@@ -7,7 +7,8 @@ import {
   findItemByTypeAndName,
   getEffectDurationTurns,
   sortObjectByValue,
-  safeArray
+  safeArray,
+  replaceFormulaReferences
 } from "../core/utils.js";
 
 import { DropDispatcher } from "../core/drop-handler.js";
@@ -53,6 +54,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       equiparItem: PlayerSheet.prototype.equiparItem,
       desequiparItem: PlayerSheet.prototype.desequiparItem,
       rolarPericia: PlayerSheet.prototype.rolarPericia,
+      rollSkillFormula: PlayerSheet.prototype.rollSkillFormula,
       adicionarIdioma: PlayerSheet.prototype.adicionarIdioma,
       removerIdioma: PlayerSheet.prototype.removerIdioma,
       adicionarConhecimento: PlayerSheet.prototype.adicionarConhecimento,
@@ -116,13 +118,6 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         safeMinLevel: safeInt(skill.minLevel, 0)
       }))
       .filter(skill => skill.safeMinLevel <= actorLevel);
-
-    console.log('[FFRPG3E][JOB_SKILL]', {
-      actorLevel,
-      totalSkills: jobSkills.length,
-      filteredSkills: context.skillsFiltradas.length,
-      skills: jobSkills.map(s => ({ name: s.name, minLevel: s.minLevel, raw: typeof s.minLevel }))
-    });
 
     context.selectedSkill = null;
 
@@ -798,6 +793,16 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     });
 
     if (!confirmar) return;
+
+    if (item.type === "job") {
+      const jobEffect = this.document.appliedEffects.find(e => 
+        e.flags?.ffrpg3e?.sourceItemId === item.id
+      );
+      if (jobEffect) {
+        await this.document.deleteEmbeddedDocuments("ActiveEffect", [jobEffect.id], { render: false });
+      }
+    }
+
     await item.delete();
   }
 
@@ -991,6 +996,30 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     await roll.toMessage({
       flavor: `Teste de ${nomePericia}`,
+      speaker: ChatMessage.getSpeaker({ actor: this.document })
+    });
+  }
+
+  async rollSkillFormula(event, target) {
+    const index = parseInt(target.dataset.skillIndex, 10);
+    const jobItem = this.document.items.find(i => i.type === "job");
+    const skill = jobItem?.system?.skills?.[index];
+    if (!skill?.combat?.formula) return;
+
+    const formula = skill.combat.formula;
+    const replacedFormula = replaceFormulaReferences(formula);
+    const rollData = this.document.getRollData();
+    const formulaPronta = Roll.replaceFormulaData(replacedFormula, rollData, { missing: "0" });
+
+    if (!Roll.validate(formulaPronta)) {
+      ui.notifications.error("Fórmula Inválida");
+      return;
+    }
+
+    const roll = Roll.create(formulaPronta);
+    await roll.evaluate();
+    roll.toMessage({
+      flavor: skill.name || "Rolagem de Skill",
       speaker: ChatMessage.getSpeaker({ actor: this.document })
     });
   }
