@@ -906,7 +906,8 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   async abrirSheetItem(event, target) {
-    const idAlvo = target.dataset.itemId;
+    const el = target.closest('[data-action="abrirSheetItem"]');
+    const idAlvo = el?.dataset?.itemId || target.dataset.itemId;
     let itemLocalizado = null;
 
     itemLocalizado = this.document.items.get(idAlvo);
