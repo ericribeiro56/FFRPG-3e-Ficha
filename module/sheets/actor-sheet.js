@@ -59,7 +59,8 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       removerIdioma: PlayerSheet.prototype.removerIdioma,
       adicionarConhecimento: PlayerSheet.prototype.adicionarConhecimento,
       removerConhecimento: PlayerSheet.prototype.removerConhecimento,
-      openSkillDetail: PlayerSheet.prototype.openSkillDetail
+      openSkillDetail: PlayerSheet.prototype.openSkillDetail,
+      closeSkillDetail: PlayerSheet.prototype.closeSkillDetail
     }
   };
 
@@ -107,32 +108,6 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     context.raceName = raceItem?.name || "";
     context.jobName = jobItem?.name || "";
 
-    const actorLevel = parseInt(this.document.system.level || 1, 10);
-    const jobSkills = jobItem?.system?.skills || [];
-    context.skillsFiltradas = jobSkills
-      .map((skill, index) => ({
-        ...skill,
-        index,
-        typeLabel: SKILL_JOB_TYPES[skill.type] || skill.type,
-        rawMinLevel: skill.minLevel,
-        safeMinLevel: safeInt(skill.minLevel, 0)
-      }))
-      .filter(skill => skill.safeMinLevel <= actorLevel);
-
-    context.selectedSkill = null;
-
-    if (this._selectedSkillIndex >= 0 && this._selectedSkillIndex < context.skillsFiltradas.length) {
-      const skill = context.skillsFiltradas[this._selectedSkillIndex];
-      context.selectedSkill = {
-        ...skill,
-        descriptionEnriched: await foundry.applications.ux.TextEditor.implementation.enrichHTML(skill.description || "", {
-          secrets: this.document.isOwner, async: true
-        }),
-        notesEnriched: await foundry.applications.ux.TextEditor.implementation.enrichHTML(skill.notes || "", {
-          secrets: this.document.isOwner, async: true
-        })
-      };
-    }
 
     context.statusEfeitos = this._buildEffectContext();
     const effectCategories = context.statusEfeitos;
@@ -146,6 +121,41 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     const equipmentContext = this._buildEquipmentContext();
     Object.assign(context, equipmentContext);
+
+
+    //Preparo das Skills dos Jobs
+    const actorLevel = parseInt(this.document.system.level || 1, 10);
+
+    const jobSkills = jobItem?.system?.skills || [];
+
+    context._selectedSkillIndex = this._selectedSkillIndex ?? -1;
+
+    context.skills = jobSkills
+      .map((skill, originalIndex) => ({ ...skill, originalIndex }))
+      .filter(skill => (parseInt(skill.minLevel) || 0) <= actorLevel);
+
+    // 4. Carrega os dados na bandeja central se houver uma selecionada
+    if (context._selectedSkillIndex >= 0 && jobSkills[context._selectedSkillIndex]) {
+      const currentSkill = jobSkills[context._selectedSkillIndex];
+      context.currentSkill = currentSkill;
+      const TextEditor = foundry.applications.ux.TextEditor;
+
+      // Atualizado para o padrão moderno do Foundry (V13 / V14 / V15)
+      context.enrichedDescription = await TextEditor.enrichHTML(currentSkill.description || "", {
+        async: true,
+        secrets: this.document.isOwner,
+        relativeTo: this.document
+      });
+
+      context.enrichedNotes = await TextEditor.enrichHTML(currentSkill.notes || "", {
+        async: true,
+        secrets: this.document.isOwner,
+        relativeTo: this.document
+      });
+    } else {
+      context.currentSkill = null;
+    }
+
 
     return context;
   }
@@ -574,7 +584,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     itemGroups[grupoAlvo].push(item);
   }
 
-  processarSlotSimples(slotName, listaIndex, listaAlvo,equippedList) {
+  processarSlotSimples(slotName, listaIndex, listaAlvo, equippedList) {
     const itens = equippedList.filter(item => item.system?.slot === slotName);
     if (itens.length > 0) {
       listaAlvo[listaIndex].item = itens[0];
@@ -597,9 +607,9 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const equippableItens = this.document.items.filter(item =>
       equippableTag.some(tag => safeArray(item.system?.tags).includes(tag))
     );
-    
+
     const consumabelItens = this.document.items.filter(
-      (item) => 
+      (item) =>
         item.system instanceof ConsumableBasicModel &&
         !equippableTag.some(tag => safeArray(item.system?.tags).includes(tag))
     );
@@ -631,29 +641,29 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     for (const item of consumabelItens) {
 
-      if(safeArray(item.system?.tags).includes("key")){
+      if (safeArray(item.system?.tags).includes("key")) {
         itemGroups.keys.push(item);
         continue;
       }
 
-      if(safeArray(item.system?.tags).includes("heal")){
+      if (safeArray(item.system?.tags).includes("heal")) {
         itemGroups.heals.push(item);
-        continue; 
+        continue;
       }
 
-      if(safeArray(item.system?.tags).includes("support")){
+      if (safeArray(item.system?.tags).includes("support")) {
         itemGroups.support.push(item);
-        continue; 
+        continue;
       }
 
-      if(safeArray(item.system?.tags).includes("combat")){
+      if (safeArray(item.system?.tags).includes("combat")) {
         itemGroups.combat.push(item);
-        continue; 
+        continue;
       }
 
-      if(safeArray(item.system?.tags).includes("ammo")){
+      if (safeArray(item.system?.tags).includes("ammo")) {
         itemGroups.ammo.push(item);
-        continue; 
+        continue;
       }
 
       this.addToGroup(item, itemGroups);
@@ -723,7 +733,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       shields: itemGroups.shields,
       armor: itemGroups.armors,
       accessories: itemGroups.accessories,
-      keyItems:itemGroups.keys,
+      keyItems: itemGroups.keys,
       healList: itemGroups.heals,
       combatList: itemGroups.combat,
       supportList: itemGroups.support,
@@ -795,7 +805,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (!confirmar) return;
 
     if (item.type === "job") {
-      const jobEffect = this.document.appliedEffects.find(e => 
+      const jobEffect = this.document.appliedEffects.find(e =>
         e.flags?.ffrpg3e?.sourceItemId === item.id
       );
       if (jobEffect) {
@@ -825,15 +835,15 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }, { render: false });
   }
 
-  async _updateItemToActive(item){
-    await item.update({ "system.equipped": true});
+  async _updateItemToActive(item) {
+    await item.update({ "system.equipped": true });
     await this.document.prepareData();
     await applyEquipmentEffect(this.document, item);
     await this.document.prepareData();
     await this.refreshItemDisplays(item);
     this.render();
   }
-  
+
   async equiparItem(event, target) {
     const itemId = target.dataset.itemId;
     const item = this.document.items.get(itemId);
@@ -845,50 +855,50 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     const slotItem = item.system.slot;
 
-    if(slotItem == "weapon"){
-      if(item.system.weapon.twoHanded == true){
+    if (slotItem == "weapon") {
+      if (item.system.weapon.twoHanded == true) {
 
-        if(this.slotsList[0].item == null && this.slotsList[1].item==null){
+        if (this.slotsList[0].item == null && this.slotsList[1].item == null) {
           await this._updateItemToActive(item);
           return;
-        }else{
-          MessageService.showError(title,msg);
+        } else {
+          MessageService.showError(title, msg);
           return;
         }
 
-      }else{
-        if(this.slotsList[0].item == null || this.slotsList[1].item == null){
+      } else {
+        if (this.slotsList[0].item == null || this.slotsList[1].item == null) {
           await this._updateItemToActive(item);
           return;
         }
-        MessageService.showError(title,msg);
+        MessageService.showError(title, msg);
         return;
       }
     }
 
-    if(slotItem == "accessory"){
-      if(this.slotsList[5].item == null || this.slotsList[6].item == null){
+    if (slotItem == "accessory") {
+      if (this.slotsList[5].item == null || this.slotsList[6].item == null) {
         await this._updateItemToActive(item);
         return;
       }
-      MessageService.showError(title,msg);
+      MessageService.showError(title, msg);
       return;
     }
 
-    if("helmet" == slotItem && this.slotsList[2].item == null){
+    if ("helmet" == slotItem && this.slotsList[2].item == null) {
       await this._updateItemToActive(item);
       return;
     }
-    if("chestplate" == slotItem && this.slotsList[3].item == null){
+    if ("chestplate" == slotItem && this.slotsList[3].item == null) {
       await this._updateItemToActive(item);
       return;
     }
-    if("arms" == slotItem && this.slotsList[4].item == null){
+    if ("arms" == slotItem && this.slotsList[4].item == null) {
       await this._updateItemToActive(item);
       return;
     }
 
-    MessageService.showError(title,msg);
+    MessageService.showError(title, msg);
 
   }
 
@@ -1117,14 +1127,25 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   async openSkillDetail(event, target) {
     event.preventDefault();
-    const index = safeInt(target.dataset.index, -1);
+    // safeInt é um utilitário comum, mas garantimos a conversão aqui
+    const index = parseInt(target.dataset.index) ?? -1;
     if (index < 0) return;
 
+    // Localiza o item de Job no Actor para validar se o índice existe
     const jobItem = this.document.items.find(i => i.type === "job");
     const skills = jobItem?.system?.skills || [];
-    if (index >= skills.length) return;
 
-    this._selectedSkillIndex = index;
+    if (index >= skills.length) {
+      this._selectedSkillIndex = -1;
+    } else {
+      this._selectedSkillIndex = index;
+    }
+
+    await this.render();
+  }
+
+  async closeSkillDetail(){
+    this._selectedSkillIndex = -1;
     await this.render();
   }
 

@@ -38,6 +38,7 @@
     "css/gear-sheet.css",
     "css/actor/actor-sheet.css",
     "css/actor/proficiency.css",
+    "css/actor/job-skill.css",
     "css/job/job-sheet.css",
     "css/race/race-sheet.css",
     "css/items/armor.css",

@@ -1,104 +1,104 @@
-<div class="job-skill-wrapper">
-    <div class="job-skill-lista">
-        {{#each skillsFiltradas}}
-            <div class="extrato-item" data-action="openSkillDetail" data-index="{{this.index}}">
-                <div class="status-barra"></div>
-                <div class="extrato-corpo">
-                    <div class="linha-principal">
-                        <span class="badge-acao">{{this.name}}</span>
-                        <span class="valor-gil">Nív {{this.minLevel}}</span>
+<!-- BLOCO 1 DE 2: templates/job-skills.hbs -->
+<div class="aba-skills-viewport">
+    <div class="skills-master-detail-control">
+
+        <!-- COLUNA ESQUERDA: LISTAGEM DE CARDS (1fr) -->
+        <aside class="skills-sidebar-container">
+            {{#each skills as |skill index|}}
+            <div class="skill-card-item {{skill.type}} {{#if (eq ../_selectedSkillIndex index)}}selected{{/if}}"
+                data-action="openSkillDetail" data-index="{{index}}">
+                <div class="skill-type-indicator"></div>
+                <span class="skill-name">{{skill.name}}</span>
+            </div>
+            {{/each}}
+        </aside>
+        <!-- BLOCO 2 DE 2: templates/job-skills.hbs -->
+        <!-- COLUNA DIREITA: PALCO CENTRALIZADOR (3fr) -->
+        <main class="skill-stage-right">
+            {{#if currentSkill}}
+            <div class="skill-unique-tray-envelope">
+
+                <!-- REQUERIMENTO -->
+                <section class="tray-field-group">
+                    <h3 class="tray-label-header">Requerimento</h3>
+                    <div class="tray-inline-row">
+                        <span><strong>Custo:</strong> {{currentSkill.cost.type}}</span>
+                        {{#if (eq currentSkill.cost.type "material")}}
+                        <span><strong>Objeto:</strong> {{currentSkill.cost.material}}</span>
+                        {{/if}}
+                        {{#unless (eq currentSkill.cost.type "nothing")}}
+                        <span><strong>Valor:</strong> {{currentSkill.cost.value}}</span>
+                        {{/unless}}
                     </div>
-                    <div class="linha-descricao">
-                        <span>Tipo: {{this.typeLabel}}</span>
+                </section>
+
+                <!-- MECÂNICAS EM LINHAS -->
+                <section class="tray-field-group">
+                    <div class="tray-bool-line"><strong>Suporte:</strong> {{#if
+                        currentSkill.support}}Sim{{else}}Não{{/if}}</div>
+                    <div class="tray-bool-line"><strong>Afeta Aliados:</strong> {{#if
+                        currentSkill.combat.ally}}Sim{{else}}Não{{/if}}</div>
+                    <div class="tray-bool-line">
+                        <strong>Em Área:</strong> {{#if currentSkill.combat.area}}Sim{{else}}Não{{/if}}
+                        {{#if currentSkill.combat.area}}
+                        <span class="tray-alcance-badge">Alcance: {{currentSkill.combat.range}}</span>
+                        {{/if}}
                     </div>
+                </section>
+
+                <!-- COMBATE -->
+                <section class="tray-field-group">
+                    <div class="tray-formula-box">
+                        <span class="formula-label">Fórmula:</span>
+                        <span class="formula-text">{{currentSkill.combat.formula}}</span>
+                        <button type="button" class="tray-roll-btn" data-action="rollSkillFormula"
+                            data-index="{{_selectedSkillIndex}}">
+                            <i class="fas fa-dice-d20"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- TAGS -->
+                <section class="tray-field-group">
+                    <div class="tray-tags-line">
+                        <strong>Tags:</strong>
+                        {{#each currentSkill.tags}}
+                        <span class="tag-bracket">[{{this}}]</span>{{#unless @last}}, {{/unless}}
+                        {{/each}}
+                    </div>
+                </section>
+
+                <!-- TEXTOS (DESCRIÇÃO E NOTAS) -->
+                <section class="tray-field-group tray-scrollable-texts">
+                    <label class="tray-label-header">Descrição</label>
+                    <!-- Substituído por div com classes nativas do Foundry para manter a formatação -->
+                    <div class="tray-prose-view journal-page-content prose-mirror">
+                        {{{enrichedDescription}}}
+                    </div>
+
+                    <label class="tray-label-header" style="margin-top: 10px;">Notas</label>
+                    <!-- Substituído por div com classes nativas do Foundry para manter a formatação -->
+                    <div class="tray-prose-view journal-page-content prose-mirror">
+                        {{{enrichedNotes}}}
+                    </div>
+                </section>
+
+                <!-- RODAPÉ -->
+                <footer class="tray-footer">
+                    <button type="button" class="tray-close-btn" data-action="closeSkillDetail" data-index="-1">Fechar</button>
+                </footer>
+
+            </div>
+            {{else}}
+            <div class="select-skill-prompt-notice">
+                <div>
+                    <p style="font-size: 14px; font-weight: bold; color: #8a2be2; margin-bottom: 4px;">Nenhuma
+                        habilidade selecionada.</p>
+                    <span style="font-size: 12px; opacity: 0.5; color: #444;">Clique em um card de skill no menu lateral
+                        para abrir o painel de visualização.</span>
                 </div>
             </div>
-        {{else}}
-            <div class="extrato-vazio">
-                <i class="fas fa-folder-open"></i>
-                <p>Nenhuma habilidade disponível para o nível atual.</p>
-            </div>
-        {{/each}}
+            {{/if}}
+        </main>
     </div>
-
-    {{#if selectedSkill}}
-    <div class="job-skill-detalhe">
-        <div class="extrato-wrapper">
-            <div class="extrato-cabecalho">
-                <h3><i class="fas fa-book-open"></i> {{selectedSkill.name}}</h3>
-            </div>
-
-            <div class="job-skill-detalhe-conteudo">
-                <div class="linha-info">
-                    <label>Tipo:</label>
-                    <span>{{selectedSkill.typeLabel}}</span>
-                </div>
-                <div class="linha-info">
-                    <label>Nível Mínimo:</label>
-                    <span>{{selectedSkill.minLevel}}</span>
-                </div>
-                <div class="linha-info">
-                    <label>Suporte:</label>
-                    <span>{{#if selectedSkill.support}}Sim{{else}}Não{{/if}}</span>
-                </div>
-
-                <div class="linha-info">
-                    <label>Custo:</label>
-                    <span>
-                        {{#if (eq selectedSkill.cost.type "mp")}}MP: {{selectedSkill.cost.value}}{{/if}}
-                        {{#if (eq selectedSkill.cost.type "hp")}}HP: {{selectedSkill.cost.value}}{{/if}}
-                        {{#if (eq selectedSkill.cost.type "material")}}{{selectedSkill.cost.material}} ({{selectedSkill.cost.value}}){{/if}}
-                        {{#if (eq selectedSkill.cost.type "nothing")}}Sem Custo{{/if}}
-                    </span>
-                </div>
-
-                {{#if selectedSkill.combat.formula}}
-                <div class="linha-info">
-                    <label>Fórmula:</label>
-                    <span>{{selectedSkill.combat.formula}}</span>
-                    <button type="button" class="action-btn-add inner-fixed-add" data-action="rollSkillFormula" data-skill-index="{{selectedSkill.index}}" style="margin-left: 8px;">Rolar</button>
-                </div>
-                {{/if}}
-
-                <div class="linha-info">
-                    <label>Área:</label>
-                    <span>{{#if selectedSkill.combat.area}}Sim{{else}}Não{{/if}}</span>
-                    {{#if selectedSkill.combat.area}}
-                    <label>Alcance:</label>
-                    <span>{{selectedSkill.combat.range}}</span>
-                    {{/if}}
-                </div>
-                
-                <div class="linha-info">
-                    <label>Afeta Aliados:</label>
-                    <span>{{#if selectedSkill.combat.ally}}Sim{{else}}Não{{/if}}</span>
-                </div>
-
-                {{#if selectedSkill.tags.length}}
-                <div class="linha-info">
-                    <label>Tags:</label>
-                    <span>{{#each selectedSkill.tags}}{{this}} {{/each}}</span>
-                </div>
-                {{/if}}
-
-                <div class="linha-info">
-                    <label>Descrição:</label>
-                    <div class="readonly-prose">{{selectedSkill.descriptionEnriched}}</div>
-                </div>
-
-                <div class="linha-info">
-                    <label>Notas:</label>
-                    <div class="readonly-prose">{{selectedSkill.notesEnriched}}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{else}}
-    <div class="job-skill-detalhe">
-        <div class="extrato-vazio" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-            <i class="fas fa-hand-pointer"></i>
-            <p>Selecione uma habilidade para ver os detalhes.</p>
-        </div>
-    </div>
-    {{/if}}
 </div>
