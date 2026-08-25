@@ -51,10 +51,12 @@
                     <div class="tray-formula-box">
                         <span class="formula-label">Fórmula:</span>
                         <span class="formula-text">{{currentSkill.combat.formula}}</span>
+                        {{#if currentSkill.combat.formula}}
                         <button type="button" class="tray-roll-btn" data-action="rollSkillFormula"
                             data-index="{{_selectedSkillIndex}}">
                             <i class="fas fa-dice-d20"></i>
                         </button>
+                        {{/if}}
                     </div>
                 </section>
 

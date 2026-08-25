@@ -1011,30 +1011,6 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     });
   }
 
-  async rollSkillFormula(event, target) {
-    const index = parseInt(target.dataset.skillIndex, 10);
-    const jobItem = this.document.items.find(i => i.type === "job");
-    const skill = jobItem?.system?.skills?.[index];
-    if (!skill?.combat?.formula) return;
-
-    const formula = skill.combat.formula;
-    const replacedFormula = replaceFormulaReferences(formula);
-    const rollData = this.document.getRollData();
-    const formulaPronta = Roll.replaceFormulaData(replacedFormula, rollData, { missing: "0" });
-
-    if (!Roll.validate(formulaPronta)) {
-      ui.notifications.error("Fórmula Inválida");
-      return;
-    }
-
-    const roll = Roll.create(formulaPronta);
-    await roll.evaluate();
-    roll.toMessage({
-      flavor: skill.name || "Rolagem de Skill",
-      speaker: ChatMessage.getSpeaker({ actor: this.document })
-    });
-  }
-
   async adicionarIdioma(event, target) {
     event.preventDefault();
     if (!this.document.isOwner && !game.user.isGM) {
@@ -1125,6 +1101,35 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     }
   }
 
+  async rollSkillFormula(event, target) {
+    const actor = this.document || this.actor;
+    const index = this._selectedSkillIndex ?? -1;
+
+    if (index < 0 || !actor) return;
+
+    const jobItem = actor.items.find(i => i.type === "job");
+    const skill = jobItem?.system?.skills?.[index];
+
+    if (!skill?.combat?.formula) {
+      ui.notifications.warn("Esta habilidade não possui uma fórmula de combate.");
+      return;
+    }
+
+    const formula = replaceFormulaReferences(skill.combat.formula);
+    const roll = new Roll(formula, actor.getRollData());
+
+    await roll.evaluate();
+
+    await roll.toMessage({
+      flavor: skill.name || "Rolagem de Skill",
+      speaker: ChatMessage.getSpeaker({ actor: actor })
+    });
+
+    // 4. ATUALIZAÇÃO DA FICHA (Opcional, se quiser mostrar o valor na UI)
+    this.calculatedSkillDamage = roll.total;
+    this.render(false);
+  }
+
   async openSkillDetail(event, target) {
     event.preventDefault();
     // safeInt é um utilitário comum, mas garantimos a conversão aqui
@@ -1144,7 +1149,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await this.render();
   }
 
-  async closeSkillDetail(){
+  async closeSkillDetail() {
     this._selectedSkillIndex = -1;
     await this.render();
   }
