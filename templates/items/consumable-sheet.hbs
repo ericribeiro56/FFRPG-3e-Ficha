@@ -1,77 +1,196 @@
-<div class="gear-sheet-wrapper">
-  <div class="sheet-header">
-    <img src="{{item.img}}" class="profile-img" data-edit="img" title="Clique para alterar imagem" />
-    <div class="header-info">
-      <input type="text" name="name" value="{{item.name}}" placeholder="Nome do Consumível" />
-      <div class="header-row">
-        <label>Tier:</label>
+<div class="sheet-container custom-consumable-sheet">
+
+  <!-- CABEÇALHO DO ITEM (LINHA HORIZONTAL ÚNICA) -->
+  <div class="sheet-header-wrapper">
+    <div class="img-wrapper">
+      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    </div>
+    
+    <div class="header-fields">
+      <div class="field-group name-field">
+        <label>Nome do Item</label>
+        <input name="name" type="text" value="{{item.name}}" placeholder="Nome do Item"/>
+      </div>
+      
+      <div class="field-group tier-field">
+        <label>Tier</label>
         <select name="system.tier">
-          <option value="T1" {{#if (eq system.tier "T1")}}selected{{/if}}>T1</option>
-          <option value="T2" {{#if (eq system.tier "T2")}}selected{{/if}}>T2</option>
-          <option value="T3" {{#if (eq system.tier "T3")}}selected{{/if}}>T3</option>
-          <option value="T4" {{#if (eq system.tier "T4")}}selected{{/if}}>T4</option>
-          <option value="T5" {{#if (eq system.tier "T5")}}selected{{/if}}>T5</option>
-          <option value="T6" {{#if (eq system.tier "T6")}}selected{{/if}}>T6</option>
-          <option value="T7" {{#if (eq system.tier "T7")}}selected{{/if}}>T7</option>
-          <option value="T8" {{#if (eq system.tier "T8")}}selected{{/if}}>T8</option>
-          <option value="T9" {{#if (eq system.tier "T9")}}selected{{/if}}>T9</option>
-          <option value="T10" {{#if (eq system.tier "T10")}}selected{{/if}}>T10</option>
+          {{#each tierOptions}}
+            <option value="{{this.value}}" {{#if (eq ../system.tier this.value)}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
         </select>
       </div>
-      <div class="header-row">
-        <label>Probabilidade:</label>
-        <input type="number" name="system.probability" value="{{system.probability}}" placeholder="%" min="0" />
+
+      <div class="field-group prob-field">
+        <label>Probabilidade (%)</label>
+        <input name="system.probability" type="number" value="{{system.probability}}" min="0" max="999" placeholder="000"/>
       </div>
-      <div class="header-row">
-        <label>Tags:</label>
-        <input type="text" name="system.tags" value="{{#each system.tags as |tag|}}{{tag}}, {{/each}}" placeholder="Ex: cura, batalha" />
-      </div>
-      <div class="header-row">
-        <label>Infinito:</label>
-        <label>
-          <input type="checkbox" name="system.infinity" {{#if system.infinity}}checked{{/if}} />
-          Quantidade infinita
-        </label>
+
+      <div class="field-group gil-field">
+        <label>Custo em Gil</label>
+        <div class="currency-input-wrapper">
+          <span class="currency-symbol">G</span>
+          <input name="system.gil" type="number" value="{{system.gil}}" min="0" max="9999999" placeholder="0"/>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="sheet-body">
-    <div class="form-group">
-      <label>Descrição:</label>
-      <prose-mirror name="system.descricao" data-target="system.descricao" value="{{system.descricao}}" class="prose-mirror-style">
-        {{{descricaoEnriquecida}}}
-      </prose-mirror>
-    </div>
+  <!-- CORPO DA FICHA EM DUAS COLUNAS PRINCIPAIS -->
+  <div class="sheet-main-content">
+    
+    <!-- COLUNA ESQUERDA: BIOGRAFIA E TAGS -->
+    <div class="column-left-data">
+      
+      <!-- Linha Superior: Tipo e Checkbox Infinito -->
+      <div class="item-type-row-grid">
+        <div class="field-group">
+          <label>Tipo</label>
+          <select name="system.type">
+            <option value="consumable" {{#if (eq system.type "consumable")}}selected{{/if}}>Consumível</option>
+            <option value="key" {{#if (eq system.type "key")}}selected{{/if}}>Chave</option>
+            <option value="ammo" {{#if (eq system.type "ammo")}}selected{{/if}}>Munição</option>
+            <option value="other" {{#if (eq system.type "other")}}selected{{/if}}>Outros</option>
+          </select>
+        </div>
+        <div class="field-group checkbox-align">
+          <label>Infinito</label>
+          <input name="system.infinity" type="checkbox" {{#if system.infinity}}checked{{/if}}/>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label>Nome da Habilidade:</label>
-      <input type="text" name="system.abilities.0.name" value="{{#if system.abilities}}{{system.abilities.0.name}}{{/if}}" />
-    </div>
-    <div class="form-group">
-      <label>Descrição da Habilidade:</label>
-      <input type="text" name="system.abilities.0.description" value="{{#if system.abilities}}{{system.abilities.0.description}}{{/if}}" />
-    </div>
+      <!-- Bloco de Tags do Item (Fluxo Horizontal/Pílulas) -->
+      <div class="property-block-vertical">
+        <span class="block-title-tag">Tags do Item</span>
+        <div class="block-adder-row">
+          <input type="text" class="add-tag-input" placeholder="Nova tag..."/>
+          <button type="button" class="action-btn-add" data-action="addGeneralTag">+</button>
+        </div>
+        <div class="vertical-scroll-list tags-horizontal-flow">
+          {{#each system.tags as |tag index|}}
+          <div class="tag-pill-item">
+            <span class="item-text-content">{{tag}}</span>
+            <button type="button" class="action-btn-remove" data-action="removeGeneralTag" data-index="{{index}}">×</button>
+          </div>
+          {{/each}}
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label>Efeitos:</label>
-      <div class="bonus-list">
-        {{#each system.effects as |effect idx|}}
-          <div class="bonus-entry">
-            <select name="system.effects.{{idx}}.status">
-              <option value="">Selecione...</option>
-              <option value="basic.hp.max" {{#if (eq effect.status "basic.hp.max")}}selected{{/if}}>HP Máximo</option>
-              <option value="basic.mp.max" {{#if (eq effect.status "basic.mp.max")}}selected{{/if}}>MP Máximo</option>
-              <option value="basic.hp.current" {{#if (eq effect.status "basic.hp.current")}}selected{{/if}}>HP Atual</option>
-              <option value="basic.mp.current" {{#if (eq effect.status "basic.mp.current")}}selected{{/if}}>MP Atual</option>
-            </select>
-            <input type="number" name="system.effects.{{idx}}.value" value="{{effect.value}}" />
-            <select name="system.effects.{{idx}}.mode">
-              <option value="flat" {{#if (eq effect.mode "flat")}}selected{{/if}}>Flat</option>
-              <option value="percent" {{#if (eq effect.mode "percent")}}selected{{/if}}>Percent</option>
+      <!-- Descrição do Item (Expande até o final) -->
+      <div class="field-group description-field major-height flex-expand">
+        <label>Descrição do Item</label>
+        <prose-mirror name="system.description" 
+                      data-target="system.description" 
+                      value="{{system.description}}"
+                      class="prose-mirror-style">
+          {{{descriptionEnriched}}}
+        </prose-mirror>
+      </div>
+    </div>
+    <!-- COLUNA DIREITA: CONFIGURAÇÃO DE EFEITO (ÁREA FIXA) -->
+    <div class="column-right-abilities">
+      <div class="fixed-effect-panel">
+        <span class="form-section-header">Configuração de Efeito</span>
+
+        <!-- Identificação: Nome e Tipo de Efeito -->
+        <div class="horizontal-row-inputs">
+          <div class="field-group">
+            <label>Nome do Efeito</label>
+            <input name="system.effect.name" type="text" value="{{system.effect.name}}" placeholder="Nome do efeito..."/>
+          </div>
+          <div class="field-group">
+            <label>Tipo do Efeito</label>
+            <select name="system.effect.effectType">
+              <option value="buff" {{#if (eq system.effect.effectType "buff")}}selected{{/if}}>Buff</option>
+              <option value="debuff" {{#if (eq system.effect.effectType "debuff")}}selected{{/if}}>Debuff</option>
             </select>
           </div>
-        {{/each}}
+        </div>
+
+        <!-- Tempo: Duração, Permanente e Aliados -->
+        <div class="effect-params-grid-triple">
+          <div class="field-group">
+            <label>Duração</label>
+            <input name="system.effect.duration" type="number" value="{{system.effect.duration}}"/>
+          </div>
+          <div class="field-group checkbox-align">
+            <label>Permanente</label>
+            <input name="system.effect.permanent" type="checkbox" {{#if system.effect.permanent}}checked{{/if}}/>
+          </div>
+          <div class="field-group checkbox-align">
+            <label>Afeta Aliados</label>
+            <input name="system.effect.safeAllies" type="checkbox" {{#if system.effect.safeAllies}}checked{{/if}}/>
+          </div>
+        </div>
+
+        <!-- Espaço: Área e Alcance -->
+        <div class="effect-params-grid-double">
+          <div class="field-group checkbox-align">
+            <label>Área</label>
+            <input name="system.effect.area" type="checkbox" {{#if system.effect.area}}checked{{/if}}/>
+          </div>
+          <div class="field-group">
+            <label>Alcance (Metros)</label>
+            <input name="system.effect.range" type="number" value="{{system.effect.range}}" placeholder="0"/>
+          </div>
+        </div>
+
+        <!-- Seção Técnica: Tags e Modificadores -->
+        <div class="properties-section-grid">
+          <div class="property-block-vertical">
+            <span class="block-title-tag">Tags do Efeito</span>
+            <div class="block-adder-row">
+              <input type="text" class="add-effect-tag-input" placeholder="Tag..."/>
+              <button type="button" class="action-btn-add" data-action="addEffectTag">+</button>
+            </div>
+            <div class="vertical-scroll-list compact-height">
+              {{#each system.effect.tags as |tTag tIndex|}}
+              <div class="list-item-row">
+                <span class="item-text-content">{{tTag}}</span>
+                <button type="button" class="action-btn-remove" data-action="removeEffectTag" data-index="{{tIndex}}">×</button>
+              </div>
+              {{/each}}
+            </div>
+          </div>
+
+          <div class="property-block-vertical">
+            <span class="block-title-tag">Modificadores</span>
+            <div class="block-adder-triple-row">
+              <select class="add-modifier-status">
+                {{#each statusOptions}}
+                <option value="{{this.key}}">{{this.display}}</option>
+                {{/each}}
+              </select>
+              <input type="number" class="add-modifier-value" placeholder="0"/>
+              <select class="add-modifier-mode">
+                <option value="flat">Flat</option>
+                <option value="percent">%</option>
+              </select>
+              <button type="button" class="action-btn-add" data-action="addEffectModifier">+</button>
+            </div>
+            <div class="vertical-scroll-list compact-height">
+              {{#each system.effect.effect as |bonus bIndex|}}
+              <div class="list-item-row triple-display">
+                <span class="modifier-badge target-badge">{{statusDisplay bonus.status}}</span>
+                <span class="modifier-badge value-badge">{{bonus.value}}</span>
+                <span class="modifier-badge mode-badge">{{modeDisplay bonus.mode}}</span>
+                <button type="button" class="action-btn-remove" data-action="removeEffectModifier" data-index="{{bIndex}}">×</button>
+              </div>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+
+        <!-- Descrição do Efeito (Rodapé da Direita - ProseMirror 60px) -->
+        <div class="field-group inner-form-field">
+          <label>Descrição do Efeito</label>
+          <prose-mirror name="system.effect.description" 
+                        data-target="system.effect.description" 
+                        value="{{system.effect.description}}"
+                        class="prose-mirror-style">
+            {{{effectDescriptionEnriched}}}
+          </prose-mirror>
+        </div>
       </div>
     </div>
   </div>

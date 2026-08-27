@@ -940,7 +940,7 @@ export class ConsumableBasicModel extends ItemModel {
       ...item,
       quantity: Field.Number(1),
       infinity: Field.Boolean(),
-      effects: Field.Array(StatusBonusBase)
+      effect: Field.Embedded(EffectModel)
     }
 
     return obj;
@@ -1030,7 +1030,7 @@ export class JobModel extends foundry.abstract.TypeDataModel {
         }))
       }),
       skills: Field.Array(JobSkillModel),
-      tempSkill: new foundry.data.fields.EmbeddedDataField(JobSkillModel, {
+      tempSkill: Field.Embedded(JobSkillModel, {
         initial: {
           name: "",
           description: "",

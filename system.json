@@ -43,6 +43,7 @@
     "css/race/race-sheet.css",
     "css/items/armor.css",
     "css/items/effect.css",
+    "css/items/consumable.css",
     "css/items/weapon.css"
   ],
   "documentTypes": {
