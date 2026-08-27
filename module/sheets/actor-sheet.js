@@ -59,6 +59,7 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       removerIdioma: PlayerSheet.prototype.removerIdioma,
       adicionarConhecimento: PlayerSheet.prototype.adicionarConhecimento,
       removerConhecimento: PlayerSheet.prototype.removerConhecimento,
+      usarItem: PlayerSheet.prototype.usarItem,
       openSkillDetail: PlayerSheet.prototype.openSkillDetail,
       closeSkillDetail: PlayerSheet.prototype.closeSkillDetail
     }
@@ -799,6 +800,33 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     if (!item) return;
 
+    if (item.type === "consumable" && (item.system.quantity || 0) > 1) {
+      const escolha = await DialogV2.confirm({
+        window: { title: "Remover Item", classes: ["ffrpg3e-dialog-confirm"] },
+        content: `<p style="margin:0;font-size:13px;">Deseja remover <strong>1</strong> ou <strong>todos</strong> os itens de <strong>${item.name}</strong>?</p>`,
+        yes: { label: "Remover 1", default: true },
+        no: { label: "Remover Todos", icon: "fas fa-trash" }
+      });
+
+      if (escolha === true) {
+        await item.update({ "system.quantity": (item.system.quantity || 0) - 1 });
+        return;
+      } else if (escolha === false) {
+        if (item.type === "job") {
+          const jobEffect = this.document.appliedEffects.find(e =>
+            e.flags?.ffrpg3e?.sourceItemId === item.id
+          );
+          if (jobEffect) {
+            await this.document.deleteEmbeddedDocuments("ActiveEffect", [jobEffect.id], { render: false });
+          }
+        }
+        await item.delete();
+        return;
+      }
+
+      return;
+    }
+
     const confirmar = await DialogV2.confirm({
       window: { title: "Remover Item", classes: ["ffrpg3e-dialog-confirm"] },
       content: `<p style="margin:0;font-size:13px;">Deseja realmente remover <strong>${item.name}</strong>?</p>`,
@@ -1091,6 +1119,35 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await this.render();
 
     this._restoreProficiencyScroll(scrollTop);
+  }
+
+  async usarItem(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if (!item || item.type !== "consumable") return;
+
+    const confirmar = await DialogV2.confirm({
+      window: { title: "Usar Item", classes: ["ffrpg3e-dialog-confirm"] },
+      content: `<p style="margin:0;font-size:13px;">Deseja usar <strong>${item.name}</strong>?</p>`,
+      yes: { label: "Usar", default: true },
+      no: { label: "Cancelar" }
+    });
+
+    if (!confirmar) return;
+
+    if (item.system.infinity === true) {
+      await MessageService.createItemUsedMessage(this.document, item.name);
+      return;
+    }
+
+    const novaQuantidade = Math.max(0, (item.system.quantity || 0) - 1);
+    if (novaQuantidade <= 0) {
+      await item.delete();
+    } else {
+      await item.update({ "system.quantity": novaQuantidade });
+    }
+
+    await MessageService.createItemUsedMessage(this.document, item.name);
   }
 
   _getProficiencyScrollTop() {

@@ -52,7 +52,7 @@
         </div>
         <div class="sub-tabela-header-row">
           <span style="flex: 1;">Nome</span>
-          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 28px;">Qtd</span>
+          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 56px;">Qtd</span>
         </div>
         {{#each keyItems}}
           <div class="inventario-row-item">
@@ -61,6 +61,11 @@
               <span class="bolso-quantidade">x{{this.system.quantity}}</span>
             </div>
             <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-usar" data-action="usarItem" data-item-id="{{this.id}}" title="Usar">
+                  <i class="fas fa-flask"></i>
+                </button>
+              </div>
               <div class="inventario-btn-box">
                 <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
                   <i class="fas fa-trash"></i>
@@ -119,7 +124,7 @@
         </div>
         <div class="sub-tabela-header-row">
           <span style="flex: 1;">Nome</span>
-          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 28px;">Qtd</span>
+          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 56px;">Qtd</span>
         </div>
         {{#each supportList}}
           <div class="inventario-row-item">
@@ -128,6 +133,11 @@
               <span class="bolso-quantidade">x{{this.system.quantity}}</span>
             </div>
             <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-usar" data-action="usarItem" data-item-id="{{this.id}}" title="Usar">
+                  <i class="fas fa-flask"></i>
+                </button>
+              </div>
               <div class="inventario-btn-box">
                 <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
                   <i class="fas fa-trash"></i>
@@ -186,7 +196,7 @@
         </div>
         <div class="sub-tabela-header-row">
           <span style="flex: 1;">Nome</span>
-          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 28px;">Qtd</span>
+          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 56px;">Qtd</span>
         </div>
         {{#each ammoList}}
           <div class="inventario-row-item">
@@ -195,6 +205,11 @@
               <span class="bolso-quantidade">x{{this.system.quantity}}</span>
             </div>
             <div class="inventario-actions-wrapper">
+                <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-usar" data-action="usarItem" data-item-id="{{this.id}}" title="Usar">
+                  <i class="fas fa-flask"></i>
+                </button>
+              </div>
               <div class="inventario-btn-box">
                 <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
                   <i class="fas fa-trash"></i>
@@ -217,7 +232,7 @@
         </div>
         <div class="sub-tabela-header-row">
           <span style="flex: 1;">Nome</span>
-          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 28px;">Qtd</span>
+          <span style="padding: 0 8px; flex-shrink: 0; margin-right: 56px;">Qtd</span>
         </div>
         {{#each othersList}}
           <div class="inventario-row-item">
@@ -226,6 +241,11 @@
               <span class="bolso-quantidade">x{{this.system.quantity}}</span>
             </div>
             <div class="inventario-actions-wrapper">
+              <div class="inventario-btn-box">
+                <button type="button" class="inventario-btn btn-usar" data-action="usarItem" data-item-id="{{this.id}}" title="Usar">
+                  <i class="fas fa-flask"></i>
+                </button>
+              </div>
               <div class="inventario-btn-box">
                 <button type="button" class="inventario-btn btn-excluir" data-action="removerItemFicha" data-item-id="{{this.id}}" title="Excluir">
                   <i class="fas fa-trash"></i>

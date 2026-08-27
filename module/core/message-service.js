@@ -27,6 +27,17 @@ export const MessageService = {
     return `Status [${effectName}] renovado para ${turns} turnos.`;
   },
 
+  createItemUsedMessage(actor, itemName) {
+    const message = `${actor.name} usou ${itemName}`;
+
+    return ChatMessage.create({
+      user: CONST.BROADCAST_USER_ID,
+      speaker: { alias: "Sistema" },
+      content: message,
+      style: CONST.CHAT_MESSAGE_STYLES.OOC
+    });
+  },
+
   equipSuccess(itemName, slot) {
     return `${itemName} equipado em ${slot}.`;
   },

@@ -6,7 +6,6 @@ import { getEquipBonusTarget } from "./equipment-service.js";
 
 export class DropDispatcher {
   static async dispatch(actor, item, event, data) {
-    console.log(`[FFRPG3E][DROP] Dispatch chamado: tipo=${item.type}, nome=${item.name}`);
     if (!item) return;
 
     switch (item.type) {
@@ -167,7 +166,6 @@ class GearDropHandler {
     const isAccessory = tags.some(t => t === "accessory");
 
     if (isConsumable && item.system?.infinity === true) {
-      console.log(`[FFRPG3E][DROP] Consumível infinito ignorado: ${name}`);
       return;
     }
 
@@ -181,12 +179,9 @@ class GearDropHandler {
 
       if (existente) {
         const novaQuantidade = safeInt(existente.system.quantity, 1) + safeInt(item.system.quantity, 1);
-        console.log(`[FFRPG3E][DROP] Stacking consumível: ${name}, sourceId=${sourceId}, quantidade atual=${existente.system.quantity}, nova=${novaQuantidade}`);
         await existente.update({ "system.quantity": Math.max(1, novaQuantidade) }, { render: false });
         await MessageService.createItemStackedMessage(actor, existente, Math.max(1, novaQuantidade));
         return;
-      } else {
-        console.log(`[FFRPG3E][DROP] Consumível não encontrado para stacking: ${name}, sourceId=${sourceId}`);
       }
     }
 
