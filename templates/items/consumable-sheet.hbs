@@ -43,7 +43,7 @@
     <div class="column-left-data">
       
       <!-- Linha Superior: Tipo e Checkbox Infinito -->
-      <div class="item-type-row-grid">
+      <div>
         <div class="field-group">
           <label>Tipo</label>
           <select name="system.type">
@@ -96,7 +96,7 @@
         <div class="horizontal-row-inputs">
           <div class="field-group">
             <label>Nome do Efeito</label>
-            <input name="system.effect.name" type="text" value="{{system.effect.name}}" placeholder="Nome do efeito..."/>
+            <input name="system.effect.name" type="text" value="{{item.name}}" placeholder="Nome do efeito..."/>
           </div>
           <div class="field-group">
             <label>Tipo do Efeito</label>
@@ -116,22 +116,6 @@
           <div class="field-group checkbox-align">
             <label>Permanente</label>
             <input name="system.effect.permanent" type="checkbox" {{#if system.effect.permanent}}checked{{/if}}/>
-          </div>
-          <div class="field-group checkbox-align">
-            <label>Afeta Aliados</label>
-            <input name="system.effect.safeAllies" type="checkbox" {{#if system.effect.safeAllies}}checked{{/if}}/>
-          </div>
-        </div>
-
-        <!-- Espaço: Área e Alcance -->
-        <div class="effect-params-grid-double">
-          <div class="field-group checkbox-align">
-            <label>Área</label>
-            <input name="system.effect.area" type="checkbox" {{#if system.effect.area}}checked{{/if}}/>
-          </div>
-          <div class="field-group">
-            <label>Alcance (Metros)</label>
-            <input name="system.effect.range" type="number" value="{{system.effect.range}}" placeholder="0"/>
           </div>
         </div>
 

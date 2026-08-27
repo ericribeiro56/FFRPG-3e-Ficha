@@ -143,7 +143,7 @@ export const STATUS_LABELS = {
 export const ITEM_TYPE_CATEGORY_MAP = {
   gear_weapon: "weapon",
   gear_armor: "armor",
-  gear_consumable: "consumable"
+  consumable: "consumable"
 };
 
 export const GEAR_ITEM_TYPES = Object.keys(ITEM_TYPE_CATEGORY_MAP);
@@ -151,7 +151,7 @@ export const GEAR_ITEM_TYPES = Object.keys(ITEM_TYPE_CATEGORY_MAP);
 export const GEAR_TYPES = {
   WEAPON: "gear_weapon",
   ARMOR: "gear_armor",
-  CONSUMABLE: "gear_consumable"
+  CONSUMABLE: "consumable"
 };
 
 export const GIL_TAX_MULTIPLIERS = {

@@ -4,5 +4,5 @@
   "TYPES.Item.race": "Raça",
   "TYPES.Item.gear_weapon": "Arma",
   "TYPES.Item.gear_armor": "Equipamento",
-  "TYPES.Item.gear_consumable": "Item"
+  "TYPES.Item.consumable": "Item Consumível/Importante"
 }

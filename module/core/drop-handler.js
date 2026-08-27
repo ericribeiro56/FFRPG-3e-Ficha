@@ -18,7 +18,7 @@ export class DropDispatcher {
       case "gear":
       case "gear_weapon":
       case "gear_armor":
-      case "gear_consumable":
+      case "consumable":
         const tags = item.system?.tags || [];
         if (tags.includes("keyItem")) {
           return GenericDropHandler.handle(actor, event, data);
@@ -166,7 +166,7 @@ class GearDropHandler {
     const isAccessory = tags.some(t => t === "accessory");
 
     if (isConsumable && sourceId) {
-      const gearTypes = ["gear", "gear_weapon", "gear_armor", "gear_consumable"];
+      const gearTypes = ["gear", "gear_weapon", "gear_armor", "consumable"];
       const existente = actor.items.find(i => 
         gearTypes.includes(i.type) && 
         (i.system?.tags || []).some(t => t === "consumable") && 

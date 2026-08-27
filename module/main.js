@@ -1,21 +1,24 @@
 import { RACAS_INICIAIS } from "../resources/defaults-data.js";
 import { PlayerSheet } from "./sheets/actor-sheet.js";
-import { CharacterData, JobModel, RaceDataModel, EffectModel, WeaponModel, ArmorModel, ConsumableBasicModel, StatusBonusBase, ItemAbilityBase } from "./data-models.js";
+import { CharacterData, JobModel, RaceDataModel, EffectModel, WeaponModel, ArmorModel, ConsumableModel, StatusBonusBase, ItemAbilityBase } from "./data-models.js";
 import { EffectsSheet } from "./sheets/items/effect-sheet.js";
 import { JobSheet } from "./sheets/job-sheet.js";
 import { RaceSheet } from "./sheets/race-sheet.js";
 import { WeaponSheet as WeaponSheetCustom } from "./sheets/items/weapon-sheet.js";
 import { ArmorSheet as ArmorSheetCustom } from "./sheets/items/armor-sheet.js";
+import { ConsumableSheet as ConsumableSheetCustom } from "./sheets/items/consumable-sheet.js";
 import { ARMOR_SLOTS, PROFICIENCY_BASIC_MAP } from "./core/constants.js";
 
 Hooks.once("preInit", async function() {
   CONFIG.dataModels = CONFIG.dataModels || {};
   CONFIG.dataModels.StatusBonusBase = StatusBonusBase;
   CONFIG.dataModels.ItemAbilityBase = ItemAbilityBase;
+  CONFIG.dataModels.EffectModel = EffectModel;
 
   game.dataModels = game.dataModels || {};
   game.dataModels.StatusBonusBase = StatusBonusBase;
   game.dataModels.ItemAbilityBase = ItemAbilityBase;
+  game.dataModels.EffectModel = EffectModel;
 });
 
 Hooks.once("init", async function() {
@@ -184,7 +187,7 @@ Hooks.once("init", async function() {
     race: RaceDataModel,
     gear_weapon: WeaponModel,
     gear_armor: ArmorModel,
-    gear_consumable: ConsumableBasicModel
+    consumable: ConsumableModel
   };
 
   CONFIG.statusEffects = [
@@ -232,6 +235,12 @@ Hooks.once("init", async function() {
     types: ["gear_armor"],
     makeDefault: true,
     label: "Configurador de Equipamento"
+  });
+
+  foundry.documents.collections.Items.registerSheet("ffrpg3e", ConsumableSheetCustom, {
+    types: ["consumable"],
+    makeDefault: true,
+    label: "Configurador de Consumível"
   });
 });
 

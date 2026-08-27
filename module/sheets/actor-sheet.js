@@ -16,7 +16,7 @@ import { buildEffectContext } from "../core/context-builders.js";
 import { INVENTORY_SLOT_TAG_MAP, OPCOES_DEFESAS_HP, OPCOES_PERCENTUAIS_CURA, opcoesTaxasGil, PROFICIENCY_BASIC_MAP, SKILL_JOB_TYPES } from "../core/constants.js";
 import { applyEquipmentEffect, removeEquipmentEffect } from "../core/equipment-service.js";
 import { MessageService } from "../core/message-service.js";
-import { ConsumableBasicModel, ItemModel } from "../data-models.js";
+import { ConsumableModel, ItemModel } from "../data-models.js";
 
 const { HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -610,9 +610,12 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     const consumabelItens = this.document.items.filter(
       (item) =>
-        item.system instanceof ConsumableBasicModel &&
+        item.system instanceof ConsumableModel &&
         !equippableTag.some(tag => safeArray(item.system?.tags).includes(tag))
     );
+
+    console.log("=================");
+    console.log(consumabelItens)
 
     const equippedList = [];
 
@@ -641,27 +644,32 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     for (const item of consumabelItens) {
 
-      if (safeArray(item.system?.tags).includes("key")) {
+      if (safeArray(item.system?.tags).includes("key") || 
+         (item.system?.type === "key")) {
         itemGroups.keys.push(item);
         continue;
       }
 
-      if (safeArray(item.system?.tags).includes("heal")) {
+      if (safeArray(item.system?.tags).includes("heal") || 
+         (item.system?.type === "heal")) {
         itemGroups.heals.push(item);
         continue;
       }
 
-      if (safeArray(item.system?.tags).includes("support")) {
+      if (safeArray(item.system?.tags).includes("support") || 
+         (item.system?.type === "support")) {
         itemGroups.support.push(item);
         continue;
       }
 
-      if (safeArray(item.system?.tags).includes("combat")) {
+      if (safeArray(item.system?.tags).includes("combat") || 
+         (item.system?.type === "combat")) {
         itemGroups.combat.push(item);
         continue;
       }
 
-      if (safeArray(item.system?.tags).includes("ammo")) {
+      if (safeArray(item.system?.tags).includes("ammo") || 
+         (item.system?.type === "ammo")) {
         itemGroups.ammo.push(item);
         continue;
       }

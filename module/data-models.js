@@ -931,16 +931,24 @@ export class ArmorModel extends GearBasicModel {
   }
 }
 
-export class ConsumableBasicModel extends ItemModel {
+export class ConsumableModel extends ItemModel {
 
   static defineSchema() {
     const item = super.defineSchema();
 
     let obj = {
       ...item,
+      type:Field.String(),
       quantity: Field.Number(1),
       infinity: Field.Boolean(),
-      effect: Field.Embedded(EffectModel)
+      effect: Field.Schema({
+        description: Field.Rich(),
+        effectType: Field.String("buff"),
+        duration: Field.Number(0),
+        permanent: Field.Boolean(false),
+        tags: Field.Array(Field.String()),
+        effect: Field.Array(StatusBonusBase)
+      })
     }
 
     return obj;
