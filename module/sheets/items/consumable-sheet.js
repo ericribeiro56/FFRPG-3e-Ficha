@@ -123,7 +123,6 @@ export class ConsumableSheet extends ItemSheetBase {
   }
 
   async addEffectModifier(event, target) {
-    console.log("[FFRPG3E][CONSUMABLE] addEffectModifier chamado");
     event.preventDefault();
     const statusSelect = this.element.querySelector(".add-modifier-status");
     const valueInput = this.element.querySelector(".add-modifier-value");
