@@ -123,6 +123,7 @@ export class ConsumableSheet extends ItemSheetBase {
   }
 
   async addEffectModifier(event, target) {
+    console.log("[FFRPG3E][CONSUMABLE] addEffectModifier chamado");
     event.preventDefault();
     const statusSelect = this.element.querySelector(".add-modifier-status");
     const valueInput = this.element.querySelector(".add-modifier-value");
@@ -134,9 +135,9 @@ export class ConsumableSheet extends ItemSheetBase {
     if (!status || isNaN(value)) return;
 
     const effect = this.document.system?.effect || {};
-    const effectList = effect.effect || [];
+    const effectList = effect.modifiers || [];
     effectList.push({ status, value, mode });
-    await this.document.update({ "system.effect.effect": effectList });
+    await this.document.update({ "system.effect.modifiers": effectList });
     if (valueInput) valueInput.value = "";
     this.render();
   }
@@ -145,10 +146,10 @@ export class ConsumableSheet extends ItemSheetBase {
     event.preventDefault();
     const index = datasetInt(target, "index");
     const effect = this.document.system?.effect || {};
-    const effectList = effect.effect || [];
+    const effectList = effect.modifiers || [];
     if (index < effectList.length) {
       effectList.splice(index, 1);
-      await this.document.update({ "system.effect.effect": effectList });
+      await this.document.update({ "system.effect.modifiers": effectList });
     }
     this.render();
   }

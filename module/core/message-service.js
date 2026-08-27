@@ -1,7 +1,7 @@
 export const MessageService = {
   async createEffectAppliedMessage(actor, item) {
     const effectType = item.system?.effectType === "debuff" ? "debuff" : "buff";
-    const durationText = item.system?.permanent ? "" : ` por ${item.system?.duration || 0} turno(s)`;
+    const durationText = item.system?.permanent ? "Permanentemente" : ` por ${item.system?.effect?.duration || 0} turno(s)`;
     const message = `${actor.name} recebeu o ${effectType} ${item.name}${durationText}`;
 
     return ChatMessage.create({

@@ -1135,6 +1135,40 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     if (!confirmar) return;
 
+    const effect = item.system?.effect || {};
+    const hasEffectName = !!effect.name;
+    const hasModifiers = Array.isArray(effect.modifiers) && effect.modifiers.length > 0;
+    const hasDuration = (effect.duration || 0) > 0;
+    const isPermanent = effect.permanent === true;
+
+    if (hasEffectName && hasModifiers && (hasDuration || isPermanent)) {
+      const changes = effect.modifiers.map(bonus => ({
+        key: bonus.status,
+        mode: bonus.mode === "percent" ? 2 : 1,
+        value: bonus.value
+      }));
+
+      const duration = isPermanent ? {} : { turns: effect.duration, units: "turns" };
+
+      const activeEffectData = {
+        name: effect.name,
+        img: item.img || "icons/svg/hazard.svg",
+        description: effect.description || "",
+        duration: duration,
+        changes: changes,
+        flags: {
+          ffrpg3e: {
+            sourceItemId: item.id,
+            effectType: effect.effectType || "buff",
+            permanent: isPermanent
+          }
+        }
+      };
+
+      await this.document.createEmbeddedDocuments("ActiveEffect", [activeEffectData]);
+      await MessageService.createEffectAppliedMessage(this.document, item);
+    }
+
     if (item.system.infinity === true) {
       await MessageService.createItemUsedMessage(this.document, item.name);
       return;

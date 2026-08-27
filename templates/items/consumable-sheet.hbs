@@ -95,7 +95,7 @@
         <div class="horizontal-row-inputs">
           <div class="field-group">
             <label>Nome do Efeito</label>
-            <input name="system.effect.name" type="text" value="{{item.effect.name}}" placeholder="Nome do efeito..."/>
+            <input name="system.effect.name" type="text" value="{{system.effect.name}}" placeholder="Nome do efeito..."/>
           </div>
           <div class="field-group">
             <label>Tipo do Efeito</label>
@@ -152,7 +152,7 @@
               <button type="button" class="action-btn-add" data-action="addEffectModifier">+</button>
             </div>
             <div class="vertical-scroll-list compact-height">
-              {{#each system.effect.effect as |bonus bIndex|}}
+               {{#each system.effect.modifiers as |bonus bIndex|}}
               <div class="list-item-row triple-display">
                 <span class="modifier-badge target-badge">{{statusDisplay bonus.status}}</span>
                 <span class="modifier-badge value-badge">{{bonus.value}}</span>

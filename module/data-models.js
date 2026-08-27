@@ -949,7 +949,7 @@ export class ConsumableModel extends ItemModel {
         duration: Field.Number(0),
         permanent: Field.Boolean(false),
         tags: Field.Array(Field.String()),
-        effect: Field.Array(StatusBonusBase)
+        modifiers: Field.Array(StatusBonusBase)
       })
     }
 
