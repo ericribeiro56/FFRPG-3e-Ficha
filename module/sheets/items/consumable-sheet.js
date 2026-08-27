@@ -1,4 +1,4 @@
-import { EFFECT_TYPES, EQUIPPABLE_BONUS_TARGETS, TIERS } from "../../core/constants.js";
+import { CONSUMABLE_TYPES, EFFECT_TYPES, EQUIPPABLE_BONUS_TARGETS, TIERS } from "../../core/constants.js";
 import { safeInt, sortByLabel, datasetInt } from "../../core/utils.js";
 import { ItemSheetBase } from "./item-core.js";
 
@@ -51,6 +51,8 @@ export class ConsumableSheet extends ItemSheetBase {
     context.statusOptions = sortByLabel(EQUIPPABLE_BONUS_TARGETS.map(t => ({ key: t.key, display: t.display })));
     context.statusDisplay = statusDisplay;
     context.modeDisplay = modeDisplay;
+
+    context.consumableTypes = sortByLabel(Object.entries(CONSUMABLE_TYPES).map(([value, label]) => ({ value, label })));
 
     const effect = this.document.system?.effect || {};
     const desc = effect.description || "";

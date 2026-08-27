@@ -47,13 +47,12 @@
         <div class="field-group">
           <label>Tipo</label>
           <select name="system.type">
-            <option value="consumable" {{#if (eq system.type "consumable")}}selected{{/if}}>Consumível</option>
-            <option value="key" {{#if (eq system.type "key")}}selected{{/if}}>Chave</option>
-            <option value="ammo" {{#if (eq system.type "ammo")}}selected{{/if}}>Munição</option>
-            <option value="other" {{#if (eq system.type "other")}}selected{{/if}}>Outros</option>
+          {{#each consumableTypes}}
+            <option value="{{this.value}}" {{#if (eq ../system.type this.value)}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
           </select>
         </div>
-        <div class="field-group checkbox-align">
+        <div class="field-group checkbox-align" style="margin-top: 5px;">
           <label>Infinito</label>
           <input name="system.infinity" type="checkbox" {{#if system.infinity}}checked{{/if}}/>
         </div>
@@ -96,7 +95,7 @@
         <div class="horizontal-row-inputs">
           <div class="field-group">
             <label>Nome do Efeito</label>
-            <input name="system.effect.name" type="text" value="{{item.name}}" placeholder="Nome do efeito..."/>
+            <input name="system.effect.name" type="text" value="{{item.effect.name}}" placeholder="Nome do efeito..."/>
           </div>
           <div class="field-group">
             <label>Tipo do Efeito</label>
@@ -113,7 +112,7 @@
             <label>Duração</label>
             <input name="system.effect.duration" type="number" value="{{system.effect.duration}}"/>
           </div>
-          <div class="field-group checkbox-align">
+          <div class="field-group checkbox-align" style="margin-top:17px !important">
             <label>Permanente</label>
             <input name="system.effect.permanent" type="checkbox" {{#if system.effect.permanent}}checked{{/if}}/>
           </div>

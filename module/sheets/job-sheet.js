@@ -1,7 +1,7 @@
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 
-import { CLASS_LIST, PROFICIENCY_BASIC_MAP, ROLL_FORMULA_TARGETS, SKILL_JOB_TYPES, WEAPON_TYPES } from "../core/constants.js";
-import { replaceFormulaReferences } from "../core/utils.js";
+import { CLASS_LIST, CONSUMABLE_TYPES, PROFICIENCY_BASIC_MAP, ROLL_FORMULA_TARGETS, SKILL_JOB_TYPES, WEAPON_TYPES } from "../core/constants.js";
+import { replaceFormulaReferences, sortByLabel } from "../core/utils.js";
 
 export class JobSheet extends HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheetV2) {
   constructor(options = {}) {

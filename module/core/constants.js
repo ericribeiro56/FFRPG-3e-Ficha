@@ -179,6 +179,15 @@ export const SKILL_JOB_TYPES = {
   passive: "Passiva"
 }
 
+export const CONSUMABLE_TYPES = {
+  key: "Importante",
+  heal: "Cura/Consumivel",
+  support: "Suporte",
+  combat: "Combate",
+  ammo: "Projétil/Munição",
+  other: "Outros",
+}
+
 export const PROFICIENCY_BASIC_MAP = [
     {
       groupLabel: "Perícias Artísticas",

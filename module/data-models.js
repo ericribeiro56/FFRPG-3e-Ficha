@@ -943,6 +943,7 @@ export class ConsumableModel extends ItemModel {
       quantity: Field.Number(1),
       infinity: Field.Boolean(),
       effect: Field.Schema({
+        name:Field.String(),
         description: Field.Rich(),
         effectType: Field.String("buff"),
         duration: Field.Number(0),
