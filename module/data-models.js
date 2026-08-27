@@ -745,6 +745,7 @@ export class ItemModel extends foundry.abstract.TypeDataModel {
   static defineSchema() {
 
     let obj = {
+      uuidItem:Field.String(),
       tier: Field.Number(1),
       probability: Field.Number(),
       description: Field.Rich(),

@@ -614,9 +614,6 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         !equippableTag.some(tag => safeArray(item.system?.tags).includes(tag))
     );
 
-    console.log("=================");
-    console.log(consumabelItens)
-
     const equippedList = [];
 
     const itemGroups = {
@@ -675,7 +672,6 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       }
 
       this.addToGroup(item, itemGroups);
-
     }
 
     const listaSlots = [

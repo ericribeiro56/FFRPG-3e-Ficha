@@ -305,3 +305,57 @@ async function criarPastaEInjetarItens(nomeDaPasta, listaDeDados, corHex = "#4a1
     console.error(`FFRPG3E | Erro crítico ao injetar o banco de dados de: "${nomeDaPasta}"`, error);
   }
 }
+
+Hooks.on("preCreateItem", (itemDocument, data, options, userId) => {
+  // 1. Garante que o item está entrando em um Actor
+  const actor = itemDocument.parent;
+  if (!(actor instanceof Actor)) return true;
+
+  // 2. Filtro Exclusivo: Só roda para consumíveis
+  if (!(itemDocument.system instanceof ConsumableModel)) return true;
+
+  // 3. Extrai uma cópia limpa do sistema para gerar a assinatura digital
+  const dadosParaComparar = itemDocument.system.toObject();
+  
+  // Limpamos do cálculo as propriedades dinâmicas que NÃO definem a identidade do item
+  delete dadosParaComparar.quantity;
+  delete dadosParaComparar.uuidItem;
+
+  // 4. Cria a string de identidade unindo o Nome do Item e as propriedades do seu Schema (tier, effects, tags, etc.)
+  const stringIdentidade = `${itemDocument.name}-${JSON.stringify(dadosParaComparar)}`;
+  const hashIdentidade = btoa(unescape(encodeURIComponent(stringIdentidade)));
+
+  // 5. Varre o inventário do Actor em busca de um consumível idêntico
+  const itemExistente = actor.items.find(item => {
+    if (!(item.system instanceof ConsumableModel)) return false;
+    
+    const dadosExistentes = item.system.toObject();
+    delete dadosExistentes.quantity;
+    delete dadosExistentes.uuidItem;
+    
+    const stringExistente = `${item.name}-${JSON.stringify(dadosExistentes)}`;
+    const hashExistente = btoa(unescape(encodeURIComponent(stringExistente)));
+    
+    return hashExistente === hashIdentidade;
+  });
+
+  // 6. Fluxo de Decisão:
+  if (itemExistente) {
+    // CASO A: O item é 100% igual. Soma +1 na quantidade do item que já está na ficha.
+    const novaQuantidade = (itemExistente.system.quantity || 0) + 1;
+    
+    itemExistente.update({ "system.quantity": novaQuantidade }).then(() => {
+      ui.notifications.info(`Quantidade de "${itemExistente.name}" aumentada para ${novaQuantidade}.`);
+    });
+
+    return false; // Cancela a criação do card duplicado
+  } else {
+    // CASO B: O item é inédito ou foi modificado pelo GM.
+    // Carimba o novo hash gerado diretamente no seu campo 'uuidItem' do DataModel
+    itemDocument.updateSource({
+      "system.uuidItem": hashIdentidade
+    });
+    
+    return true; // Permite a criação do novo item no Actor
+  }
+});
