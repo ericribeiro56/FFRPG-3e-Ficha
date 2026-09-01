@@ -3,7 +3,7 @@
   "name": "ffrpg3e",
   "title": "ffrpg-3e",
   "description": "Sistema do ffrpg 3e para o foundry v14",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "compatibility": {
     "minimum": "14",
     "verified": "14"
@@ -39,6 +39,7 @@
     "css/actor/actor-sheet.css",
     "css/actor/proficiency.css",
     "css/actor/job-skill.css",
+    "css/actor/genericInfo.css",
     "css/job/job-sheet.css",
     "css/race/race-sheet.css",
     "css/items/armor.css",

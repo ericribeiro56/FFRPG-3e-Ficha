@@ -132,9 +132,8 @@
             <a class="item" data-tab="proficiency">Proeficiência</a>
             <a class="item" data-tab="inventario">Inventário</a>
             <a class="item" data-tab="status">Status</a>
-            <a class="item" data-tab="extrato">Extrato</a>
+            <a class="item" data-tab="genericInfo">Informações</a>
             <a class="item" data-tab="skills">Skills do Job</a>
-            <a class="item" data-tab="background">Background</a>
         </nav>
 
         <section class="sheet-body">
@@ -150,14 +149,11 @@
             <div class="tab" data-tab="status">
                 {{> "systems/ffrpg3e/templates/actor/tabs/status-sheet.hbs"}}
             </div>
-            <div class="tab" data-tab="extrato">
-                {{> "systems/ffrpg3e/templates/actor/tabs/extrato-sheet.hbs"}}
+            <div class="tab" data-tab="genericInfo">
+                {{> "systems/ffrpg3e/templates/actor/tabs/genericInfo.hbs"}}
             </div>
             <div class="tab" data-tab="skills">
                 {{> "systems/ffrpg3e/templates/actor/tabs/job-skill.hbs"}}
-            </div>
-            <div class="tab" data-tab="background">
-                {{> "systems/ffrpg3e/templates/actor/tabs/background-sheet.hbs"}}
             </div>
         </section>
     </div>

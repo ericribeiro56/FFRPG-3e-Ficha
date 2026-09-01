@@ -96,8 +96,16 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       "system.proficiency.social.deception.total": "Lábia"
     });
 
-    context.enrichBackground = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-      this.document.system.info.background || "",
+    context.enrichBackstory = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+      this.document.system.info.backstory || "",
+      { secrets: this.document.isOwner, async: true }
+    );
+    context.enrichPersonality = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+      this.document.system.info.personality || "",
+      { secrets: this.document.isOwner, async: true }
+    );
+    context.enrichNotes = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+      this.document.system.info.notes || "",
       { secrets: this.document.isOwner, async: true }
     );
 
@@ -1254,10 +1262,9 @@ export class PlayerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 Hooks.once("init", async function () {
   await foundry.applications.handlebars.loadTemplates([
     "systems/ffrpg3e/templates/actor/tabs/attributes-sheet.hbs",
-    "systems/ffrpg3e/templates/actor/tabs/extrato-sheet.hbs",
+    "systems/ffrpg3e/templates/actor/tabs/genericInfo.hbs",
     "systems/ffrpg3e/templates/actor/tabs/proficiency.hbs",
     "systems/ffrpg3e/templates/actor/tabs/status-sheet.hbs",
-    "systems/ffrpg3e/templates/actor/tabs/background-sheet.hbs",
     "systems/ffrpg3e/templates/actor/tabs/job-skill.hbs",
     "systems/ffrpg3e/templates/generics/inventory-sheet.hbs",
   ]);

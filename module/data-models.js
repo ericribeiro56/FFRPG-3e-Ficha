@@ -58,7 +58,9 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
         age: Field.Number(0),
         height: Field.Number(0),
         weight: Field.Number(0),
-        background: Field.Rich("", false)
+        backstory: Field.Rich("", false),
+        notes: Field.Rich("", false),
+        personality: Field.Rich("", false)
       }),
 
       attributes: Field.Schema({

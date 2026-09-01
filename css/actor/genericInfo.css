@@ -1,0 +1,268 @@
+/* ==========================================================================
+   CSS EXCLUSIVO E FORÇADO: ABA GENERIC INFO (FINANÇAS & CRÔNICAS)
+   ========================================================================== */
+
+/* Força a aba ativa a se comportar como um container rígido que não vaza da ficha */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    background-color: rgba(0, 0, 0, 0.35) !important;
+    backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
+}
+
+/* Wrapper principal em duas colunas */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .generic-info-wrapper {
+    display: grid !important;
+    
+    /* 🚨 MARCAÇÃO DE LARGURA: Altere o '30%' abaixo para redimensionar as colunas principais */
+    grid-template-columns: 30% 1fr !important;
+    
+    gap: 14px !important;
+    padding: 12px !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Colunas Verticais Estritas */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .generic-info-coluna-financas,
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .generic-info-coluna-cronicas {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* --- SEÇÃO: EXTRATO FINANCEIRO (ESQUERDA) --- */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-cabecalho {
+    flex-shrink: 0 !important;
+    padding-bottom: 6px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    margin-bottom: 8px !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-cabecalho h3 {
+    margin: 0 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #dfd5c6 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 1px 1px 2px #000 !important;
+}
+
+/* Trava de altura e scroll vertical do Extrato */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-lista {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 4px 0 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    min-height: 0 !important;
+}
+
+/* Cards do Extrato */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: #fffdf7 !important;
+    border: 1px solid #d4c8b8 !important;
+    border-radius: 6px !important;
+    padding: 8px !important;
+    box-shadow: 0 1px 3px rgba(74, 51, 25, 0.08) !important;
+    box-sizing: border-box !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-item.card-adicionado {
+    border-left: 4px solid #2a9d8f !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-item.card-removido {
+    border-left: 4px solid #e63946 !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-corpo {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .linha-principal {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .badge-acao {
+    font-size: 9px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    padding: 1px 5px !important;
+    border-radius: 3px !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .badge-acao.acao-adicionado {
+    background: rgba(42, 157, 143, 0.15) !important;
+    color: #2a9d8f !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .badge-acao.acao-removido {
+    background: rgba(230, 57, 70, 0.15) !important;
+    color: #e63946 !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .valor-gil {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #2b1a08 !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .linha-descricao {
+    font-size: 11px !important;
+    color: #5c4e3c !important;
+    font-style: italic !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-meta {
+    text-align: right !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    font-size: 9px !important;
+    color: #735e47 !important;
+}
+
+/* Estado de Extrato Vazio */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-vazio {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #b5aba0 !important;
+    font-size: 11px !important;
+    font-style: italic !important;
+    text-align: center !important;
+    gap: 6px !important;
+    text-shadow: 1px 1px 1px #000 !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-vazio i {
+    font-size: 20px !important;
+    color: #dfd5c6 !important;
+}
+/* --- SEÇÃO: CRÔNICAS (DIREITA SUBDIVIDIDA) --- */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .generic-info-coluna-cronicas {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+}
+
+/* Linha Superior: História e Personalidade lado a lado */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .cronicas-linha-topo {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Divide em 50% / 50% exatos */
+    gap: 12px !important;
+    flex: 1.1 !important; /* Controla a proporção de altura do bloco de cima */
+    min-height: 0 !important;
+}
+
+/* Linha Inferior: Notas pegando a largura total */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .cronicas-linha-base {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 0.9 !important; /* Controla a proporção de altura das Notas na base */
+    min-height: 0 !important;
+}
+
+/* Estrutura de cada bloco de editor individual */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .cronica-bloco {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 6px !important;
+    padding: 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Cabeçalhos internos das caixas de texto rico */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .cronica-cabecalho h4 {
+    margin: 0 0 6px 0 !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: #fff5e6 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    padding-bottom: 4px !important;
+    flex-shrink: 0 !important;
+    text-shadow: 
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000,
+         0px  2px 4px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Container do Prose-Mirror */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .cronica-editor {
+    flex: 1 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Estilo do Prose-Mirror injetado (Mantendo o padrão papiro claro) */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .prose-mirror-style {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    color: #2b1a08 !important;
+    background-color: #faf6ec !important;
+    border: 1px solid #c7b9a8 !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+}
+
+/* Customização dos Scrollbars Internos */
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-lista::-webkit-scrollbar,
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .prose-mirror-style::-webkit-scrollbar {
+    width: 5px !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-lista::-webkit-scrollbar-track,
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .prose-mirror-style::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 4px !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-lista::-webkit-scrollbar-thumb,
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .prose-mirror-style::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 4px !important;
+}
+
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .extrato-lista::-webkit-scrollbar-thumb:hover,
+.ffrpg3e.sheet.actor .tab[data-tab="genericInfo"].active .prose-mirror-style::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
